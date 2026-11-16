@@ -124,6 +124,10 @@ factory's deliver/review stages.
 - **Test:** 10 reviews with the export on. Check the timings add up to wall-clock time, and that viewed-but-skipped
   files show near-zero time. Beside the quiz, a second comprehension measure: a small follow-up change made by hand
   after reading the page, with the agent closed (extend it without the agent). Log whether the person can do it.
+- **Code Tour "0/13 snippets" (2026-11-16).** Secondhand, from the demo on #9: the Diff tab shows
+  "0/13 snippets" as the reader moves through the tour. That is a peer of the viewed state this item
+  already notes. It is not a time-per-file measure. Evidence: `vendor`. The count string is secondhand.
+  Notes: [`notes/sweep-2026-11-16.md`](notes/sweep-2026-11-16.md).
 
 ### 3. `teach-code`: stateful, mission-led lessons about a repo or one area of it — `proposed`, cost M (v1) / L (v2), target new skill in accelerate (reuses the HR renderer)
 *Merges the old #3 (slice explainer), #10 (repo onboarding course), and #14 (learner profile), 2026-11-01, after
@@ -148,6 +152,9 @@ reading Matt Pocock's `teach`.*
     [X](https://x.com/mattpocockuk/status/2064023481398824993) (5,054 likes, 7,777 bookmarks, 909,811 impressions) and
     [X](https://x.com/mattpocockuk/status/2063988995692900439) (2,821 likes). His reply "/teach me about this codebase"
     ([X](https://x.com/mattpocockuk/status/2062973868344524834): 282 likes, 137 bookmarks).
+  - **Wattenberger, several perspectives (2026-11-16).** The prompt on #14 asks for a high-level
+    walkthrough from different perspectives, with diagrams. A lesson can open on that prompt. Counts
+    and the evidence label are on #14.
   - A community "teach pr" skill (teach the checked-out PR "like a senior engineer onboarding them", with a chosen
     teaching level 1–4) was proposed for that repo and declined: "Cool idea, but not for this repo IMO"
     ([issue #727](https://github.com/mattpocock/skills/issues/727)). The space for a code-specific teacher is open.
@@ -255,6 +262,14 @@ reading Matt Pocock's `teach`.*
   ([DEV, 2026-11-01](https://dev.to/igorkasyanchuk/i-made-my-coding-agent-explain-its-own-pull-requests-j67),
   [repo](https://github.com/igorkasyanchuk/diffnotes), 3 stars per the GitHub API on 2026-11-02). Evidence:
   `practitioner` (low engagement).
+  **gavel (2026-11-16).** PhotoStructure, a fork of difit. `/gavel` in Claude Code or `$gavel` in Codex
+  opens a local browser review. The write-up's narrative, which the author says the agent should write,
+  asks why the change was needed, what alternatives were considered, why this approach, and where to
+  start. Those alternatives and the reason are this item. The Change summary panel, as the page
+  describes it, is why the change was made, where the tour starts, and the proposed commit message.
+  [repo](https://github.com/photostructure/gavel) (MIT, created 2026-11-07, 4 stars, 0 forks, GitHub
+  API 2026-11-16). [write-up](https://photostructure.com/coding/gavel/). Evidence: `vendor`.
+  Purpose-ordered parts are #12. Per-part Approve and Reject are handed off.
   **Flatbread** is a handoff that keeps the dead ends from a Claude Code, Codex, or Cursor session, so the next
   agent can pull an execution brief
   ([X](https://x.com/bulentongun/status/2116366373920391218): 7 likes). Evidence: `engagement` (low).
@@ -340,6 +355,15 @@ reading Matt Pocock's `teach`.*
   "called" (`HR/SKILL.md` "Blast radius"). A resolved graph answers "what else does this touch" faster.
 - **Test:** on 5 PRs, compare the grep and graph outputs by hand: false mentions removed, real callers missed. Time to
   answer "who calls this?" A diagram used as blast radius fails the check when a missing box is described as unused.
+- **Rasoi (2026-11-16).** Sahni et al., Columbia, including Lydia B. Chilton.
+  [arXiv 2611.16293](https://arxiv.org/abs/2611.16293). The abs page, read 2026-11-16, says submitted
+  12 Nov 2026 (v1, 2026-11-12T04:47:39Z). A design probe maps how a codebase's architecture changes
+  after each agent edit: elements and relationships added, modified, or removed, at several
+  abstraction levels. A week-long study, 12 developers, their own codebases. Visual diffs helped them
+  see whether changes stayed in scope, notice unexpected restructuring, and relate changed parts to
+  the whole. The authors say the value is the developer's confidence in their own evaluation. The
+  abstract reports no comprehension quiz. Evidence: `measured-obs` (qualitative field study). The
+  per-edit map is #17, in Changes (2026-11-16 sweep).
 
 ### 8. Semantic "lines to read", call-graph order, and test reach — `proposed`, cost M, target HR
 - **Idea:** before the model's prose, and beside it, run a local tree-sitter semantic diff. Collapse moves,
@@ -377,6 +401,18 @@ reading Matt Pocock's `teach`.*
   ([gist](https://gist.github.com/geoffreylitt/a29df1b5f9865506e8952488eac3d524)). This is the earlier report's #10
   "familiarity-adaptive density", which hasn't shipped. HR always writes for a newcomer (`HR/SKILL.md` "Write for
   someone new to this code"). Evidence: `practitioner` + `measured-obs` (Bacchelli & Bird, via the earlier report).
+  **Code Tour tone pad (2026-11-16).** GitHub Copilot's Code Tour is in testing, "coming soon alongside
+  our new GitHub 2.0 UI." Lichin Lin (Design Engineer at GitHub), 2026-11-13,
+  [post](https://x.com/lichinlin/status/2121233913406214200). X `public_metrics` read 2026-11-16
+  ~13:35 UTC: likes 351, bookmarks 103, reposts 19, quotes 13, replies 28, impressions 18,223. The
+  post says review is the story behind the changes, turned into readable chapters and visual diagrams,
+  with a way to tune how the story is told. A 56s demo was described by a video model. That
+  description is secondhand: a gear opens "Adjust tone," a 2D pad, Technical to Plain by Brief to
+  Detailed. "Brief · Plain" and Apply regenerated the tour, and the diagram. The chapters, the
+  diagram, and "0/13 snippets" are on #11 and #2. One-post echo, no official GitHub announcement:
+  [vqv.me](https://vqv.me/s/qp7zi/). Evidence: `vendor` + `engagement`. This is the strongest vendor
+  evidence on this item so far. **Our own idea:** widen the two fixed depths to that two-axis
+  re-render, still cost S. The pad sits beside the git-signal collapse. Quiz score stays the guard.
 - **Add a level check, the gap `teach` users report most:** "There is no assessment step… It never did grilling to
   establish my starting point" (`teach` docs, [common questions](https://github.com/mattpocock/skills/blob/main/docs/productivity/teach.md); request
   [#725](https://github.com/mattpocock/skills/issues/725)). Collapse or open the deep background from (a) the git
@@ -430,6 +466,14 @@ reading Matt Pocock's `teach`.*
   The only evidence is the vendor's own docs, so it stays under #6–#10 and above the split advisor (#12).
 - **Test:** on 5 PRs, the footer counts match a hand count of claims, and every diagram step opens a line
   `build --check` can resolve. A step with no line fails the check.
+- **Code Tour diagram (2026-11-16).** Secondhand, from the same demo as #9. A diagram, "How the
+  changes fit together," uses the chapters as nodes. Edges are typed, including "verified by",
+  "state consumed by", and "busy/exit logic coordinates with", and they expand. A chapter chip such
+  as `src/components/WorkspaceDiffSingleView.tsx` lines 28–29 has the tooltip "Open in Diff" and
+  jumps to that line. That is a diagram step that opens the code. The numbered chapters are a peer
+  of the shipped reading order and of grouping. Those table rows are unchanged. Wattenberger's prompt
+  on #14 asks for diagrams from several perspectives. Evidence: `vendor` for the post. The UI lines
+  are secondhand.
 
 ### 12. Split and size advisor — `proposed`, cost S–M, target HR
 - **Idea:** when the concerns show more than one independent cluster, or the estimated reading time is more than one
@@ -441,6 +485,11 @@ reading Matt Pocock's `teach`.*
   [site](https://www.dyff.sh/), which did not load on 2026-11-02). The README does not describe a 34-file PR grouped
   into 4-5 dependency-order stages, so that claim stays unchecked. Not enough to move this item. The symbol-search
   half is noted on #7. Evidence for Dyff: `vendor`.
+  **gavel (2026-11-16).** The same tool as #5 groups a large change by purpose. Each part has its own
+  tab and its own brief. A refactor can come before the behavior that depends on it. That is this
+  advisor's split, ordered by purpose. Stars and the write-up are on #5. Evidence: `vendor`. The
+  "Start here" tour with Next links is the shipped reading order. Per-part Approve and Reject are
+  handed off.
 - **Test:** on 10 past limitless PRs, does the advisor's split match what Matt would split?
 
 ### 13. "Who to ask" for the area — `proposed`, cost S, target HR + #3
@@ -471,12 +520,22 @@ reading Matt Pocock's `teach`.*
   Evidence: `practitioner`. One short non-goals line on the background. Not a fourth full explanation, and not a
   new item. The same guide's warning that video cannot be grepped or linked at a sentence is noted on the
   narrated modality below.
+  **Wattenberger (2026-11-16).** Amelia Wattenberger (design, AI, tools for thought; previously R&D at
+  GitHub Next), 2026-11-14.
+  [post](https://x.com/Wattenberger/status/2121640552458281016). X `public_metrics` read 2026-11-16
+  ~13:35 UTC: likes 122, bookmarks 170, reposts 6, replies 9, impressions 9,107. Bookmarks are above
+  likes. The prompt: "walk me through how this works from different perspectives. keep it high level
+  and be liberal with diagrams." Evidence: `practitioner` + `engagement`. The diagrams are #11. A #3
+  lesson can run the same prompt.
 - **Why it helps:** one true paragraph can still miss the angle the reader needed. Two or three angles are a small
   addition to the background block and to a #3 lesson. The non-goals line says what a later reader must not treat
   as an oversight.
 - **Why it sits here:** the effect did not clear a multiple-comparison correction, and the setting is an intro
   programming course. Cheap to try, and below "Who to ask" (#13), which has a clearer mechanism.
 - **Test:** alternate PRs with and without the extra angles and compare quiz score.
+- **Wattenberger prompt, our own idea for the test (2026-11-16).** Run the prompt above verbatim
+  against the current human-review page, on one real accelerate or limitless pull request, and score
+  both with the #1 quiz.
 
 ### 15. Interactive or animated explainer for the algorithmic core — `proposed`, cost M, target HR (gated)
 - **Idea:** for a change whose core is an algorithm or state machine, allow one `interactive` block (a sandboxed
@@ -546,6 +605,52 @@ reading Matt Pocock's `teach`.*
 | Precision check on every claim | `HR/SKILL.md` "Precision check" | Earlier report #7. Item 11 adds a visible count of claims that could not be tied to code. |
 | Comment, verdict, and **Copy feedback for the agent** loop | `HR/README.md`; `HR/assets/app.js` | Like hunk-review-changes / constellagent "submit to agent". |
 
+## Changes (2026-11-16 sweep)
+
+The draft header, the notes list under it, and the shipped table rows are unchanged. Open PRs #13,
+#17, #19, #21, #23, and #25 edit those. This section sits between the shipped table and the hand-off
+list. The other sweep changelogs sit with the draft history, lower in this file. Headings #1 through
+#17 stay numbered as they are. Notes:
+[`notes/sweep-2026-11-16.md`](notes/sweep-2026-11-16.md).
+
+- #9: GitHub Copilot Code Tour, in testing, from Lichin Lin (Design Engineer at GitHub), 2026-11-13.
+  [post](https://x.com/lichinlin/status/2121233913406214200). X `public_metrics` read 2026-11-16
+  ~13:35 UTC: likes 351, bookmarks 103, reposts 19, quotes 13, replies 28, impressions 18,223.
+  Evidence: `vendor` + `engagement`. The strongest vendor evidence on this item so far. The demo's
+  tone pad is secondhand. **Our own idea:** widen the two fixed depths to that two-axis re-render,
+  still cost S. Echo, one social post, no official GitHub announcement:
+  [vqv.me](https://vqv.me/s/qp7zi/).
+- #11: the same demo's diagram. Nodes are the chapters. Edges are typed. A file:line chip opens the
+  Diff tab. Wattenberger's prompt, on #14, asks for diagrams. The numbered chapters are a peer of the
+  shipped reading order and of grouping. Those rows were left unchanged.
+- #2: the demo's Diff tab shows "0/13 snippets". A peer of read-tracking. Secondhand. A count of
+  snippets, not a timestamp.
+- #14 and #3: Amelia Wattenberger, 2026-11-14.
+  [post](https://x.com/Wattenberger/status/2121640552458281016). likes 122, bookmarks 170, reposts 6,
+  replies 9, impressions 9,107. Bookmarks are above likes. Evidence: `practitioner` + `engagement`.
+  **Our own idea** for the test: run that prompt verbatim against the current human-review page on
+  one accelerate or limitless pull request, and score both with the #1 quiz.
+- #7: Rasoi, Sahni et al., Columbia, including Lydia B. Chilton.
+  [arXiv 2611.16293](https://arxiv.org/abs/2611.16293). The abs page says submitted 12 Nov 2026 (v1,
+  2026-11-12T04:47:39Z). Qualitative field study, 12 developers, one week, their own codebases. No
+  comprehension quiz in the abstract. Evidence: `measured-obs`. The structural map stays on #7.
+- #17: Rasoi maps the architecture after each agent edit. That is a per-edit delta, beside this
+  item's delta of the review page. The item body is unchanged. Open PRs #19, #21, #23, and #25 each
+  insert on a line of that item. The study does not move it.
+- #5 and #12: [gavel](https://github.com/photostructure/gavel), PhotoStructure, MIT, created
+  2026-11-07, 4 stars and 0 forks (GitHub API 2026-11-16, matching the brief).
+  [write-up](https://photostructure.com/coding/gavel/). The narrative's alternatives and why this
+  approach are #5. Purpose-ordered parts, each with a tab and a brief, are #12. Per-part Approve and
+  Reject, and the change-request loop, are in the hand-off list.
+- Shipped HTML page: [krishhgg/pr-walkthrough](https://github.com/krishhgg/pr-walkthrough). GitHub API
+  this session: 1 star, 0 forks, MIT. The brief said 0 stars. The backlog uses 1. One-line peer. The
+  table row is unchanged. Open PR #21 edits it.
+- Rank: unchanged. Measured evidence stays above vendor and practitioner evidence, so #9 stays below
+  #1, #2, #4, #6, and #7. Rasoi is field evidence on #7. Code Tour is vendor. The rise the rules
+  still allow is one place, above #8, which is cost M and a thin vendor source. The file leaves #9
+  where it is. Moving that section would cut text open PRs #19 and #21 insert into. TARS, already on
+  #9, was null on correctness. Nothing else moves. No new row. The tone pad widens #9 and stays cost S.
+
 ## Hand off to Code Review Research Bot (review quality and bug finding, out of scope here)
 
 - **Macroscope Check Run Agents**: custom agents on every PR as GitHub check runs
@@ -556,6 +661,12 @@ reading Matt Pocock's `teach`.*
 - **OpenAI's Codex plugin for Claude Code**: `/codex:review` and `/codex:adversarial-review` of uncommitted changes
   ([X](https://x.com/rezaul_arif/status/2043509181320413621), 1 like; not checked against OpenAI's docs).
 - **OpenQodex**: OSS review CLI for unpushed and uncommitted changes ([X](https://x.com/DanKornas/status/2110154613680902197): 39 likes).
+- **gavel, per-part verdicts (2026-11-16).** Approve lets the agent commit once comments are addressed
+  and the required checks pass. Reject stops the agent. A change request on a line sends the agent
+  back, and the reply stays in that thread. Each part keeps its own verdict. Review workflow. The
+  brief and the split stay on #5 and #12.
+  [write-up](https://photostructure.com/coding/gavel/).
+  [repo](https://github.com/photostructure/gavel) (4 stars, 0 forks, GitHub API 2026-11-16).
 - **Claude Code team review process**: incident-causing PRs used as a daily eval set; PRs merged more than doubled while
   the revert share fell by more than 40% (June–September). Article posted on @addyosmani's account
   ([X](https://x.com/addyosmani/status/2114604912520921136)).
