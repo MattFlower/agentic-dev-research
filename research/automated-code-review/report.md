@@ -254,6 +254,23 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
 
 ### 2.5 Execution, security and spec (sources behind Matt's options A, D, E)
 
+- *2026-11-16 sweep.* **PrivacyPR**, *A Dataset of Real-World Privacy Fixes for Benchmarking
+  Privacy-Aware Code Review* [arXiv 2611.18293](https://arxiv.org/abs/2611.18293) (Hua Yang,
+  Aditya Bhardwaj, Shidong Pan, Bowen Xu; NC State; data and harness
+  [10.5281/zenodo.23744765](https://doi.org/10.5281/zenodo.23744765)) **[arXiv]**: 4,131 merged
+  GitHub PRs from 1,469 repos (Jun 2018–Jan 2024); 1,169 high-confidence privacy fixes and 1,643
+  non-fix PRs; LLM-generated labels for privacy relevance, fix type, and GDPR principle. Verified:
+  250 privacy fixes + 250 non-fix PRs, manually checked; both annotators endorsed 72% of the LLM's
+  GDPR-principle assignments. Small: 100 + 100. The harness reverts each fix (excluding docs and
+  changelogs) so the defect is the change under review; non-fix PRs measure false alarms. Each
+  reviewer gets a generic prompt and a privacy prompt. Two judges (GPT-6.1 and Gemini 3.1 Pro),
+  Cohen's kappa 0.70–0.97. On Small, two coding agents detected 42–51% of defects with a generic
+  review prompt vs 88–91% when explicitly asked to check privacy, while flagging 11–15% of
+  non-fix PRs. ⚠️ Small is 100 + 100; labels are LLM-generated with 72% GDPR-principle
+  endorsement; the privacy prompt's false-alarm cost is measured only on non-fix PRs; reverted-fix
+  defects may be easier than organic ones. Backlog **C20**. Also helps limitless: same privacy and
+  redaction weakness already recorded (privacy 9/30, §1.2; redaction gaps, item 9).
+
 All opened 2026-10-31; claims as summarised in Matt's Report: SecPRBench [2610.33509](https://arxiv.org/abs/2610.33509),
 Anthropic Defending Code harness [blog-post.md](https://github.com/anthropics/defending-code-reference-harness/blob/main/docs/blog-post.md),
 Anthropic zero-days [research](https://www.anthropic.com/research/zero-days), AIxCC SoK [2602.07666](https://arxiv.org/abs/2602.07666),
