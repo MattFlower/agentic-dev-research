@@ -39,6 +39,8 @@ factory's deliver/review stages.
 
 *2026-11-13 sweep: [`notes/sweep-2026-11-13.md`](notes/sweep-2026-11-13.md).*
 
+*2026-11-18 sweep: [`notes/sweep-2026-11-18.md`](notes/sweep-2026-11-18.md).*
+
 ## A. Ranked
 
 ### 1. Comprehension quiz at the end of the page — `proposed`, cost S, target HR
@@ -161,6 +163,18 @@ factory's deliver/review stages.
   exposes the contradiction, and credit for a higher level waits for two or more independent checks, at
   least one of them unprompted recall. The skill is a generic tutor. The rules still fit the quiz.
   See "Changes (2026-11-10 sweep)".
+- **rederive, generative (2026-11-18).** [rederive](https://github.com/EricJujianZou/rederive) asks how
+  you would build a part, adds constraints one at a time, and names the pattern only once you reach
+  the design the code uses. The FAQ's example is a middleware chain. That is the open-ended,
+  generative counterpart to this item's multiple-choice block. Stars, the struggle log, and the
+  derive mode are on #3. Evidence: `practitioner`. No outcome data. See "Changes (2026-11-18 sweep)".
+- **Code Bearings (2026-11-18).** Michael Pellegrin, 4 November 2026. A local browser viewer opens a
+  prepared quiz file about a repository or a committed change. Questions are about relationships and
+  behavior: where a responsibility belongs, and how data moves. Source excerpts, with filenames and
+  original line numbers, stay hidden until the reveal. There is an "I'm not sure" option. One person
+  can share the browser during a team call
+  ([post](https://mdpellegrin.com/blog/2026-11-04-code-bearings/)). Evidence: `practitioner` (his own
+  report). Support for reveal-gated source evidence and the "I'm not sure" option.
 
 ### 2. Measure it: time per file and stop, reveal events, quiz score in the export — `proposed`, cost S, target HR
 - **Idea:** add timestamps per `focus` stop and per file, the reveal time, and quiz answers to the **Copy feedback**
@@ -204,6 +218,11 @@ factory's deliver/review stages.
   "0/13 snippets" as the reader moves through the tour. That is a peer of the viewed state this item
   already notes. It is not a time-per-file measure. Evidence: `vendor`. The count string is secondhand.
   Notes: [`notes/sweep-2026-11-16.md`](notes/sweep-2026-11-16.md).
+- **Dan Vega, comprehension debt (2026-11-18).** Notes only, as signal.
+  [post](https://x.com/therealdanvega/status/2122774329951768813). Counts as read from the X API on
+  2026-11-18 ~13:35 UTC, not re-counted: 93 likes, 9 bookmarks. "Comprehension debt" is the new tech
+  debt. "if I can't explain the diff, or don't have verifications and gates I trust. I don't merge
+  it." The page description ends at "Small PRs. Read every…". Evidence: `engagement`.
 
 ### 3. `teach-code`: stateful, mission-led lessons about a repo or one area of it — `proposed`, cost M (v1) / L (v2), target new skill in accelerate (reuses the HR renderer)
 *Merges the old #3 (slice explainer), #10 (repo onboarding course), and #14 (learner profile), 2026-11-01, after
@@ -378,6 +397,28 @@ reading Matt Pocock's `teach`.*
   bookmarks 42, replies 31, reposts 7, quotes 2, views 3737. The brief's impression figure was 3732.
   X API `get_posts_by_id` returned `client-not-enrolled`. Evidence: `practitioner` + `engagement`.
   The narrower-question rule is on #1. The map is on #9. No new row.
+- **rederive, a derive mode (2026-11-18).** MIT skill for Claude Code and Codex.
+  `npx skills add EricJujianZou/rederive`. GitHub API on 2026-11-18: `stargazers_count` 1046, created
+  2026-10-19T03:05:36Z. The site badge showed 1,025★. The map holds 5 to 10 problems in build order,
+  in `.rederive/map.md`. Hints add constraints one at a time. When you are stuck it narrows to a few
+  approaches, and after two wrong answers in a row the README offers a sketch. The struggle log is
+  `.rederive/log.md`. `.rederive/` is in the local git exclude. A background agent maps the repo from
+  the code, the imports between files, and the commits where the design changed. The FAQ says it
+  reads diffs and does not trust commit messages, so a few large AI commits still work.
+  [repo](https://github.com/EricJujianZou/rederive),
+  [site](https://ericzou.dev/rederive/). X counts as read from the X API on 2026-11-18 ~13:35 UTC,
+  not re-counted:
+  [vintcessun](https://x.com/vintcessun/status/2121869821575078201) 21 likes, 13 bookmarks, 21 replies;
+  [fngly343149](https://x.com/fngly343149/status/2122540806925844634) 4 likes. Evidence: `practitioner`
+  + `engagement` (stars). No outcome data. A possible derive mode: problems in build order,
+  constraint-by-constraint hints, and the struggle log as the learner profile. **Our own idea** for
+  the test: run `/rederive` and teach-code v1 on the same area of accelerate, then compare how well
+  the reader can explain the design a day later. The generative half is #1.
+- **Hierarchical context, notes only (2026-11-18).** The same paper as the pointer on #9. In silico.
+  It varies how much of the function, class, and module hierarchy the model sees when it writes
+  documentation. [arXiv 2611.18964](https://arxiv.org/abs/2611.18964). The arXiv comment says SBQS
+  2026. Submitted 13 Nov 2026, before this window. Weak relevance to this item's background. No
+  design change.
 
 ### 4. Worked example with real values ("intuition with toy data") — `proposed`, cost M, target HR + item 3
 - **Idea:** an `example` block that traces one concrete input through the changed path: input → each stop (file:line)
@@ -483,6 +524,13 @@ reading Matt Pocock's `teach`.*
   `not stated` gaps. Make sure no decision entry leaks a held-back finding. On one real limitless or
   accelerate session diff, check whether the author's explanation names a mismatch with an ADR or a
   rules file, and score a second reader on the quiz with that entry and without it.
+- **GitHub artifacts when there is no session (2026-11-18).** Nevo, Raz, and Yorav ground an LLM
+  explanation in pull request descriptions, issue descriptions and discussions, and commit messages.
+  The pipeline extracts that context, explains the code's purpose, and validates the explanation. A
+  standalone tool and an MCP server. A small-scale user study.
+  [arXiv 2511.03549](https://arxiv.org/abs/2511.03549), v1 on 5 Nov 2025. A search of these notes
+  found no earlier cite. Evidence: the paper's user study. Research support for drawing the "why"
+  from those artifacts when there is no agent session.
 
 ### 6. "Ask about this" from any line or block, answered in the agent session — `proposed`, cost S, target HR
 - **Idea:** next to **Comment**, add **Ask** (a question tagged `?`). The feedback export puts questions first. The
@@ -788,6 +836,11 @@ reading Matt Pocock's `teach`.*
   exists. White et al. (on #2) do not vary explanation depth, so they are not a source here.
 - **Test:** time on top-of-page for owned vs. unfamiliar areas, with quiz score held constant. Quiz score is the
   guard: a faster top of the page with a lower quiz score fails.
+- **Hierarchical documentation context (2026-11-18).** Notes only. Petrachini, de França, and Araújo
+  vary the function, class, and module hierarchy visible to a model that is writing documentation.
+  In silico. [arXiv 2611.18964](https://arxiv.org/abs/2611.18964). Submitted 13 Nov 2026. The arXiv
+  comment says accepted and presented at SBQS 2026. Weak relevance to the newcomer-versus-owner
+  split. The same pointer is on #3. No design change.
 
 ### 10. Per-repo explanation rules file — `proposed`, cost S, target HR
 - **Idea:** a repo-owned rules file the page must satisfy. Example: a migration must get a deploy note and a
@@ -868,6 +921,16 @@ reading Matt Pocock's `teach`.*
   of the shipped reading order and of grouping. Those table rows are unchanged. Wattenberger's prompt
   on #14 asks for diagrams from several perspectives. Evidence: `vendor` for the post. The UI lines
   are secondhand.
+- **Pinned snippets, ship-signal (2026-11-18).** [Pull request #3](https://github.com/SuchintK/ship-signal/pull/3),
+  merged 2026-11-18T10:49:42Z, adds `scripts/walkthrough.py` with `snippet`, `refresh`, and `check`
+  for offline pull-request walkthrough HTML. Snippets are read from committed git blobs and pinned
+  to their source SHA. `refresh` shows a diff before it writes. It refuses ambiguous or changed
+  snippet boundaries unless unique anchors resolve them. `check` validates exact excerpts, captions,
+  source and base ancestry, links, and anchors, and the pull request says that check runs in CI. It
+  validates 31 source excerpts and 84 links across pull requests #1 and #2.
+  [post](https://x.com/smirf_05/status/2123003554109833495) credits @mattpocockuk's `/retro` skill
+  (2 likes; not re-counted). Evidence: `practitioner`, plus weak `engagement`. **Our own idea:**
+  HR's `build --check` could verify that every code block matches the blob at its recorded SHA.
 
 ### 12. Split and size advisor — `proposed`, cost S–M, target HR
 - **Idea:** when the concerns show more than one independent cluster, or the estimated reading time is more than one
@@ -947,6 +1010,62 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
   Code Review Practices" ([arXiv 2611.18939](https://arxiv.org/abs/2611.18939)). 24 interviews,
   survey n=2,590 at a large company. The bullet is in the hand-off list.
 - Rank: unchanged. Vendor and engagement evidence does not move rows above measured ones.
+
+## Changes (2026-11-18 sweep)
+
+This section sits after the 2026-11-17 changelog and before the second `## A. Ranked`.
+Code-understanding sweep pull requests #13, #17, #19, #21, #23, #25, #27, and #29 are merged.
+Open pull requests are code-review sweeps and do not edit this file. Rank unchanged. No new
+numbered item. Notes:
+[`notes/sweep-2026-11-18.md`](notes/sweep-2026-11-18.md).
+
+- #3 teach-code, and #1 quiz. [rederive](https://github.com/EricJujianZou/rederive),
+  [site](https://ericzou.dev/rederive/). MIT. `npx skills add EricJujianZou/rederive`. Created
+  2026-10-19. GitHub API on 2026-11-18: 1,046 stars. The site badge showed 1,025★. It states the
+  problem a part of the code solves, adds constraints one at a time, and names the pattern only
+  once you reach the design (a middleware chain, in the FAQ). The map is 5 to 10 problems in build
+  order (`.rederive/map.md`). Stuck hints narrow the approaches. The struggle log is
+  `.rederive/log.md`, and `.rederive/` is in the local git exclude. The background agent reads the
+  code, the imports, and the commits where the design changed. The FAQ says it reads diffs and
+  does not trust commit messages. X counts as read from the X API on 2026-11-18 ~13:35 UTC, not
+  re-counted:
+  [vintcessun](https://x.com/vintcessun/status/2121869821575078201) 21 likes, 13 bookmarks,
+  21 replies;
+  [fngly343149](https://x.com/fngly343149/status/2122540806925844634) 4 likes.
+  Evidence: `practitioner` + `engagement` (stars). No outcome data. On #3, a possible derive mode:
+  problems in build order, constraint-by-constraint hints, and the struggle log as the learner
+  profile. **Our own idea** for the test: run `/rederive` and teach-code v1 on the same area of
+  accelerate, then compare how well the reader can explain the design a day later. On #1, the
+  open-ended generative counterpart to the multiple-choice questions.
+- #1 quiz. Code Bearings, Michael Pellegrin, 4 November 2026.
+  [post](https://mdpellegrin.com/blog/2026-11-04-code-bearings/). A local browser viewer for a
+  prepared quiz about a repository or a committed change. Questions are about relationships and
+  behavior. Source excerpts, with filenames and original line numbers, stay hidden until the
+  reveal. An "I'm not sure" option. One person can share the browser during a team call.
+  Evidence: `practitioner`. Support for reveal-gated source evidence and the "I'm not sure" option.
+- #11 grounded claims. [ship-signal pull request #3](https://github.com/SuchintK/ship-signal/pull/3),
+  merged 2026-11-18T10:49:42Z. `scripts/walkthrough.py` has `snippet`, `refresh`, and `check` for
+  offline walkthrough HTML. Snippets come from committed git blobs and are pinned to their source
+  SHA. `refresh` shows a diff before it writes, and refuses ambiguous or changed boundaries unless
+  unique anchors resolve them. `check` validates exact excerpts, captions, source and base
+  ancestry, links, and anchors, in CI. The pull request says 31 source excerpts and 84 links
+  across pull requests #1 and #2.
+  [post](https://x.com/smirf_05/status/2123003554109833495) credits Matt Pocock's `/retro` skill
+  (2 likes, weak; not re-counted). Evidence: `practitioner`. **Our own idea:** HR's `build --check`
+  could verify that every code block matches the blob at its recorded SHA.
+- #5 decision log. Nevo, Raz, and Yorav,
+  [arXiv 2511.03549](https://arxiv.org/abs/2511.03549), v1 on 5 Nov 2025. Ground LLM explanations
+  in pull request descriptions, issues and discussions, and commit messages. Extract, explain,
+  validate. A tool and an MCP server. A small user study. Research support for drawing the "why"
+  from those artifacts when there is no agent session. Not cited in these notes before this pass.
+- #9 and #3, notes only. Petrachini, de França, and Araújo,
+  [arXiv 2611.18964](https://arxiv.org/abs/2611.18964), v1 on 13 Nov 2026. In silico. Varies the
+  function, class, and module hierarchy the model sees when it writes documentation. The arXiv
+  comment says SBQS 2026. Weak relevance to #9 and to #3's background. No design change.
+- #2, notes only. [Dan Vega](https://x.com/therealdanvega/status/2122774329951768813): 93 likes,
+  9 bookmarks, not re-counted. "if I can't explain the diff, or don't have verifications and gates
+  I trust. I don't merge it," on "comprehension debt." Evidence: `engagement`.
+- Rank: unchanged. No new numbered item.
 
 ## A. Ranked
 
