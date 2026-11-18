@@ -6,8 +6,9 @@
 
 Status: first draft, written to be revised once Matt's prior docs are folded in further. Every
 external source below was opened on 2026-10-31, except the 2026-11-02 sweep items named above,
-CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), and Foresight-SWE
-(opened 2026-11-05); anything that could not be opened is listed in "Not verified". Numbers from
+CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), Foresight-SWE
+(opened 2026-11-05), and the Claude Code verification post and the instruction-file review paper
+(opened 2026-11-17); anything that could not be opened is listed in "Not verified". Numbers from
 different benchmarks are not comparable.
 
 **Precedence for Matt's figures** (as instructed): the 2026-10-31 escapes-dev run beats Phase 0
@@ -207,6 +208,19 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   84% of >1,000-line PRs get findings (avg 7.5) vs 31% of <50-line PRs (avg 0.5); agents scale
   with PR size; `REVIEW.md` is read from the base branch, never from the PR
   ([customize](https://code.claude.com/docs/en/code-review-customize.md)). Vendor-reported. (partly in Matt's docs)
+- A reliability checklist stays off the always-on path when only diff-triggered items run: 39
+  items, each with a trigger readable from a diff, a check, and the incidents or PRs behind it,
+  and a review checks only the matches, usually 3 to 10. Misses become rules two ways: (a)
+  patterns from human review comments and reverts that occur in at least two PRs and are
+  identifiable from a diff — three agents try to disprove each, and a human approves it in a PR;
+  (b) replay three bug finders on a PR tied to a known incident, and if at least two find it, it
+  is detectable, and if it   is missed on a small diff, it becomes a REVIEW.md rule. Rules are pruned on a routine.
+  Stacking a second, more expensive reviewer is often worse than tuning the primary, and a review
+  result is valid only for the commit it reviewed.
+  [Addy Osmani, "How the Claude Code team thinks about verification"](https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/)
+  (claude.dev, 2026-11-16) **[VB]** ⚠️. No recall or precision numbers for the checklist. Backlog
+  **C21**. Also helps limitless. The same post's stage-wise recall (raw / post-verification /
+  final) is already C19; REVIEW.md read from the base branch is already C6.
 - **Codex review rubric** ([`codex-rs/prompts/templates/review/rubric.md`](https://github.com/openai/codex/blob/main/codex-rs/prompts/templates/review/rubric.md)):
   flag only bugs introduced by the commit that the author would fix; "do not stop at the first
   qualifying finding"; name the provably affected code; P0–P3 priorities plus a numeric confidence;
@@ -260,6 +274,15 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   SecBench.js [repo](https://github.com/cristianstaicu/SecBench.js), Greptile benchmarks
   [page](https://www.greptile.com/benchmarks), agentpatterns review [page](https://agentpatterns.ai/verification/open-code-review-benchmarks/),
   SZZ evaluation (Rosa et al.) [2102.03300](https://arxiv.org/abs/2102.03300).
+- Over 70% of instruction-file changes get no substantive review. AI reviewers catch surface
+  structure and miss factual errors, necessity questions, and staleness. Codex, OpenCode, and
+  Claude Code, with full repo access, recovered 1.3–3.9% of 1,962 human-checked concerns across
+  468 PRs.
+  [Yang, He, Zhou, "AI Cannot Review What Humans Catch: A First Look at the Reviews of Agent
+  Instruction Files"](https://arxiv.org/abs/2611.18582) (arXiv:2611.18582) **[arXiv]**. Census:
+  2,870 instruction-file PRs across 2,246 repos; 16-category taxonomy. The concerns include
+  non-defect issues (necessity, style), so this is a scope signal, not a recall target. Backlog
+  **C22**. Also helps limitless if it reviews its own agent instruction files.
 
 ### 2.5 Execution, security and spec (sources behind Matt's options A, D, E)
 

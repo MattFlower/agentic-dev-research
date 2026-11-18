@@ -238,6 +238,32 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
      escapes-heldout.
    - **Cost:** S for a 25–50 task slice; M for full verified.
 10. **External smoke check on ReviewBench test set (25 tasks, has Codex CLI example)** — `proposed`, S.
+22. **Instruction-file diffs (SKILL.md, AGENTS.md, CLAUDE.md, .cursorrules) as an explicit scope/eval slice** — `proposed`, cost S. Also helps limitless
+    if it reviews its own agent instruction files.
+    Ranks with the cheap scope guards (C14): below the harness (item 1, C19) and the known-defect
+    smokes (C9–C10), above C11 and C21. The gain is a scope decision on files this repo actually
+    reviews, at cost S, not a blocking-recall point.
+    - **Idea:** Treat diffs to `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, and `.cursorrules` as their own
+      slice. The v1 bug lens either says it does not cover them or routes them to a human, rather
+      than giving an all-clear.
+    - **Source:** [Yang, He, Zhou](https://arxiv.org/abs/2611.18582), *AI Cannot Review What Humans
+      Catch: A First Look at the Reviews of Agent Instruction Files* (arXiv:2611.18582). Opened
+      2026-11-17. [report.md](report.md) §2.4.
+    - **Why:** accelerate is a skills repo, so many diffs quality-review sees will be instruction
+      files. The census is 2,870 instruction-file PRs across 2,246 repos; over 70% of
+      instruction-file changes get no substantive review. AI reviewers catch surface structure but
+      miss factual errors, necessity questions, and staleness. The paper gives a 16-category
+      taxonomy and a benchmark of 1,962 human-checked concerns across 468 PRs. Codex, OpenCode,
+      and Claude Code with full repo access recovered only 1.3–3.9% of the concerns humans raise.
+      A bug lens that stays silent on these files reads as a pass.
+    - **Test:** Sample ~20 instruction-file PRs from the paper's benchmark (if released) or from
+      accelerate's own history. Check whether quality-review flags the human-raised factual and
+      staleness concerns, and whether a one-line note ("instruction-file diff: not covered by bug
+      lens, needs human") costs anything.
+    - **Cost:** S.
+    - **Evidence:** one preprint. Scope signal, not a recall target: the benchmark's concerns
+      include non-defect issues (necessity, style), which do not match our gold rubric (real
+      major/blocker code defects).
 11. **Same-agent review as a measured anti-pattern** — `proposed`, M. Also helps limitless.
     - **Idea:** Treat "author agent then same-agent review" as a measured anti-pattern; prefer independent
       review samples (already in adversarial×2); optionally test a foresight-style pack (unstated edge
@@ -248,6 +274,38 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
       quality-review is a post-implement gate in an agent loop.
     - **Test:** On escapes-dev, independent adversarial×2 vs same-session self-review after implement;
       blocking recall + clean must-fix (and resolve-rate if used in a factory loop).
+21. **Diff-triggered reliability rules + miss-to-rule loop** — `proposed`, cost M. Also helps limitless
+    (its lenses-from-base GUIDE.md is the natural home for such rules).
+    Ranks below the S checks (C9–C10, C14, C18–C19, C22) and below C11 and C20, near C16. Cost is
+    M and the post gives no recall or precision, so this stays under items that already have a
+    measured delta. The post's stage-wise recall point (raw / post-verification / final) is
+    already C19. The base-branch REVIEW.md point is already C6 ("Repo rules from the base
+    commit"). This item is the trigger-matched checklist and the miss-to-rule loop.
+    - **Idea:** Keep repo-specific reliability rules. Each rule has a trigger readable from a diff,
+      a check, and the incidents or PRs behind it. On a review, read the diff and run only the
+      rules whose trigger matches. Add rules from real misses, and prune them on a routine.
+    - **Source:** [Addy Osmani, "How the Claude Code team thinks about verification"](https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/)
+      (claude.dev blog, 2026-11-16). Opened 2026-11-17. [report.md](report.md) §2.3.
+    - **Why:** Gives quality-review a way to grow repo-specific recall from real misses without a
+      long always-on checklist. The team keeps a 39-item reliability checklist. Each item has a
+      trigger readable from a diff, a check, and the incidents or PRs behind it. Claude reads the
+      diff and checks only items whose trigger matches, usually 3 to 10. Misses become rules two
+      ways. (a) Patterns from human review comments and reverts that occur in at least two PRs and
+      are identifiable from a diff; three agents try to disprove each, and a human approves it in
+      a PR. (b) Replay three bug finders on a PR tied to a known incident; if at least two find
+      it, it is detectable; if it is missed on a small diff, it becomes a REVIEW.md rule. Rules
+      are pruned on a routine. The post also says stacking a second, more expensive reviewer is
+      often worse than tuning the primary, and review results are only valid for the commit they
+      reviewed. Tension, stated plainly: Matt's limitless research rejected long pattern
+      checklists on evidence. This differs because only trigger-matched items (3 to 10) are active
+      per diff and each rule must be backed by ≥2 real PRs/incidents.
+    - **Test:** On the accelerate eval (item A1), build rules only from the tuning split's misses
+      using the ≥2-PR + diff-identifiable bar. Compare recall and false alarms on the held-out
+      split vs. no rules. Log how many rules fire per diff. Do not spend limitless
+      escapes-heldout.
+    - **Cost:** M.
+    - **Evidence:** thin. Vendor practice only. The post gives no recall or precision numbers for
+      the checklist itself.
 
 ---
 
