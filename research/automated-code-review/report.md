@@ -389,3 +389,67 @@ rejected on cost; see [BACKLOG.md](BACKLOG.md) Rejected, "Claude Code ultrarevie
 - I did not open the full text of every arXiv paper; for §2.5 I verified that each page exists and
   matches the title Matt's docs cite, and rely on Matt's Report for the specific numbers.
 - `human-review/SKILL.md`'s "one in five" statistic: source not found (§0).
+
+## Changes (2026-11-18 sweep)
+
+Opened 2026-11-18. These entries belong in §2.3–§2.4 and next to the Martian bench bullet. They
+are here because open sweep PRs already edit those lines, including the Martian bullet (#16, #20)
+and the status paragraph at the top.
+
+- **Niketan Rane**, *Building Trustworthy Evals for AI Code Review*
+  ([post](https://www.niketansrane.com/blogs/evals-for-ai-code-reviewers/), Nov 2026) **[X]** ⚠️
+  Author says the numbers are rounded. One production multi-agent reviewer. Same build, same 20
+  planted-bug PRs, eight runs: recall about 63% to 77% (two same-day runs, 72% and 63%). Two runs
+  of the same build disagreed on roughly 1 in 5 known bugs, about as often as two different
+  versions. One run against one baseline could only reliably detect a drop of about 10 points;
+  three trials per PR, compared PR-by-PR against pooled main runs, about 5. Paired bootstrap over
+  PRs. Planted bugs were easier than real ones (around 64% vs around 52% recall, same agent and
+  model). Answer key: human threads, the author's later fixes, two frontier models with a plain
+  prompt, and their own agent. Later fixes were about 9 in 10 real and covered just under a
+  quarter of the issues. No single source found most. Findings only their own agent raised are
+  excluded. Judge: one call per PR after a 5-vote check was almost always unanimous; regrading
+  changed the found-bug set in about 3 to 4% of reviews; a judge failure scores the PR zero.
+  Evidence for backlog item 1 (A/A, k, PR-clustered bootstrap). Not a new item. Also helps
+  limitless.
+- **Gigs**, *Trust, but measure: How we evaluated AI code reviewers* (Raffaele Bianco, Julio
+  Zynger, 2026-11-17)
+  ([post](https://gigs.com/blog/trust-but-measure-how-we-evaluated-ai-code-reviewers)) **[X]**:
+  actioned-finding rate is the share of review threads whose flagged code, as it read when the
+  comment was posted, no longer appears anywhere in the merged file. Crude on purpose; PR history
+  is enough. One month of past PRs: existing AI reviewer 60% (Claude check 57%), all human
+  reviewers 63% (61%). Almost a third of AI comments got no change and no reply, against about
+  one in eight for humans. Humans usually review after the AI, so the human figure is a reference
+  only. A small fast model labels each finding (addressed, and important bug / missing test /
+  documentation / nit) and agreed with a hand check on almost all of a sample. Stop rule written
+  down first: 100 PRs per tool or 4 weeks, whichever comes first; at least 50% and ahead of the incumbent means expand,
+  30–50% revise, below 30% stop. One team. Line disappearance inflates the rate. Not a recall
+  measure. Backlog **C23**. Also helps limitless.
+- **Lightfactory**, *How we test an AI code reviewer* (Benedict Evert, 6 Nov 2026)
+  ([post](https://lightfactory.app/blog/testing-an-ai-code-reviewer/)) **[VB]** ⚠️ thin. 29 frozen
+  cases; most are planted defects (24 synthetic, most with one planted defect; 5 from their own
+  PRs). On five cases, `xhigh` caught the same one labelled defect as `high`, at two to three
+  times the cost. A focused security pass raised trust-boundary detection from 2 to 6 of 16
+  labelled defect opportunities at `xhigh`, false findings from 8 to 11, and right change-request
+  verdicts from 19 to 17 of 20; at `high`, detection went from 2 to 3 of 16. Small planted cases
+  did not separate models. On 22 real ReviewBench PRs, the model they were using found about half
+  as many defects as the others. The author says most comparisons are one run over about 20 cases,
+  and a one-defect difference is within run-to-run noise. Weak corroboration for item 2 (high
+  effort) and for the precision cost in items 9 and 10. No backlog item.
+- *Does the AI Reviewer Alleviate or Aggravate the Maintenance Burden? Evidence from GitHub
+  Copilot Reviewer* [arXiv 2611.22793](https://arxiv.org/abs/2611.22793) (Feiyang Xu, Poonacha K.
+  Medappa, Murat M. Tunc; submitted 2026-11-17) **[arXiv]**: natural experiment on Copilot
+  Reviewer. After adoption, PR submissions and maintainer review workload rise; over time, human
+  contributions decline while the increase in bot PRs is sustained; AI review speeds human PRs,
+  and bot PRs take longer to review and merge. Practice and ecosystem study. No reviewer recall
+  data. No backlog item.
+- *Level Up! AI-Driven Challenges and Adaptations to Code Review Practices*, Newman, Bird, Butler,
+  Murphy-Hill [arXiv 2611.18939](https://arxiv.org/abs/2611.18939) (submitted 2026-11-13)
+  **[arXiv]**: 24 interviews and a survey (n=2,590). Practice study. No reviewer recall data. Not
+  already in this report. No backlog item.
+- Next to **Martian Code Review Bench** (§2.4): Itamar Friedman (Qodo CEO, a competing vendor),
+  2026-11-17
+  ([thread](https://x.com/itamar_mar/status/2122691830143938757)) **[X]** ⚠️. Competitor's
+  critique, no measured scores in the visible posts. He says the bench has selection bias (ignored
+  suggestions are not counted), misclassification bias (follow-up fixes count against precision),
+  representation bias (filtering to repos with 10+ contributors or 500+ line PRs leaves one tool),
+  and measurement bias (critical-only shows no tools), and that Qodo shared feedback with Martian.

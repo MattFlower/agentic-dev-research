@@ -173,6 +173,56 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
 
 *2026-11-16 sweep.*
 
+*Changes (2026-11-18 sweep).* Sits under this heading. Open sweep PRs edit other lines (item 1's
+RegBench note, items 2–7, the gap between items 10 and 11, and the end of item 11). Item 1's body
+is unchanged.
+
+- **Item 1 evidence note (2026-11-18).** Not a new item. Outside evidence for design-v1's A/A
+  runs, k, and the PR-clustered bootstrap. Niketan Rane, "Building Trustworthy Evals for AI Code
+  Review" ([post](https://www.niketansrane.com/blogs/evals-for-ai-code-reviewers/), Nov 2026).
+  Author says the numbers are rounded. One production multi-agent reviewer. Same build, same 20
+  planted-bug PRs, 8 runs: recall about 63% to 77% (two same-day runs 72% and 63%). Two runs of
+  the same build disagreed on roughly 1 in 5 known bugs, about as often as two different versions.
+  One run against one baseline could only reliably detect a drop of about 10 points; three trials
+  per PR, compared PR-by-PR against pooled main runs, about 5. They use a paired bootstrap over
+  PRs. So k=2 in design-v1 should be checked against our own A/A data: on their set, k=3 halved
+  the detectable effect from about 10 points to about 5. Planted bugs were easier than real ones
+  (around 64% vs around 52% recall, same agent and model). Item 1 does not state these rules yet:
+  fail closed (if the judge fails, the PR scores zero; a 5-vote check was almost always unanimous,
+  so they use one call per PR; regrading changed the found-bug set in about 3 to 4% of reviews)
+  and exclude findings only our own agent raised (answer key from human threads, the author's
+  later fixes, two frontier models with a plain prompt, and their own agent; later fixes were
+  about 9 in 10 real but covered just under a quarter of the issues; no single source found most).
+  Also helps limitless (its evals and review). [report.md](report.md).
+
+23. **Online actioned-finding rate from PR history (production metric, post-v1)** — `proposed`,
+    cost S. Also helps limitless (its production reviewer).
+    Ranks mid/low in section C. Cost is S, but it does not measure misses, so it sits behind the
+    harness (item 1) and the known-defect checks (C9, C10). Same family as C4 (BitsAI outdated
+    rate: did the flagged lines change later?), and cheaper: the signal is whether the flagged
+    snippet, as it read when the comment was posted, is gone from the merged file.
+    - **Idea:** Actioned-finding rate = the share of review threads whose flagged code, as it read
+      when the comment was posted, no longer appears anywhere in the merged file. Crude on purpose.
+      Computable from PR history alone. Report it per channel (must-fix vs advisory).
+    - **Source:** Gigs, "Trust, but measure: How we evaluated AI code reviewers" (Raffaele Bianco,
+      Julio Zynger, 2026-11-17)
+      ([post](https://gigs.com/blog/trust-but-measure-how-we-evaluated-ai-code-reviewers)).
+      [report.md](report.md).
+    - **Why:** Cheap, label-free signal of whether must-fix findings get acted on in real use.
+      Complements offline recall. Can be backfilled.
+    - **Test:** Compute it on existing limitless review history and on accelerate PRs reviewed by
+      the skill. Hand-check a sample of 30 threads to measure script error before trusting it.
+      Report it per channel (must-fix vs advisory).
+    - **Evidence:** One team. Vendor-neutral, uncalibrated against true bugs. Line disappearance
+      inflates the rate. Not a recall measure. Their one-month baseline: existing AI reviewer 60%
+      (Claude check of every finding: 57%), all human reviewers 63% (61%). Almost a third of the
+      AI comments got no change and no reply, against about one in eight for humans. Humans
+      usually review after the AI, so the human number is a reference only. A small fast model
+      then labels each finding (addressed, and important bug / missing test / documentation /
+      nit) and agreed with a hand check on almost all of a sample. Their stop rule, written down
+      first: 100 PRs per tool or 4 weeks, whichever comes first; at least 50% and ahead of the incumbent
+      means expand, 30–50% means revise, below 30% means stop.
+
 20. **Privacy slice + explicit privacy intent in the security lens (PrivacyPR)** — `proposed`,
     cost S–M. Also helps limitless.
     Depends on item 10 and does not replace it. Ranks with that lens: behind the harness (item 1,
