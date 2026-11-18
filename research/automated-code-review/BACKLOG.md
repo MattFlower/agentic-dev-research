@@ -171,6 +171,37 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
 
 ## C. Post-v1 improvements
 
+*2026-11-16 sweep.*
+
+20. **Privacy slice + explicit privacy intent in the security lens (PrivacyPR)** — `proposed`,
+    cost S–M. Also helps limitless.
+    Depends on item 10 and does not replace it. Ranks with that lens: behind the harness (item 1,
+    C19) and the S eval checks (C9–C10), ahead of C11 and C16. The gain is privacy recall on a
+    slice limitless already misses; the effort is a prompt plus one external split.
+    - **Idea:** (a) Put an explicit privacy/personal-data check inside the planned security lens
+      (item 10) of quality-review, rather than relying on a generic bug prompt. (b) Use PrivacyPR
+      Small and Verified (reverted fixes plus non-fix PRs) as a cheap external privacy slice in
+      the eval, reporting recall and the clean-PR false-alarm rate together.
+    - **Source:** [PrivacyPR](https://arxiv.org/abs/2611.18293) (*PrivacyPR: A Dataset of
+      Real-World Privacy Fixes for Benchmarking Privacy-Aware Code Review*; Hua Yang, Aditya
+      Bhardwaj, Shidong Pan, Bowen Xu; NC State; data and harness
+      [10.5281/zenodo.23744765](https://doi.org/10.5281/zenodo.23744765)). Opened 2026-11-16.
+      [report.md](report.md) §2.5.
+    - **Why:** On Small, two coding agents detected 42–51% of defects with a generic review prompt
+      and 88–91% when explicitly asked to check privacy, while flagging 11–15% of non-fix PRs.
+      That gap is direct evidence that review intent drives privacy recall. Limitless review
+      research recorded privacy 9/30 and redaction gaps (already in [report.md](report.md) §1.2
+      and items 9–10), so this targets a known weak slice. The same weakness is in limitless's
+      reviewer.
+    - **Test:** On PrivacyPR Small, run quality-review with and without the privacy instruction.
+      Also run the bug-lens on our own clean fixtures, and check that the extra instruction does
+      not raise false alarms or drop other findings. Pre-register a bar. Do not contaminate
+      escapes-heldout.
+    - **Evidence:** moderate. Single paper, small split. Small is 100 + 100. Labels are
+      LLM-generated; both annotators endorsed 72% of the LLM's GDPR-principle assignments. The
+      privacy prompt's false-alarm cost is measured only on non-fix PRs. Reverted-fix defects may
+      be easier than organic ones.
+
 1. **Rated-severity rater as a separate pass** (v3 rater with "nuisance" class, 18/20) instead of in-finder
    fields — `proposed`, S. [Matt] Notes e2.
 2. **Other-vendor sample as an extra union finder** (comment channel only) — `proposed`, S, modest:
