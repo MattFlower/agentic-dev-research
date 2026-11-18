@@ -1,14 +1,17 @@
 # Code understanding: backlog
 
-*Draft 5, 2026-11-05 (draft 4 plus the 2026-11-05 sweep; the 2026-11-04 IronBee sweep is folded in; see "Changes in draft 5" below). Repo path: `agentic-dev-research/research/code-understanding/BACKLOG.md`.*
+*Draft 6, 2026-11-06 (draft 5 plus the 2026-11-06 sweep; see "Changes in draft 6" below). Repo path: `agentic-dev-research/research/code-understanding/BACKLOG.md`.*
 *It follows the layout in that repo's README (`research/<topic>/report.md` + `notes/` + optional `BACKLOG.md`)
 and the style of `research/automated-code-review/BACKLOG.md`. Findings and sources are in
 [`research/code-understanding/notes/first-sweep-2026-11-01.md`](notes/first-sweep-2026-11-01.md),
 [`research/code-understanding/notes/sweep-2026-11-02.md`](notes/sweep-2026-11-02.md),
 [`research/code-understanding/notes/sweep-2026-11-03.md`](notes/sweep-2026-11-03.md),
 [`research/code-understanding/notes/2026-11-04-daily-sweep.md`](notes/2026-11-04-daily-sweep.md),
-and [`research/code-understanding/notes/sweep-2026-11-05.md`](notes/sweep-2026-11-05.md)
+[`research/code-understanding/notes/sweep-2026-11-05.md`](notes/sweep-2026-11-05.md),
+and [`research/code-understanding/notes/sweep-2026-11-06.md`](notes/sweep-2026-11-06.md)
 until a `report.md` is written.*
+
+*2026-11-12 sweep: [`notes/sweep-2026-11-12.md`](notes/sweep-2026-11-12.md).*
 
 **Baseline.** `accelerate/skills/human-review` (v0.6.2, 2026-10-30) is ground truth. Everything here is ranked by
 what it adds *on top of* that skill. Ideas the skill already does are listed under **Shipped**, with the file path.
@@ -24,7 +27,8 @@ same rule as the code-review backlog's "fix the eval first".
 **Evidence labels.** `measured-RCT` (randomized or controlled study) · `measured-obs` (observational or field data) ·
 `practitioner` (someone describes their own use) · `vendor` (launch post or docs) · `engagement` (X numbers only, as
 returned by the X API on the date written next to the number: 2026-11-01 in draft 2, 2026-11-02 in draft 3,
-2026-11-03 in draft 4, 2026-11-04 in the 2026-11-04 sweep note, 2026-11-05 in draft 5) · `our own idea`.
+2026-11-03 in draft 4, 2026-11-04 in the 2026-11-04 sweep note, 2026-11-05 in draft 5,
+2026-11-06 in draft 6) · `our own idea`.
 
 **Statuses.** `proposed` · `testing` · `shipped` (in human-review, path cited) · `rejected` (with the reason).
 
@@ -32,6 +36,8 @@ returned by the X API on the date written next to the number: 2026-11-01 in draf
 factory's deliver/review stages.
 
 ---
+
+*2026-11-13 sweep: [`notes/sweep-2026-11-13.md`](notes/sweep-2026-11-13.md).*
 
 ## A. Ranked
 
@@ -59,6 +65,14 @@ factory's deliver/review stages.
   [code](https://github.com/nbalepur/impaired-programming)). Evidence for that result: `measured-RCT` (student sample).
   Retrieval testing beats re-reading for retention
   ([Roediger & Karpicke 2006](https://pubmed.ncbi.nlm.nih.gov/16507066/)).
+  **Output prediction on the quiz (2026-11-13).** A C++ pilot found code-explanation accuracy stayed
+  about 100% across nearly all atoms of confusion, while output prediction fell on some atoms and
+  not on others. The one explanation miss, ChangeOfLiteralEncoding at 90%, was an octal literal read
+  as decimal
+  ([arXiv 2611.15575](https://arxiv.org/abs/2611.15575), published 2026-11-11T14:59:11Z).
+  Evidence: `measured-obs` (pilot, small). **Our own idea:** at least one question should ask for an
+  output, checked against the code or a run. A fluent explanation is weak evidence the model traced
+  the code. See #4 and #11.
   **RepoProbe** is a model benchmark, not a study of people: 500 GitHub Discussions pairs from 50 repositories,
   scored by a checklist of atomic weighted facts and discrete rubrics, rationale written before the score. That
   protocol was more stable than a scalar LLM-as-a-Judge. In the results table, every model's clarity score is
@@ -76,6 +90,30 @@ factory's deliver/review stages.
   Evidence: `vendor`. For 1–2 reading-order stops, withhold that stop's annotation until the reader answers one or
   two such questions, then reveal it. The multiple-choice block at the end stays. That slice is cost S–M. The
   end-of-page quiz stays cost S.
+  **Predict before the ask.** Addy Osmani's article "Critical thinking when agents do the work"
+  ([X](https://x.com/addyosmani/status/2117512471930167377), posted 2026-11-03; the text was read at
+  [nitter](https://nitter.gq/addyosmani/article/2117512471930167377)) says to form an expected answer
+  before asking an agent on a non-trivial task, on paper or only in your head, and describes a quiz
+  at the bottom of a change report with the rule of merging only after a perfect score. The article
+  names a spectrum: offloading, where you still own the result; deferral, where the model's output
+  becomes the next input; and surrender, where that output becomes your own view. This session's
+  X API `get_posts_by_ids` returned `client-not-enrolled`. api.fxtwitter.com at 2026-11-09T13:25:34Z:
+  likes 20751, bookmarks 50612, reposts 3233, replies 598, quotes 988, views 5492821. Quote posts from
+  the same day's mirror read: [mylifcc](https://x.com/mylifcc/status/2117534221283606608) likes 816,
+  bookmarks 1021, views 114090;
+  [DataChaz](https://x.com/DataChaz/status/2117568522469666982) likes 4926, bookmarks 7030, views 774453.
+  Those are the largest X-post like count and view count in this backlog. The rank stays with the
+  measured quiz results above. Open PR #13 adds the May 2026 cognitive-surrender essay on this item.
+  This paragraph is the November article. Evidence: `practitioner` + `engagement` (mirror fields,
+  dated above).
+  **Learn with Claude**, a peer of this quiz. A Claude Code plugin, MIT. npm `learn-with-claude` 0.1.0,
+  published 2026-11-08. GitHub API on 2026-11-09: `stargazers_count` 0
+  ([repo](https://github.com/babakhalid/learn-with-claude)). The README says the dashboard asks
+  predict-first questions and questions on the diff while the agent builds, and "The session is never
+  blocked waiting for a quiz answer." Posts, same mirror read:
+  [BabaKhaliid](https://x.com/BabaKhaliid/status/2119430173972107301) likes 0, views 9;
+  [Khaled865412521](https://x.com/Khaled865412521/status/2119711655726576089) likes 0, views 26.
+  Evidence: `vendor`, plus `engagement` that is tiny. No study.
   **perspica's Learn tab** is a smaller quiz on the concepts behind one change. It is one to three questions, or the
   words "nothing to learn" when the change needs no background. The lessons are model-written and checked against
   the code. Noted here, not a second quiz. See #3 and #15.
@@ -85,6 +123,11 @@ factory's deliver/review stages.
   using prediction, generation, and retrieval on the reader's own project
   ([repo](https://github.com/DrCatHicks/learning-opportunities), 2,540 stars per the GitHub API on 2026-11-05).
   The same repo's `orient` skill is noted on #3. Evidence: `practitioner` + `engagement` (stars).
+  **Cognitive surrender.** Addy Osmani's essay of 5 May 2026 says that approving an agent-written diff
+  without first forming your own view is surrender, and it points back at the quiz gap already cited above
+  ([essay](https://addyosmani.com/blog/cognitive-surrender/)). Evidence: `practitioner`. Replies on an X
+  thread were named in the 2026-11-06 brief and were not opened. See
+  [`notes/sweep-2026-11-06.md`](notes/sweep-2026-11-06.md).
 - **Why it helps:** today the page shows what changed but never checks that it landed in your head. A quiz turns
   passive reading into retrieval, and it shows you which part you didn't get. It also gives us a **comprehension
   metric**, which the earlier report said human-review lacks.
@@ -103,7 +146,21 @@ factory's deliver/review stages.
   related open issue [#985](https://github.com/mattpocock/skills/issues/985), and [#611](https://github.com/mattpocock/skills/issues/611)). So HR's renderer should shuffle answers with a seed, and
   `build --check` should warn on unequal option lengths. Matt Pocock's own claim: "The /teach tests knowledge retrieval as well as just teaching"
   ([X](https://x.com/mattpocockuk/status/2076545046204071987), 3 likes).
+  **One check question per chapter (2026-11-11).** Co-Review's `/co-review:audit` ends each of four
+  guide chapters with one Check. The reader comments a prediction, and the agent says how that answer
+  matches the code
+  ([workflows](https://sdsvn.github.io/co-review/docs/guides/workflows/)). The multiple-choice block at
+  the end of the page stays. Evidence: `vendor`. The guide is #3. Coverage is #2. See "Changes
+  (2026-11-11 sweep)".
 - **Risk:** questions can leak held-back findings. Keep them after the pass, and phrase them about behavior, not bugs.
+- **Quiz shape from the 2026-11-10 paper and from `socratic-tutor`.** White et al. asked four multiple-choice
+  questions after the reader's pass, with the AI closed: maintenance, summarization, mental execution, and
+  structure (Wyrich et al.). Means were 3.22 and 3.23 of 4, and a perfect four was about half of tasks, so
+  the mental-execution questions need to be harder than that ceiling. The study is on #2.
+  `socratic-tutor` (on #3) adds two rules for this block: a wrong answer gets a narrower question that
+  exposes the contradiction, and credit for a higher level waits for two or more independent checks, at
+  least one of them unprompted recall. The skill is a generic tutor. The rules still fit the quiz.
+  See "Changes (2026-11-10 sweep)".
 
 ### 2. Measure it: time per file and stop, reveal events, quiz score in the export — `proposed`, cost S, target HR
 - **Idea:** add timestamps per `focus` stop and per file, the reveal time, and quiz answers to the **Copy feedback**
@@ -111,6 +168,12 @@ factory's deliver/review stages.
 - **Sources:** carried over from `agentic-dev-research/research/making-prs-easier-to-review/report.md`, the sections
   "Claims to validate" and "Self-instrumentation". It has not shipped: `HR/assets/app.js` stores viewed state and
   comments in `localStorage`, but no timing. Evidence: `our own idea` (from the earlier report).
+  **Co-Review coverage (2026-11-11).** `get_review` returns how many files the reviewer marked viewed
+  in each area, and that area's next unviewed file. A file changed since it was marked viewed counts
+  as unread
+  ([agent contract](https://sdsvn.github.io/co-review/docs/reference/agent-contract/)). That is a
+  reading signal, next to the quiz. It is not itself a comprehension score. Evidence: `vendor`. The
+  guide is #3. See "Changes (2026-11-11 sweep)".
   Supporting evidence for the second measure below: (Im)Paired Programming found that a completion metric missed the
   harm, and an "extend the code without the agent" task showed it
   ([arXiv 2607.26375](https://arxiv.org/abs/2607.26375)). Evidence for that result: `measured-RCT` (student sample).
@@ -119,11 +182,28 @@ factory's deliver/review stages.
   edits stay small ([arXiv 2610.10610](https://arxiv.org/abs/2610.10610)). Evidence: `measured-obs`. It is not a
   human study, and it is not a reason to add an agent-eval skill. It is a reason to keep a comprehension measure
   next to time-to-approve. See #1.
+  **White et al.** ([arXiv 2611.12019](https://arxiv.org/abs/2611.12019), published 2026-11-09T07:56:58Z)
+  is the same warning on self-report. 3×2 within-subjects, N=20 after two exclusions from 22. Java snippets
+  of about 30, 45, and 70 lines. Gemini's web chat on a second monitor, then a four-question quiz with the
+  AI closed. tDRT reaction times were 11.2% higher with AI (chi-square 17.37, p<.001) and, in the results
+  section, still 6.9% higher in the quiz phase (p=0.007). The introduction and the discussion print 6.93%
+  for that quiz-phase comparison. NASA-TLX and SEQ did not differ (p=0.180, p=0.161). Quiz means were 3.22
+  and 3.23 of 4 (p=.982), with a ceiling. Self-reported ease is not the comprehension signal, and
+  time-to-approve is not one either. The quiz and the extend task stay the guard. A quiz used as that
+  guard has to be able to move, which this one could not. Evidence: a within-subjects measurement on a
+  small student sample. People were not assigned to separate groups, so this result is not tagged
+  `measured-RCT`. The arXiv comment says "Accepted to ICSE 2027." Themes and the hold-back cite are in
+  the 2026-11-10 changes section. Notes:
+  [`notes/sweep-2026-11-10.md`](notes/sweep-2026-11-10.md).
 - **Why it helps:** every other item here is a guess without it. It tells us whether a block saves minutes or only
   moves them. The extend task tells us whether the reader can still work once the page is closed.
 - **Test:** 10 reviews with the export on. Check the timings add up to wall-clock time, and that viewed-but-skipped
   files show near-zero time. Beside the quiz, a second comprehension measure: a small follow-up change made by hand
   after reading the page, with the agent closed (extend it without the agent). Log whether the person can do it.
+- **Code Tour "0/13 snippets" (2026-11-16).** Secondhand, from the demo on #9: the Diff tab shows
+  "0/13 snippets" as the reader moves through the tour. That is a peer of the viewed state this item
+  already notes. It is not a time-per-file measure. Evidence: `vendor`. The count string is secondhand.
+  Notes: [`notes/sweep-2026-11-16.md`](notes/sweep-2026-11-16.md).
 
 ### 3. `teach-code`: stateful, mission-led lessons about a repo or one area of it — `proposed`, cost M (v1) / L (v2), target new skill in accelerate (reuses the HR renderer)
 *Merges the old #3 (slice explainer), #10 (repo onboarding course), and #14 (learner profile), 2026-11-01, after
@@ -148,17 +228,41 @@ reading Matt Pocock's `teach`.*
     [X](https://x.com/mattpocockuk/status/2064023481398824993) (5,054 likes, 7,777 bookmarks, 909,811 impressions) and
     [X](https://x.com/mattpocockuk/status/2063988995692900439) (2,821 likes). His reply "/teach me about this codebase"
     ([X](https://x.com/mattpocockuk/status/2062973868344524834): 282 likes, 137 bookmarks).
+  - **Wattenberger, several perspectives (2026-11-16).** The prompt on #14 asks for a high-level
+    walkthrough from different perspectives, with diagrams. A lesson can open on that prompt. Counts
+    and the evidence label are on #14.
   - A community "teach pr" skill (teach the checked-out PR "like a senior engineer onboarding them", with a chosen
     teaching level 1–4) was proposed for that repo and declined: "Cool idea, but not for this repo IMO"
     ([issue #727](https://github.com/mattpocock/skills/issues/727)). The space for a code-specific teacher is open.
   - The slice explainer evidence from the old #3: the Claude Code team's article
     ([X](https://x.com/addyosmani/status/2114604912520921136): 13,390 likes) and Simon Willison's
     [linear walkthroughs](https://simonwillison.net/guides/agentic-engineering-patterns/linear-walkthroughs/).
+  - **Slice on demand, same article as #1.** The 2026-11-03 article says the Claude Code team rebuilds
+    understanding of one slice by asking the model to explain that slice, and states "You just need to
+    know what you don't have." Counts are on #1. This is the slice-explainer job already in this item.
+    The like count leaves the item under the measurement items (#1 and #2). Evidence: `practitioner` +
+    `engagement`.
   - The course evidence from the old #10: codebase-to-course ([repo](https://github.com/zarazhangrui/codebase-to-course),
     5,750 stars per the GitHub API on 2026-11-01), Understand-Anything (`tour[]`,
     [repo](https://github.com/Egonex-AI/Understand-Anything/), 89,517 stars per the API), DeepWiki, Google Code Wiki,
     CodeTour, and [Busjahn et al.](https://researchonline.gcu.ac.uk/ws/portalfiles/portal/24953094/ICPC2015_authors_version.pdf)
     (execution-order reading).
+  - **LACY, CodeMap, and Cognitive Tours.** LACY
+    ([arXiv 2603.25391](https://arxiv.org/abs/2603.25391), FSE 2026 companion) is expert-curated code
+    tours plus comprehension questions. Within-subjects, five learners on one legacy codebase:
+    guided-tour quiz 83%, AI-only tour quiz 57%. Evidence: `measured-RCT` (small, one system). CodeMap
+    ([arXiv 2504.04553](https://arxiv.org/abs/2504.04553), ICPC 2026) draws hierarchical maps of an
+    unfamiliar codebase. A user study of nine experienced developers and six novices. The paper states
+    79% less time reading model replies (1.15 vs 5.48 minutes) than a chatbot, and 90% more time on the
+    map (8.55 vs 4.50 minutes, t=3.67, p=.011) than a static visualization tool. No comprehension quiz
+    was in the sections read. Cognitive Tours
+    ([arXiv 2611.08456](https://arxiv.org/abs/2611.08456); the arXiv comment says a shorter version is
+    submitted to the ICSE 2027 demo track and is under review;
+    [demo](https://cognitive-tours-demo.vercel.app/), HTTP 200 on 2026-11-09) is a human-written tour
+    of waypoints: user needs, design decisions, code, tests, and open questions, with notes between
+    stops. The author reports her own use over six months. The paper calls that a design proposition,
+    and the evaluation is proposed future work. The ask-the-author capture is on #5. Evidence for
+    Cognitive Tours: `practitioner`.
   - IronBee Code Wiki ([product](https://ironbee.ai/code-wiki)). Launch post by @serkan_ozal
     ([X](https://x.com/serkan_ozal/status/2117633673461674225): like_count 5, bookmark_count 0, reply_count 2,
     retweet_count 1, impression_count 9185, X API on 2026-11-04). Same niche as DeepWiki and Google Code Wiki
@@ -189,6 +293,18 @@ reading Matt Pocock's `teach`.*
   - **Code Stories**, PR Explainer's always-on daemon: the repo narrates its own history (what changed last week,
     onboarding) without a pull request to open ([site](https://prexplainer.com/)). Noted here, not a separate item.
     The sample entries on the page are product copy. Evidence: `vendor`.
+  - **Co-Review `/co-review:audit` (2026-11-11).** An Eclipse Theia app, MIT, and a Claude Code plugin.
+    The audit writes a whole-repo guide in four chapters: lay of the land; how it works; patterns,
+    naming, and why; where it hurts. Every claim links to code. A claim that could not be verified is
+    tagged inferred or unknown. Each chapter ends with one check question. The workflows page states
+    the goal: afterwards, without the agent, you can say where things live, use the vocabulary, trace
+    the main flows, and place a change and predict what it affects
+    ([workflows](https://sdsvn.github.io/co-review/docs/guides/workflows/)). GitHub API at
+    2026-11-11T13:20:30Z: 9 stars, 1 fork, created 2026-09-25. fxtwitter at that read: 7 likes,
+    0 bookmarks, 15 replies, 139 views. X API `get_posts_by_ids` returned client-forbidden. The check
+    question is #1. Coverage per area is #2. The tags are #11. `/co-review:review` is a shipped peer.
+    Evidence: `vendor`, plus `engagement` that is tiny. If Graphify is installed, the repository
+    overview can be built from that graph. Graphify itself is not re-added here.
   - **perspica Learn** writes at most three concept lessons for one change, or says there is nothing to learn.
     A lesson can include a figure. The quiz on the lesson is #1. The figure, when one is drawn, is #15. Not a
     second course. [README](https://github.com/sshah03/perspica). Evidence: `vendor`. The rest of the tool is #8.
@@ -196,6 +312,31 @@ reading Matt Pocock's `teach`.*
     writes an `orientation.md` for a new repo
     ([repo](https://github.com/DrCatHicks/learning-opportunities), 2,540 stars per the GitHub API on 2026-11-05).
     Evidence: `practitioner`. See #1.
+  - **Graphify codebase wiki** ([post, 2026-10-14](https://graphify.com/blog/auto-generated-codebase-wiki)).
+    The hosted product writes a wiki for each indexed repository, links each article to the source files, and
+    rebuilds the wiki with each index. A "How we know" panel shows where a claim came from. That panel is also
+    #11. The local graph is #7. Same class of orientation baseline as DeepWiki and IronBee Code Wiki above.
+    This pass did not look up engagement for the blog post. GitHub API at 2026-11-06T13:57:28Z, and the same
+    fields at 2026-11-06T13:55:10Z: `stargazers_count` 143301 (the sweep brief said 143299), `forks_count` 13705,
+    Apache-2.0, `default_branch` `v8`, created 2026-04-03.
+    [repo](https://github.com/Graphify-Labs/graphify). [product](https://graphify.com/).
+    X `public_metrics` in the brief for 2026-11-06, not re-read this session because `get_posts_by_ids` returned
+    `client-not-enrolled`: [stewy0x](https://x.com/stewy0x/status/2118329037852479886) 10 likes, 7 bookmarks,
+    383 impressions, 0 replies (created 2026-11-05T13:06:13Z);
+    [Kuzoxbt](https://x.com/Kuzoxbt/status/2118439070703730858) 22 likes, 15 bookmarks, 934 impressions,
+    3 replies, 2 reposts (created 2026-11-05T20:23:27Z);
+    [BangDropID](https://x.com/BangDropID/status/2118380320114552923) 6 likes, 3 bookmarks, 216 impressions;
+    [mchulet](https://x.com/mchulet/status/2118347490596712702) 3 likes, 4 bookmarks, 352 impressions;
+    [dextune](https://x.com/dextune/status/2118694891685331436) 1 like, 0 bookmarks, 84 impressions
+    (created 2026-11-06T13:20:00Z). Evidence: `vendor` + `engagement`.
+  - **Words versus names.** A Voxyz prompt has the agent build a clickable `docs/codemap/` and flag places
+    where the words people use do not match names in the code. Parent
+    [Voxyz_ai](https://x.com/Voxyz_ai/status/2118418074508710296). Follow-up prompt
+    [Voxyz_ai](https://x.com/Voxyz_ai/status/2118418076022755684). Brief X API `public_metrics` for 2026-11-06,
+    same unread condition as Graphify: parent 131 likes, 215 bookmarks, 9620 impressions, 9 replies, 9 reposts;
+    follow-up 12 likes, 32 bookmarks, 1248 impressions. Evidence: `engagement` + `practitioner`. A prompt
+    recipe, with no product page opened for these two posts. The mismatch sits on the lesson's `terms` block.
+    The map itself is the #7 family.
   - Evidence: `practitioner` + `engagement`, plus `measured-RCT` for retrieval and spacing (see #1) and for the
     extend-by-hand task.
 - **Why a standalone skill, not part of HR:** different input (no diff), state across sessions, and invoked by the
@@ -207,6 +348,14 @@ reading Matt Pocock's `teach`.*
   ([#960](https://github.com/mattpocock/skills/issues/960))). HR's fixed renderer, build validation, and code pulled
   from git already prevent all three. Also don't copy "knowledge from web resources": for a repo, the primary source is
   the code at head, plus ADRs and docs in the repo.
+- **Sóþspell** (2026-11-12) is a narrated walkthrough of a whole repo. Diagrams build with the story. The
+  reader can pause and ask without losing the place, and progress is saved so the tour can resume.
+  GitHub API at 2026-11-12T13:32:13Z: 4 stars, 1 fork, created 2026-10-17, MIT. Release v0.3.1,
+  2026-10-26. Show HN
+  [item](https://news.ycombinator.com/item?id=50245022), 2026-10-26T15:05:31Z, 1 point, no comments.
+  The README says the Claude, Codex, and OpenCode plugins are not published yet. Each loads from a
+  local directory. [repo](https://github.com/anthonyclarka2/sothspell). Evidence: `vendor`. The same
+  counts at 2026-11-12T13:24:51Z. The narrated half is #15. Not a second course.
 - **Test:** v1 on three limitless areas Matt hasn't touched recently (for example the routing policy and the review
   stage). Run Pocock's `/teach` as-is on the same areas as the **baseline**. Measure quiz score, time to first correct
   edit, factual errors per lesson, and citation count per lesson. After the lesson, a small follow-up change made by
@@ -215,6 +364,20 @@ reading Matt Pocock's `teach`.*
   Also check that the lesson's first stops are the code behind a screen or endpoint the reader named. v2 only if v1 beats both the baseline and
   reading cold. For v2: onboard to an unfamiliar public repo (for example `ky`) with the course vs. DeepWiki vs.
   Floorplan vs. cold, then make the same small change. Floorplan is the second baseline arm, beside DeepWiki.
+- **Jane Street `socratic-tutor`** ([SKILL.md](https://github.com/janestreet/agent_skills/blob/master/socratic-tutor/SKILL.md),
+  MIT, in [janestreet/agent_skills](https://github.com/janestreet/agent_skills)). GitHub API at
+  2026-11-10T13:24:25Z: `stargazers_count` 3140 (3136 at 2026-11-10T13:20:56Z the same session; the backlog
+  uses 3140). It will not start a tutoring session on a one-off "explain X". It asks 3–5 diagnostic
+  questions before teaching, then keeps 4–10 subskills on a 0–5 map rendered after each level change.
+  A level rises only after two or more independent checks, one of them unprompted recall, and a spaced
+  re-test can drop a level. `teach`, cited above, interviews for the mission and stores what a quiz
+  shows. This skill adds the placement diagnostic and the map the learner sees. It is a generic tutor
+  (teach, tutor, quiz, drill, master, on any topic). One exercise line is "predict what this code prints."
+  It is not a lesson about a repo or a diff. The X post is a promo by @0xRicker, not Jane Street's account
+  ([X](https://x.com/0xRicker/status/2119838664767254976)). fxtwitter at 2026-11-10T13:24:25Z: likes 84,
+  bookmarks 42, replies 31, reposts 7, quotes 2, views 3737. The brief's impression figure was 3732.
+  X API `get_posts_by_id` returned `client-not-enrolled`. Evidence: `practitioner` + `engagement`.
+  The narrower-question rule is on #1. The map is on #9. No new row.
 
 ### 4. Worked example with real values ("intuition with toy data") — `proposed`, cost M, target HR + item 3
 - **Idea:** an `example` block that traces one concrete input through the changed path: input → each stop (file:line)
@@ -230,6 +393,11 @@ reading Matt Pocock's `teach`.*
   low-granularity boxes did better than full-state boxes on comprehension tasks
   ([SIGCSE TS 2027](https://2027.sigcse-ts.acm.org/details/sigcse-ts-2027-Papers-1/166/How-Much-Runtime-State-Should-We-Show-Learners-An-EEG-Study-of-Feedback-Granularity-)).
   Evidence: `practitioner` + `measured-RCT` (education setting).
+  **Same pilot, on the traced example (2026-11-13).** Explanation accuracy stayed near 100% while
+  output prediction fell on some atoms
+  ([arXiv 2611.15575](https://arxiv.org/abs/2611.15575)). Evidence: `measured-obs` (pilot, small).
+  **Our own idea:** the example should include at least one predicted output, checked against the
+  code or a run. The captured command on this item is that check. Counts are on #1.
 - **Why it helps:** diffs and prose are abstract. One traced example makes the behavior change visible, and it fits
   HR's "code on the page comes from git" honesty rule if the values are captured too.
 - **Test:** on 5 behavior-changing PRs, compare quiz score and time with and without the block (alternate PRs). Check
@@ -239,7 +407,11 @@ reading Matt Pocock's `teach`.*
 - **Idea:** a visible `decisions` block: what was asked, what was assumed, alternatives tried and dropped, and why.
   Each entry is tagged by source (*user prompt*, *agent transcript*, *commit message*, *not stated*). HR could read
   the session transcript when it runs in the same conversation. In limitless, the source is the spec plus the
-  implement log.
+  implement log. The why in an entry is the author's own words. After the session, rank the decisions
+  the diff made, flag any that contradict an ADR or the rules file (#10), and ask the author to explain
+  each one. The model may list the facts. The author writes the explanation. That entry can be a stop
+  in a #3 lesson. When an agent wrote the line, the source unit is the planning prompts that changed no
+  files, up to five, plus the build prompt and the replies.
 - **Sources:** Addy Osmani's *Agentic Code Review*: agent reasoning "is usually discarded the moment the diff is
   produced… review shifts from checking reasoning… to reconstructing intent"
   ([X](https://x.com/addyosmani/status/2066595308629594363): 1,714 likes, 3,249 bookmarks). Entire records sessions,
@@ -248,6 +420,15 @@ reading Matt Pocock's `teach`.*
   ([X reply](https://x.com/AkshaySubr42403/status/2067331955494912104), 0 likes). Practitioners asking for the same:
   [@UditKhandelwal8](https://x.com/UditKhandelwal8/status/2082542780237352977),
   [@GandhiRohith](https://x.com/GandhiRohith/status/2067630870996103481) (low engagement).
+  **Theseus** (read 2026-11-13) reads a pull request and writes a guide beside the diff. Hooks in
+  Claude Code, Codex, and OpenCode capture the agent transcript. Linear and Jira context go into a
+  Motivation that includes alternatives considered. The homepage example says PBKDF2 was considered
+  and was not memory-hard enough. The guides page says only the code establishes a change. The
+  change list is behavior claims, most important first. The homepage demo is "6 changes · 1 unknown".
+  That list is a peer of the shipped grouping and reading-order rows
+  ([home](https://theseus.dev/), [guides](https://theseus.dev/product/guides),
+  [pricing](https://theseus.dev/pricing)). Starter is $99 a month for 100 guides. GitHub only.
+  No launch date on those pages. Evidence: `vendor`. Unknown entries are #11. The daily digest is #17.
   **DiffNotes** is the same premise, built: the agent that wrote the PR annotates it with a summary, a deploy card
   (migrations, flags, rollback), a risk list, and one why-not-what note per changed block. A browser extension
   overlays the notes on GitHub's Files changed tab. Nothing is posted to the PR. Notes expire. Per-repo rules live
@@ -255,6 +436,14 @@ reading Matt Pocock's `teach`.*
   ([DEV, 2026-11-01](https://dev.to/igorkasyanchuk/i-made-my-coding-agent-explain-its-own-pull-requests-j67),
   [repo](https://github.com/igorkasyanchuk/diffnotes), 3 stars per the GitHub API on 2026-11-02). Evidence:
   `practitioner` (low engagement).
+  **gavel (2026-11-16).** PhotoStructure, a fork of difit. `/gavel` in Claude Code or `$gavel` in Codex
+  opens a local browser review. The write-up's narrative, which the author says the agent should write,
+  asks why the change was needed, what alternatives were considered, why this approach, and where to
+  start. Those alternatives and the reason are this item. The Change summary panel, as the page
+  describes it, is why the change was made, where the tour starts, and the proposed commit message.
+  [repo](https://github.com/photostructure/gavel) (MIT, created 2026-11-07, 4 stars, 0 forks, GitHub
+  API 2026-11-16). [write-up](https://photostructure.com/coding/gavel/). Evidence: `vendor`.
+  Purpose-ordered parts are #12. Per-part Approve and Reject are handed off.
   **Flatbread** is a handoff that keeps the dead ends from a Claude Code, Codex, or Cursor session, so the next
   agent can pull an execution brief
   ([X](https://x.com/bulentongun/status/2116366373920391218): 7 likes). Evidence: `engagement` (low).
@@ -263,26 +452,66 @@ reading Matt Pocock's `teach`.*
   the prompts) or *agent's call*. It does not read sessions for someone else's pull request
   ([README](https://github.com/sshah03/perspica)). Evidence: `vendor`. The noise tags, reading order, and test
   reach are #8.
+  **Author explains it.** Cognitive Tours' `suggest-waypoint` skill ranks unrecorded work since a date,
+  ranks decisions first, flags any that contradict an existing ADR, and asks the author what was
+  decided, in their words. The skills do not write the map. A draft comes only after that question, and only if
+  the author asks for one. In the paper's example, one evening produced more than 20 commits, and the
+  skill's first item contradicted ADR 007, which was still Accepted. The author reports using the tool
+  across six months. The evaluation is future work.
+  [arXiv 2611.08456](https://arxiv.org/abs/2611.08456). Evidence: `practitioner`. The capture rule in
+  the idea (rank the diff's decisions, flag an ADR or the #10 rules file, ask the human) is
+  `our own idea`, adapted from that skill. The article on #1 also says to have the agent list the
+  decisions it made, then quiz yourself. That list is the agent's. The entry stored here is the author's.
+  **Tracybot** maps each agent-written line to a Tasklet: up to five preceding prompts that changed no
+  files, the build prompt, and the replies. OpenCode is read through its SDK. Claude Code and Codex
+  are recorded through hooks. Snapshots
+  sit on hidden git refs, and a commit is linked with a git note. The editor view is AI Blame. A
+  Tasklet can be exported as a MADR record; the developer writes the reasons and the consequences. The
+  paper's Table I sets that unit beside a whole session (Git AI, Cursor Blame) and a single prompt
+  (PromptTrace). Evaluation: a focus group of 7, and a survey of 24 people judging screenshots. The
+  paper says those people did not use the tool, and the measures are usability.
+  [arXiv 2611.09395](https://arxiv.org/abs/2611.09395),
+  [repo](https://github.com/TracyTeam/tracybot). GitHub API on 2026-11-09, in the call that started at
+  the clock read 2026-11-09T13:23:42Z: `stargazers_count` 10, `forks_count` 0, GPL-3.0. Evidence:
+  `vendor` for the tool. The study measured usability. It did not measure comprehension.
   The earlier report recommended "label each why by source; write *why: not stated*" (`report.md`, row "Brief and
   summary drawn from…"). It hasn't shipped: HR tags signals and `risk.why`, not the brief or rationale. Evidence
   for the item: `practitioner` + `vendor`.
 - **Why it helps:** "what instigated the change" is reviewers' biggest information need (Bacchelli & Bird, cited in
   the earlier report). The agent already has that information, and HR throws it away.
 - **Test:** on 5 agent-built changes, have Matt rate each entry as accurate, useful, or neither, and count the
-  `not stated` gaps. Make sure no decision entry leaks a held-back finding.
+  `not stated` gaps. Make sure no decision entry leaks a held-back finding. On one real limitless or
+  accelerate session diff, check whether the author's explanation names a mismatch with an ADR or a
+  rules file, and score a second reader on the quiz with that entry and without it.
 
 ### 6. "Ask about this" from any line or block, answered in the agent session — `proposed`, cost S, target HR
 - **Idea:** next to **Comment**, add **Ask** (a question tagged `?`). The feedback export puts questions first. The
   agent answers in chat and, when the answer belongs on the page, adds it as a `note` and rebuilds. This keeps the
   one-file, no-network design.
+- **code-walkthrough (2026-11-13).** Select text and Ask the agent in place. The answer can add or
+  replace a block. Undo removes it. The edit is local. "Hand to my session" passes a task into the
+  reader's Claude Code session. "Copy gh command" prints the calls that post review comments.
+  Nothing is posted unless the reader does that from the page. The page is a shipped peer of the
+  HTML page: a two-sentence overview with no file names, then files in three to five themes
+  ([README](https://github.com/crisperity/code-walkthrough)). GitHub API at 2026-11-13T13:21:22Z:
+  5 stars, 0 forks, created 2026-09-15T14:33:00Z, last push 2026-11-09T21:28:25Z, MIT.
+  Evidence: `practitioner`, low popularity. The call graph and the reading order are #7 and #8.
 - **Sources:** PR chat is a common feature in review tools: Tembo Review "Ask about selected code… why they changed"
   ([Tembo](https://www.tembo.io/review)) and Graphite Chat "get instant context on code changes"
   ([Graphite](https://graphite.com/)). GILT, an in-IDE LLM helper, raised task completion (+0.47 sub-tasks, p<.01)
   but **not** quiz scores ([Nam et al., ICSE 2024](https://arxiv.org/html/2307.08177v3)). Evidence: `vendor` +
   `measured-RCT` (mixed).
+  **Greptile, ask from selected code (2026-11-11).** The same post as the Tour tab says the reader can
+  select code or a finding and ask, including a walkthrough of what changed
+  ([blog, 2026-11-09](https://www.greptile.com/blog/code-review-is-evolving), Daksh Gupta). The Tour tab
+  is a shipped reading-order peer. Evidence: `vendor`. Merge status and bulk approve are handed off.
   **DiffGuardian** answers a spoken or typed question while the lines it is talking about scroll
   ([site](https://diffguardian.ai/)). The voice tour and Trace It are #15. The dependency graph is #7.
   Evidence: `vendor`.
+  **Tracybot** answers a click on an agent-written line with the Tasklet behind it: up to five planning
+  prompts that changed no files, the build prompt, and the replies, plus earlier Tasklets for that line.
+  The paper's table sets that unit beside a whole session and beside one prompt. The stars, the sample,
+  and the paper are on #5. Evidence: `vendor`. Ask stays one button. The unit is this design point.
 - **Why it helps:** a static page can't answer the reader's own question, and that is usually the one that blocks
   understanding. The cost is small because the feedback loop already exists (`HR/SKILL.md` "When feedback comes back").
 - **Test:** count the questions per review and how many answers turned into page edits. Also check whether question
@@ -291,6 +520,66 @@ reading Matt Pocock's `teach`.*
   in the chat window" ([issue #519](https://github.com/mattpocock/skills/issues/519)). HR's export makes in-place notes
   cheap without a server, so the cost argument against it doesn't apply here. The lesson to take is to keep it one
   button, with no new UI mode.
+- **Atlas Review, ask from a hunk (2026-11-10).** The marketing page says hover a finding or a diff hunk
+  and ask what changed, what the impact is, and how to test it. The walkthrough UI opens Ask Atlas on a
+  selected line range. GitHub API at 2026-11-10T13:24:25Z: 0 stars.
+  [site](https://loomtide.ai/atlasreview), [repo](https://github.com/Loomtide/atlas-review).
+  Evidence: `vendor`. The walkthrough is a shipped peer. The policy file is #10. Step-read marks are #17.
+  Findings and the verdict are handed off.
+
+### 18. Intent map and unexplained files — `proposed`, cost S, target HR
+- **Idea:** Quote, verbatim, each thing the author says the pull request does. Take the words from a spec,
+  the description, linked issues, commit messages, and the title, strongest source first. Tag that source
+  `spec`, `described`, `title only`, or `UNKNOWN`. Map each quote to the files that implement it. A check
+  rejects a quote that is not in the author's text, then lists the changed non-noise files that no quote
+  explains, so the reviewer can ask why those files are in the diff. Run the pass in a fresh session, not
+  the session that wrote the diff.
+- **What human-review already does:** It reads the description and the commit messages, and it writes its
+  own `brief` and `summary` (`HR/SKILL.md` "Read the change", "The fields that carry the most weight").
+  `concerns` groups files by what the change does, in the model's words. `focus` is three to six stops,
+  phrased as what to check. Mechanical and generated files are tiered. `questions` ask the reviewer for a
+  decision. The precision check tests the page's own claims against the diff. Signals are computed from
+  git and paths, never from the title, the description, or the commit messages. That is not a verbatim
+  map from the author's sentences to files, and it does not list the changed files those sentences leave
+  out. A reading order, a noise tier, and a cap of about eight "what to check" pointers are already
+  shipped. They are not part of this item.
+- **Sources:** dmoka/skills `pr-tour`
+  ([SKILL.md](https://github.com/dmoka/skills/blob/main/skills/pr-tour/SKILL.md),
+  [notes](https://github.com/dmoka/skills/blob/main/skills/pr-tour/references/notes.md)).
+  GitHub API at 2026-11-12T13:32:13Z: the repo has 21 stars and 2 forks, MIT, created 2026-09-01.
+  The same counts at 2026-11-12T13:24:51Z. The last commit on `skills/pr-tour/SKILL.md` is
+  2026-10-05T12:41:44Z. The skill says the unexplained list is the most useful thing the tour shows.
+  `scripts/annotate.mjs` rejects a quote that is not verbatim (whitespace normalised, case kept, at least
+  four characters) and then sets `unexplained`. The item text is "Nothing the author wrote explains this
+  change — ask why it is here." Noise never appears on that list. The cap of eight LOOK HERE pointers
+  does not include those files (`references/notes.md`). `scripts/lib.mjs` ranks a spec above the
+  description and linked issues (those two tie), then commit messages, then an informative title.
+  Evidence: `practitioner` + `vendor`. One repo. No X count was fetched. See the sweep note.
+  **MergeAtlas** groups changed files into a frame per outcome. It does not quote the author verbatim,
+  and it does not list files the author's words leave unexplained. That grouping is support here. The
+  unchanged files that behave differently are #7.
+  [repo](https://github.com/ismayilkarimli/MergeAtlas). GitHub API at 2026-11-12T13:32:13Z: 7 stars,
+  0 forks, created 2026-11-01, MIT. Show HN
+  [item](https://news.ycombinator.com/item?id=50429817), 2026-11-09T18:51:12Z, 4 points, no comments.
+  Evidence: `vendor`.
+- **Why it helps:** A reviewer can see where the pull request's story and the diff disagree. That is the
+  drive-by, and the file the description forgot. #5 records why a choice was made. This item records
+  which changed files no stated intent covers.
+- **Why it sits here:** Rank 7 by gain per effort. #1 and #2 stay first: nothing else can be ranked
+  without a measure. #3 is a lesson about a repo, at cost M or L. #4 has a measured result for a traced
+  example. #5 has more sources, and it answers a different question. #6 has a measured study, and
+  measured evidence stays above a practitioner report. This item is cost S and needs no parser, so it
+  sits above blast radius (#7, cost M) and the semantic diff (#8, cost M). The evidence is one skill in
+  a 21-star repo, so it does not jump #1 through #6. The heading is 18, and the section is placed here,
+  so headings #7 through #17 keep the draft 5 numbers. Open PRs #13, #17, #19, and #21 cite those numbers.
+- **Test:** On [excalidraw/excalidraw#8613](https://github.com/excalidraw/excalidraw/pull/8613) and on four
+  more real pull requests (limitless, or accelerate). The #8613 title and body are image cropping. The
+  diff of `packages/math/vector.ts` adds `vectorProjection`, and one commit subject is "normalize before
+  projection to improve rotated crop region drag", so that file should map to a quote. `setupTests.ts`
+  only changes `includes` to `includes?.` on the act() warning, in commit `b0375fe5` ("refactor to
+  simplify tests", 2024-10-09). Check that this file is listed as unexplained, and that a crop file is
+  not. A file flagged unexplained when a quote does explain it fails the test. A quote the author did
+  not write must be rejected.
 
 ### 7. Structural blast radius and "what it's wired into" map — `proposed`, cost M, target HR
 - **Idea:** replace or extend HR's `git grep -w` blast radius with a tree-sitter import/call graph that is 1 hop from
@@ -311,6 +600,12 @@ reading Matt Pocock's `teach`.*
   The site did not load on 2026-11-02, and the README does not describe grouping a 34-file PR into 4-5
   dependency-order stages, so that claim stays unchecked. The walkthrough half (what to read first) is noted on
   the split advisor. Evidence: `vendor` + `engagement`.
+  **code-walkthrough** resolves a call graph at package and symbol level. The README's call-graph
+  step says the compiler or a language server does it, and that the graph shows which new function
+  is called from everywhere and which is a leaf. The cost section says the graphs come from parsers.
+  A missing parser skips those sections. Stars are on #6
+  ([README](https://github.com/crisperity/code-walkthrough)). Evidence: `practitioner`, low
+  popularity. Callers before callees are #8.
   **Two families of diagrams.** A vendor guide (the author builds repowise; updated 2026-11-01) splits model-drawn
   pictures, which tell a story, from parsed import graphs, which answer blast radius. On Flask, the post says a
   GitDiagram drawing showed 15 of 24 modules and left out `globals.py` and `helpers.py`, the two most-imported
@@ -325,8 +620,27 @@ reading Matt Pocock's `teach`.*
   **OPVS v1.14.0** (2026-11-01) answers who calls a function, and labels each hit exact or heuristic. Python is
   indexed. Unknown is not reported as zero
   ([changelog](https://www.opvs.ai/changelog/opvs-v1140-ask-the-code-index-who-calls-a-function)). Evidence: `vendor`.
+  **MergeAtlas (2026-11-12).** An agent skill plus a Python script. Arrows run from a cause to its
+  effect, including into unchanged files that behave differently, stacked beside the card that reaches
+  them. The site says, of [excalidraw/excalidraw#8613](https://github.com/excalidraw/excalidraw/pull/8613),
+  "Exported images now come out cropped, yet no export code is in that diff." The image caption marks
+  `export.ts` not changed but affected. The pull request's file list, read 2026-11-12, has export
+  snapshots and no `export.ts` source file. GitHub API at 2026-11-12T13:32:13Z: 7 stars, 0 forks,
+  created 2026-11-01, MIT.
+  [repo](https://github.com/ismayilkarimli/MergeAtlas), [site](https://mergeatlas.dev/). Show HN
+  [item](https://news.ycombinator.com/item?id=50429817), 2026-11-09T18:51:12Z, 4 points, no comments.
+  Evidence: `vendor`. Intent frames are #18. Tests beside the card they verify, and noise stacked apart
+  with a reason, are the shipped `concerns` row and the mechanical tier.
   **DiffGuardian** draws a dependency graph from the diff alone and calls the graph heuristic, not a model
   ([site](https://diffguardian.ai/)). Voice and Trace It are #15. Ask is #6. Evidence: `vendor`.
+  **CodeLens (2026-11-11).** A pull request or a local branch opens one change at a time. Each step
+  shows that change's diff, who calls it, with callers outside the change marked, and which databases
+  and APIs it touches. The model writes the explanations. The checks come from the call graph.
+  Tree-sitter covers 15 languages. TypeScript and JavaScript also use the TypeScript compiler. Other
+  languages resolve calls by name, and a missed call is drawn as inferred or left out
+  ([README](https://github.com/blong8334/codeLens)). GitHub API at 2026-11-11T13:20:30Z: 1 star,
+  created 2026-11-03, Apache-2.0. npm `@blong8334/codelens` 0.1.2. Routes, CLIs, and jobs are #8. The
+  content-keyed cache is #17. Evidence: `vendor`, plus `engagement` that is about zero.
   **PR Lens** draws which parts of the app the change touches, including parts the diff does not, as an animated
   architecture diagram ([site](https://prlens.dev/), [repo](https://github.com/coldteadotai/pr-lens), 2,352 stars
   per the GitHub API on 2026-11-05). The data-flow animation is also #11 and #15. Findings and autofix are handed
@@ -336,10 +650,51 @@ reading Matt Pocock's `teach`.*
   counts are the X API on 2026-11-05. Evidence: `vendor` + `engagement`.
   IronBee Code Wiki's area map (imports solid, HTTP dashed) is another vendor graph overlay for understanding
   impact ([product](https://ironbee.ai/code-wiki), same launch post as #3). Still `vendor`, low engagement.
+  **Graphify** parses code locally with tree-sitter into a queryable knowledge graph. The code parse does not call a model.
+  Docs, PDFs, images, and video can take a semantic pass that does. There is no vector store. Each edge is
+  tagged `EXTRACTED` when the source states it, or `INFERRED` when Graphify resolved it. That is the same
+  trust split as OPVS, which labels a hit exact or heuristic, and as the repowise rule above, which keeps a
+  parsed graph apart from a drawn picture. A run writes `graph.html`, `GRAPH_REPORT.md`, and `graph.json`.
+  `graph.html` is the interactive view. The README on `v8` registers a `/graphify` skill for Claude Code,
+  Cursor, Codex, Gemini CLI, and others. Codex invokes it as `$graphify`. The product page and the README
+  install the CLI with `uv tool install graphifyy`. The PyPI name has two y's. The product tagline is
+  "shared codebase understanding for agents and developers." GitHub API at 2026-11-06T13:57:28Z, and the same
+  fields at 2026-11-06T13:55:10Z: `stargazers_count` 143301, `forks_count` 13705, license Apache-2.0,
+  `default_branch` `v8`, created 2026-04-03. The sweep brief said 143299 stars. This line uses 143301.
+  [repo](https://github.com/Graphify-Labs/graphify). [product](https://graphify.com/). The hosted wiki
+  and its "How we know" panel, rebuilt with each index, are #3 and #11
+  ([post, 2026-10-14](https://graphify.com/blog/auto-generated-codebase-wiki)). The 2026-11-01 sweep named
+  Graphify from one post and did not open the repo. X `public_metrics`
+  below are the 2026-11-06 brief's figures. This session's `get_posts_by_ids` returned `client-not-enrolled`
+  and did not re-read them. [stewy0x](https://x.com/stewy0x/status/2118329037852479886) (created
+  2026-11-05T13:06:13Z; the brief says the note tweet names the repo and `EXTRACTED` and `INFERRED`): 10 likes,
+  7 bookmarks, 383 impressions, 0 replies.
+  [Kuzoxbt](https://x.com/Kuzoxbt/status/2118439070703730858) (created 2026-11-05T20:23:27Z): 22 likes,
+  15 bookmarks, 934 impressions, 3 replies, 2 reposts.
+  [BangDropID](https://x.com/BangDropID/status/2118380320114552923): 6 likes, 3 bookmarks, 216 impressions.
+  [mchulet](https://x.com/mchulet/status/2118347490596712702): 3 likes, 4 bookmarks, 352 impressions.
+  [dextune](https://x.com/dextune/status/2118694891685331436) (created 2026-11-06T13:20:00Z): 1 like,
+  0 bookmarks, 84 impressions. The star count is large. It is engagement. It does not measure whether a person
+  understood the code, so this item stays below the quiz and the measurement items. Evidence: `vendor` +
+  `engagement`.
+  **Words versus names.** The Voxyz prompt on #3 also asks for a clickable `docs/codemap/` and a flag where
+  the words people use do not match names in the code. Brief `public_metrics` for 2026-11-06, same unread
+  condition as the Graphify posts: parent 131 likes, 215 bookmarks, 9620 impressions, 9 replies, 9 reposts;
+  follow-up 12 likes, 32 bookmarks, 1248 impressions. The post links are on #3. Evidence: `engagement` +
+  `practitioner`.
 - **Why it helps:** HR's blast radius is honest but text-only, covers 5 languages, and says "mentioned", never
   "called" (`HR/SKILL.md` "Blast radius"). A resolved graph answers "what else does this touch" faster.
 - **Test:** on 5 PRs, compare the grep and graph outputs by hand: false mentions removed, real callers missed. Time to
   answer "who calls this?" A diagram used as blast radius fails the check when a missing box is described as unused.
+- **Rasoi (2026-11-16).** Sahni et al., Columbia, including Lydia B. Chilton.
+  [arXiv 2611.16293](https://arxiv.org/abs/2611.16293). The abs page, read 2026-11-16, says submitted
+  12 Nov 2026 (v1, 2026-11-12T04:47:39Z). A design probe maps how a codebase's architecture changes
+  after each agent edit: elements and relationships added, modified, or removed, at several
+  abstraction levels. A week-long study, 12 developers, their own codebases. Visual diffs helped them
+  see whether changes stayed in scope, notice unexpected restructuring, and relate changed parts to
+  the whole. The authors say the value is the developer's confidence in their own evaluation. The
+  abstract reports no comprehension quiz. Evidence: `measured-obs` (qualitative field study). The
+  per-edit map is #17, in Changes (2026-11-16 sweep).
 
 ### 8. Semantic "lines to read", call-graph order, and test reach — `proposed`, cost M, target HR
 - **Idea:** before the model's prose, and beside it, run a local tree-sitter semantic diff. Collapse moves,
@@ -351,23 +706,39 @@ reading Matt Pocock's `teach`.*
   [homepage](https://sshah03.github.io/perspica/). pmndrs/react-three-fiber#4008 is "152 of 545".
   apache/spark#59118 is "87 of 633", and that card also says tests reach 30 of the 31 changed functions.
   jhy/jsoup#2618 says tests reach all 20 changed functions. pallets/flask#5818 is one of the twelve examples.
+  **CodeLens, what reaches the change (2026-11-11).** The README on #7 also lists which routes, CLIs,
+  and jobs reach a change, and the queue starts from a suggested place to read. Callers and external
+  systems are on #7. The cache is on #17. Evidence: `vendor`. 1 star at 2026-11-11T13:20:30Z.
   The README says the noise tags, the reading order, and test reach do not need a model. The homepage says those three come from perspica itself.
   Summaries, notes, and Learn lessons are the model's, and each lesson is checked against the code. The only X
   post in this sweep that names it is
   [vibeleaderboard](https://x.com/vibeleaderboard/status/2117626768110596353): 1 like, 26 impressions (X API,
   2026-11-05). Evidence: `vendor`, plus `engagement` that is tiny. "What you asked for" is cited on #5. Learn is
   cited on #1, #3, and #15.
+  **Structured code reveal** ([arXiv 2609.24616](https://arxiv.org/abs/2609.24616), submitted
+  2026-09-21, revised 2026-10-29). A within-subjects eye-tracking study of three Java snippets. 53
+  participants were recruited. Gaze analysis used 44. Structured reveal, syntax before the details,
+  produced longer fixations than a character-by-character reveal. Mean comprehension scores were 4.886
+  static, 5.000 structured, and 4.932 character (Table 4, N=44). The scores sit together. The study is
+  about how a short snippet appears on screen. Evidence: `measured-RCT` (lab snippets). The item stays
+  at this rank.
 - **Why it helps:** agent pull requests are often majority mechanical. HR's mechanical tier is path-based, so a
   move or a rename inside a file still looks like logic. The `focus` order is not taken from the call graph.
   "Tests cover / don't cover" does not say which changed test reaches which changed function.
-- **Why it sits here:** same cost as blast radius (#7), and the same kind of local parser. The evidence is one
-  beta tool, 41 stars, and one post with 1 like, so it stays below #1–#6. It is its own row, next to #7.
+- **Why it sits here:** same cost as blast radius (#7), and the same kind of local parser. The evidence for
+  the parser is one beta tool, 41 stars, and one post with 1 like, so it stays below #1–#6. The
+  eye-tracking study above is lab snippets, and its quiz scores sat together, so it does not lift the
+  item. It is its own row, next to #7.
   #7 answers what else the change touches. This one answers which lines are the logic, which order to read
   them, and which tests reach which changed functions. It stays above the rules file and the claims footer,
   which apply more narrowly.
 - **Test:** on 5–8 real PRs (limitless, plus public PRs like the perspica examples), compare HR's mechanical tags
   with perspica's noise tags by hand. Time the questions "what is the real logic delta?" and "do the tests hit
   the risky functions?" Check false move collapses.
+- **code-walkthrough** orders callers before callees inside a theme. The shipped concerns row says
+  callees first. This item walks entry points, then what they call. The compiler-or-parser caveat
+  and the stars are on #6 and #7
+  ([README](https://github.com/crisperity/code-walkthrough)). Evidence: `practitioner`.
 
 ### 9. Two-depth background (newcomer vs. owner) — `proposed`, cost S, target HR
 - **Idea:** split `background` into a *deep background* (collapsed when the git signals say the reader has history in
@@ -377,12 +748,33 @@ reading Matt Pocock's `teach`.*
   ([gist](https://gist.github.com/geoffreylitt/a29df1b5f9865506e8952488eac3d524)). This is the earlier report's #10
   "familiarity-adaptive density", which hasn't shipped. HR always writes for a newcomer (`HR/SKILL.md` "Write for
   someone new to this code"). Evidence: `practitioner` + `measured-obs` (Bacchelli & Bird, via the earlier report).
+  **Code Tour tone pad (2026-11-16).** GitHub Copilot's Code Tour is in testing, "coming soon alongside
+  our new GitHub 2.0 UI." Lichin Lin (Design Engineer at GitHub), 2026-11-13,
+  [post](https://x.com/lichinlin/status/2121233913406214200). X `public_metrics` read 2026-11-16
+  ~13:35 UTC: likes 351, bookmarks 103, reposts 19, quotes 13, replies 28, impressions 18,223. The
+  post says review is the story behind the changes, turned into readable chapters and visual diagrams,
+  with a way to tune how the story is told. A 56s demo was described by a video model. That
+  description is secondhand: a gear opens "Adjust tone," a 2D pad, Technical to Plain by Brief to
+  Detailed. "Brief · Plain" and Apply regenerated the tour, and the diagram. The chapters, the
+  diagram, and "0/13 snippets" are on #11 and #2. One-post echo, no official GitHub announcement:
+  [vqv.me](https://vqv.me/s/qp7zi/). Evidence: `vendor` + `engagement`. This is the strongest vendor
+  evidence on this item so far. **Our own idea:** widen the two fixed depths to that two-axis
+  re-render, still cost S. The pad sits beside the git-signal collapse. Quiz score stays the guard.
 - **Add a level check, the gap `teach` users report most:** "There is no assessment step… It never did grilling to
   establish my starting point" (`teach` docs, [common questions](https://github.com/mattpocock/skills/blob/main/docs/productivity/teach.md); request
   [#725](https://github.com/mattpocock/skills/issues/725)). Collapse or open the deep background from (a) the git
   signals, (b) the learner records from #3, or (c) when neither exists, one optional question at the top ("new to this
   area?"). The community "teach pr" skill asks for a teaching level 1–4 up front
   ([#727](https://github.com/mattpocock/skills/issues/727)).
+- **Tiered on demand, SAFE (2026-11-11).** Johnson et al.
+  ([arXiv 2611.13041](https://arxiv.org/abs/2611.13041), published 2026-11-09T11:40:08Z) open a
+  security finding with a one-sentence summary, then what, why, where, and how to fix, and put the
+  deep dive behind a disclosure the reader opens. The predecessor rewrote the whole explanation at a
+  chosen beginner, intermediate, or advanced depth. Within-subjects crossover, 24 participants, both
+  builds. System Usability Scale 77.3 to 85.0 (p=.011). Trust moved +0.04. The interface and the agent
+  changed together, so the gain is the bundle. The domain is security findings. Quiz score stays the
+  guard. The grounding result is #11. Evidence: a within-subjects measurement. Not tagged
+  `measured-RCT`. See "Changes (2026-11-11 sweep)".
 - **Caution from TARS** ([arXiv 2607.15948](https://arxiv.org/html/2607.15948v1)): an in-IDE agent profiles
   expertise and role and adapts explanation depth. Within-subjects, n=18, on Java snippets: 26% faster (mean 224.0s
   vs 304.08s; Mann-Whitney p=0.085, not significant) and no correctness difference (cosine similarity to a
@@ -390,6 +782,10 @@ reading Matt Pocock's `teach`.*
   are against the scale midpoint in the TARS condition. Adapting depth may save time. It has not been shown to
   improve understanding. Keep this item at cost S, and keep quiz score as the guard. Evidence: `measured-RCT`
   (small, null on correctness).
+- **Earned levels from `socratic-tutor` (2026-11-10).** The skill on #3 places each of 4–10 subskills at
+  0–5 and raises a level only after demonstrated checks, including one unprompted recall. That is a level
+  check with earned levels. The one optional "new to this area?" question stays the fallback when no map
+  exists. White et al. (on #2) do not vary explanation depth, so they are not a source here.
 - **Test:** time on top-of-page for owned vs. unfamiliar areas, with quiz score held constant. Quiz score is the
   guard: a faster top of the page with a lower quiz score fails.
 
@@ -402,6 +798,10 @@ reading Matt Pocock's `teach`.*
   [repo](https://github.com/igorkasyanchuk/diffnotes), 3 stars per the GitHub API on 2026-11-02). The fail-closed
   `build --check` is ours; DiffNotes describes the agent reading the rules. See #5 for the rest of the tool.
   Evidence: `practitioner` (low engagement).
+  **Atlas Review** reads a repo-owned `.atlas/review-policy.json` (the code also accepts `atlas-review.yml`).
+  The file sets review depth per path (deep, structural, shallow, collapsed, skip). That is a cousin of
+  this item's explanation rules, aimed at how hard a path is reviewed. 0 stars on 2026-11-10. The rest of
+  the tool is on #6. Evidence: `vendor`.
 - **Why it helps:** HR already checks that claims match the diff. A rule makes a missing deploy or rollback note a
   build failure on the changes that need one.
 - **Why it sits here:** effort is S because `build --check` already exists. The gain shows up on the PRs a rule
@@ -414,22 +814,60 @@ reading Matt Pocock's `teach`.*
 - **Idea:** on the explanation, show a footer that counts claims tied to a specific place in the code and claims
   that are not ("N grounded · M ungrounded"). Each diagram step opens the real `path:line`: the code at the
   explained commit, and what this pull request changed there. A step that does not resolve fails `build --check`.
+  **Theseus** writes an explicit Unknown into the change list. The homepage demo is "6 changes · 1
+  unknown", and one entry is "Unknown: does the production Worker have the new secret bound?" The
+  guides page says anything the check cannot confirm is flagged as an unknown
+  ([home](https://theseus.dev/), [guides](https://theseus.dev/product/guides)). Evidence: `vendor`.
+  **Our own idea,** from the pilot on #1: a confident explanation is weak evidence that a claim is
+  grounded.
   Record, in one line, why this diagram type was chosen from signs in the code (something moves through states,
   work overlaps in time, parties exchange messages, there is a decision, or the schema changes). Mark steps that
   are new or changed in this pull request. Trace and Walk, numbering the steps to an ending and stepping through
   them, are optional controls on that diagram. Teaching the change before the findings is already shipped. This
   item does not redo it.
+  **Co-Review inferred and unknown (2026-11-11).** The audit guide on #3 links each claim to code and
+  tags a claim the agent could not verify as inferred or unknown
+  ([workflows](https://sdsvn.github.io/co-review/docs/guides/workflows/)). Evidence: `vendor`. 9 stars.
+  **SAFE must read the repo and the fired rule (2026-11-11).** The explanation is tied to the data
+  flow the analyser reported. The same study as #9 left trust flat (+0.04). The abstract says
+  grounding made the findings easier to understand rather than easier to believe. Triage accuracy was
+  0.46 against 0.53 (p=.59). Time per finding, 5.1 against 4.7 minutes, was also indistinguishable
+  (p=.21). The results section prints a 2.6 odds ratio for a better-quality remediation (95 percent CI
+  0.93 to 7.09, p=.069). Correct proposals were 19 percent and 41 percent. The abstract prints the
+  2.6 figure as the odds of a correct remediation. Evidence: within-subjects, security findings. Not
+  tagged `measured-RCT`. The domain and that p-value keep the item where it is.
 - **Sources:** aictrl's explanation card, which keeps reviewer notes last and counts grounded against ungrounded
   claims ([blog, 2026-10-22](https://aictrl.dev/blog/understand-a-pull-request-before-you-review-it),
   [docs](https://aictrl.dev/docs/pr-explanations)). Evidence: `vendor`.
   **PR Lens** opens the diff from a step in an animated architecture or data-flow diagram
   ([site](https://prlens.dev/)). The star count and the posts are on #7. Evidence: `vendor`.
+  **Graphify** tags each edge `EXTRACTED` or `INFERRED`, and the hosted wiki has a "How we know" panel that
+  links a claim to the source files it was written from. The wiki is rebuilt with each index
+  ([post, 2026-10-14](https://graphify.com/blog/auto-generated-codebase-wiki)). GitHub API at
+  2026-11-06T13:57:28Z: `stargazers_count` 143301 (brief said 143299), `forks_count` 13705
+  ([repo](https://github.com/Graphify-Labs/graphify)). X `public_metrics`
+  from the 2026-11-06 brief, not re-read this session:
+  [stewy0x](https://x.com/stewy0x/status/2118329037852479886) 10 likes, 7 bookmarks, 383 impressions, 0 replies;
+  [Kuzoxbt](https://x.com/Kuzoxbt/status/2118439070703730858) 22 likes, 15 bookmarks, 934 impressions, 3 replies,
+  2 reposts; [BangDropID](https://x.com/BangDropID/status/2118380320114552923) 6 likes, 3 bookmarks,
+  216 impressions; [mchulet](https://x.com/mchulet/status/2118347490596712702) 3 likes, 4 bookmarks,
+  352 impressions; [dextune](https://x.com/dextune/status/2118694891685331436) 1 like, 0 bookmarks,
+  84 impressions. Evidence: `vendor` + `engagement`.
 - **Why it helps:** the precision check already rejects a claim that does not match the diff. It does not show the
   reader how many claims were left untied. A diagram the reader cannot open at a line cannot be checked.
 - **Why it sits here:** the footer and the step links apply to every page, and both sit on checks HR already runs.
-  The only evidence is the vendor's own docs, so it stays under #6–#10 and above the split advisor (#12).
+  The evidence is still vendor material (aictrl's docs, PR Lens, and Graphify's edge labels and "How we know"
+  panel), so it stays under #6 through #10 and above the split advisor (#12).
 - **Test:** on 5 PRs, the footer counts match a hand count of claims, and every diagram step opens a line
   `build --check` can resolve. A step with no line fails the check.
+- **Code Tour diagram (2026-11-16).** Secondhand, from the same demo as #9. A diagram, "How the
+  changes fit together," uses the chapters as nodes. Edges are typed, including "verified by",
+  "state consumed by", and "busy/exit logic coordinates with", and they expand. A chapter chip such
+  as `src/components/WorkspaceDiffSingleView.tsx` lines 28–29 has the tooltip "Open in Diff" and
+  jumps to that line. That is a diagram step that opens the code. The numbered chapters are a peer
+  of the shipped reading order and of grouping. Those table rows are unchanged. Wattenberger's prompt
+  on #14 asks for diagrams from several perspectives. Evidence: `vendor` for the post. The UI lines
+  are secondhand.
 
 ### 12. Split and size advisor — `proposed`, cost S–M, target HR
 - **Idea:** when the concerns show more than one independent cluster, or the estimated reading time is more than one
@@ -441,6 +879,11 @@ reading Matt Pocock's `teach`.*
   [site](https://www.dyff.sh/), which did not load on 2026-11-02). The README does not describe a 34-file PR grouped
   into 4-5 dependency-order stages, so that claim stays unchecked. Not enough to move this item. The symbol-search
   half is noted on #7. Evidence for Dyff: `vendor`.
+  **gavel (2026-11-16).** The same tool as #5 groups a large change by purpose. Each part has its own
+  tab and its own brief. A refactor can come before the behavior that depends on it. That is this
+  advisor's split, ordered by purpose. Stars and the write-up are on #5. Evidence: `vendor`. The
+  "Start here" tour with Next links is the shipped reading order. Per-part Approve and Reject are
+  handed off.
 - **Test:** on 10 past limitless PRs, does the advisor's split match what Matt would split?
 
 ### 13. "Who to ask" for the area — `proposed`, cost S, target HR + #3
@@ -454,6 +897,58 @@ reading Matt Pocock's `teach`.*
 - **Note:** HR's privacy rules already say signals name contributors, so check before sharing (`HR/SKILL.md`
   "Security and privacy").
 - **Test:** for 10 pages, ask Matt whether the named people are the ones he would ask.
+
+## Changes (2026-11-17 sweep)
+
+This section sits between #13 and #14. Open PRs #13, #17, #19, #21, #23, #25, and #27 each add a
+changelog at another `##` boundary: before Hand off, before the draft changelogs, before Rejected,
+and after Rejected. Those hunks include the lines around those headings. The lines around ### 14
+are in none of them. The second `## A. Ranked` below keeps #14–#17 in the ranked list. The draft
+header, the notes list, and the ranked item bodies are unchanged. Notes:
+[`notes/sweep-2026-11-17.md`](notes/sweep-2026-11-17.md).
+
+- #5 Decision log. DeltaDB, from Zed / Delta, is the strongest built version of line-to-conversation
+  provenance so far. A peer of Entire and DiffNotes, already cited.
+  [delta.dev/deltadb](https://delta.dev/deltadb). The page says "The version control system that
+  records every edit with the conversation behind it." Each edit, a person's or an agent's, is a
+  delta with an author and a base version. Messages and comments are deltas in the same history, so
+  "From the code, you can get back to the conversation behind it." Rewind to any message. Teammates
+  can read the conversation and comment before commit. Git stays for commits and pull requests.
+  Built on CRDTs. Evidence: `vendor` + `engagement`.
+  [2026-11-13](https://x.com/zeddotdev/status/2121317002803589376): likes 207, bookmarks 34,
+  reposts 3, impressions 8,636.
+  [2026-11-16](https://x.com/zeddotdev/status/2122445554865070376): likes 338, bookmarks 444,
+  reposts 5, replies 10, impressions 69,940. Bookmarks are above likes. The post links DeltaDB and
+  quotes the comprehension-debt post on #2.
+  [2026-11-14](https://x.com/zeddotdev/status/2121650009158435324): likes 70, bookmarks 26.
+  "Agent archaeology": piecing together why a teammate and their agent wrote code a certain way.
+  Talk by Richard Feldman: [YouTube](https://www.youtube.com/watch?v=Enn9dVrRXAo).
+  Pushback in replies, low engagement:
+  [kalminium](https://x.com/kalminium/status/2122598441977339944) ("It's not about keeping track of
+  what changed", 2 likes) and
+  [atticus_indica](https://x.com/atticus_indica/status/2122659443913699436) (0 likes). Provenance is
+  not comprehension. That is the open question.
+  **Our own idea** for the test: on one accelerate PR authored in a Claude Code session, have HR
+  map each hunk to the transcript turn that produced it and count how many decision entries get a
+  real source instead of "not stated". Cost unchanged. The item body is unchanged.
+- #6 "Ask about this". Per-span thread attribution is the lookup this item needs: a line to the
+  conversation that wrote it. The 2026-11-13 Zed post: "Attribution doesn't stop at the line. Turn
+  on highlights to see which threads and commits wrote each part of it." The item body is unchanged.
+- #2 Measure it. The comprehension-debt post is engagement-only demand for a team-level "how much
+  can we still explain" number.
+  [post](https://x.com/Prayag12B/status/2122350982705119490) (2026-11-16): likes 1,283, bookmarks
+  360, reposts 114, quotes 37, replies 222, impressions 171,444. The claim is that after the agent
+  builds a feature and the PR merges, the developer "only understands 30% of what was actually
+  changed", and that teams should "measure not just how quickly they ship, but how much of their
+  codebase they can still explain". The 30% is the author's illustration, not a measurement.
+  Evidence: `engagement` only. **Our own idea:** roll #1 quiz scores up per area or directory over
+  time. No cost change. The item body is unchanged.
+- Hand-off: Newman, Bird, Butler, Murphy-Hill, "Level Up! AI-Driven Challenges and Adaptations to
+  Code Review Practices" ([arXiv 2611.18939](https://arxiv.org/abs/2611.18939)). 24 interviews,
+  survey n=2,590 at a large company. The bullet is in the hand-off list.
+- Rank: unchanged. Vendor and engagement evidence does not move rows above measured ones.
+
+## A. Ranked
 
 ### 14. Explain the core change from two or three angles — `proposed`, cost S, target HR + #3
 - **Idea:** for the core of a change, give two or three short explanations, each from one angle: what it does,
@@ -471,12 +966,22 @@ reading Matt Pocock's `teach`.*
   Evidence: `practitioner`. One short non-goals line on the background. Not a fourth full explanation, and not a
   new item. The same guide's warning that video cannot be grepped or linked at a sentence is noted on the
   narrated modality below.
+  **Wattenberger (2026-11-16).** Amelia Wattenberger (design, AI, tools for thought; previously R&D at
+  GitHub Next), 2026-11-14.
+  [post](https://x.com/Wattenberger/status/2121640552458281016). X `public_metrics` read 2026-11-16
+  ~13:35 UTC: likes 122, bookmarks 170, reposts 6, replies 9, impressions 9,107. Bookmarks are above
+  likes. The prompt: "walk me through how this works from different perspectives. keep it high level
+  and be liberal with diagrams." Evidence: `practitioner` + `engagement`. The diagrams are #11. A #3
+  lesson can run the same prompt.
 - **Why it helps:** one true paragraph can still miss the angle the reader needed. Two or three angles are a small
   addition to the background block and to a #3 lesson. The non-goals line says what a later reader must not treat
   as an oversight.
 - **Why it sits here:** the effect did not clear a multiple-comparison correction, and the setting is an intro
   programming course. Cheap to try, and below "Who to ask" (#13), which has a clearer mechanism.
 - **Test:** alternate PRs with and without the extra angles and compare quiz score.
+- **Wattenberger prompt, our own idea for the test (2026-11-16).** Run the prompt above verbatim
+  against the current human-review page, on one real accelerate or limitless pull request, and score
+  both with the #1 quiz.
 
 ### 15. Interactive or animated explainer for the algorithmic core — `proposed`, cost M, target HR (gated)
 - **Idea:** for a change whose core is an algorithm or state machine, allow one `interactive` block (a sandboxed
@@ -496,11 +1001,26 @@ reading Matt Pocock's `teach`.*
   ([X](https://x.com/siderakis2/status/2115624999478309109)): 2 likes, 101 impressions, 4 replies. Evidence:
   `vendor` + weak `engagement`. Severity-graded findings from PR Explainer are handed off. The listen-along stays
   on this item because it is another explainer surface, not a separate job.
+  **Sóþspell** (2026-11-12) narrates a whole repo while diagrams build with the story. The reader can
+  pause. Stars, the plugin caveat, and the Show HN point are on #3. Evidence: `vendor`. A peer of this
+  listen-along.
   **DiffGuardian** speaks a walkthrough while the lines highlight. Trace It is the same tour as text you read at
   your own pace ([site](https://diffguardian.ai/)). Ask is #6. The graph is #7. Evidence: `vendor`.
   **PR Lens** animates architecture and data flow inside the pull request, and a step opens the diff
   ([site](https://prlens.dev/)). Stars and posts are on #7. Findings are handed off. Evidence: `vendor`.
   perspica's Learn figure, when the model draws one, is the concept-lesson case of this block. See #1 and #3.
+  **Anatomy (2026-11-11).** A skill that explains an idea by inventing a physical machine whose working
+  is the concept. The README's example is a cache key as a pin-tumbler lock. The quick-start prompt is
+  a token-bucket rate limiter. The figure is an interactive isometric SVG, with WebGL for effects lines
+  cannot draw. Every number comes from the same small model that moves the parts. The skill checks the
+  figure by zooming in on every joint. It runs in Claude Code and in Codex
+  ([README](https://github.com/wheresryan22/anatomy)). GitHub API at 2026-11-11T13:20:30Z: 26648 stars
+  (26647 at 2026-11-11T13:17:42Z the same session), 2245 forks, created 2026-10-08, MIT. The article
+  post ([X](https://x.com/Richix01/status/2119798155608752166)) had 12 likes, 4 bookmarks, and 78429
+  views on api.fxtwitter.com at that 13:20:30Z read. X API `get_posts_by_ids` returned client-forbidden.
+  Evidence: `vendor` + `engagement`. The README says Anatomy invents the object, so the metaphor is
+  not taken from the repository's code and can mislead. A use in HR stays gated, the figure stays tied
+  to the real code, and the quiz (#1) is the guard. Not a new row.
 - **Test:** only on PRs tagged algorithmic. Compare quiz and time with and without the block. The narrated
   modality is a separate pass: on 3 PRs, does the reader still open the page for a line the voice mentioned?
 
@@ -518,12 +1038,32 @@ reading Matt Pocock's `teach`.*
 - **Test:** 10 limitless runs. Does Matt open the page before the diff, and does review latency change?
 
 ### 17. "Since you last looked" interdiff — `proposed`, cost M, target HR
+- **Theseus daily digest (2026-11-13).** The homepage says a daily digest highlights the important
+  themes in the codebase. That digest is not the delta of this page, so the item stays put. The
+  guides page keeps every push's guide and marks what is new or updated since the previous one
+  ([home](https://theseus.dev/), [guides](https://theseus.dev/product/guides)). Evidence: `vendor`.
 - **Idea:** when a page is rebuilt after feedback, show the delta from the last version the reviewer saw (changed
   hunks, and which notes changed) and keep the old comments attached to unchanged lines. Today the new page "starts
   clean" (`HR/SKILL.md` "When feedback comes back").
+  **SWE-Time** ([arXiv 2611.12083](https://arxiv.org/abs/2611.12083), published and updated
+  2026-11-09T09:01:27Z, v1) is a benchmark of agents, not of people. The abstract: 1,661 cases, 65
+  repositories, 15 coding agents, best SWE-Time average 61.9 (Claude Opus 4.8, inside Claude Code).
+  Task Backward traces a reported regression to the first bad commit. Task Forward predicts how a
+  requested change would affect behavior, given the developer's intent and the repository before the
+  change. This item is the delta of the review page since the reader last looked. The paper does not
+  move it. Evidence: `measured-obs` (agents).
 - **Sources:** `our own idea`. A related review-quality idea is the code-review backlog's C3 "re-review only the fix
   diff".
+  **Atlas Review** stores which walkthrough steps the reader marked read, in localStorage, per review.
+  The 2026-11-10 launch post calls that reading progress. The peer is those saved step-read marks on a
+  large review. This item remains the interdiff of hunks and notes since the last page. See #6 for the
+  repo. Evidence: `vendor`.
 - **Test:** count re-read minutes on the second round across 5 feedback loops.
+- **CodeLens cache (2026-11-11).** Parses and descriptions are stored by content hash, so a later
+  review pays for content that changed. The explore page also lists what is new or changed since the
+  last look, from the snapshot's commit id. The per-change risk pass is not cached yet, and a cached
+  "why" can go stale when only callers change. The README is on #7. Evidence: `vendor`. This item
+  stays the interdiff of hunks and notes since the last page.
 
 ---
 
@@ -531,14 +1071,14 @@ reading Matt Pocock's `teach`.*
 
 | Idea | Where | Notes |
 |---|---|---|
-| Diff → one self-contained HTML page; branch, PR, range, **uncommitted** work | `HR/SKILL.md` "Decide the scope"; `HR/scripts/human-review.mjs` | Covers PRs and uncommitted changes. Not whole-repo onboarding (item 3). Peer products that already do this job: Saga (ordered chapters, one HTML file, comments pushed to GitHub; [post](https://jakeberesford.com/blog/saga), 20 stars, created 2026-07-11) and Guided Review (units from the parsed diff; the model does not invent the lines; [docs](https://guidedreview.dev/docs)). Also peers of this page, GitHub API on 2026-11-05: Trail of Bits Review Walkthrough (the HTML steps; findings are handed off; [page](https://trailofbits.com/skills/review-walkthrough/)), [qiushiyan/explain-diff](https://github.com/qiushiyan/explain-diff) (0 stars), [malav2110/explain-diff-html](https://github.com/malav2110/explain-diff-html) (19 stars), f-labs `html-code-review` (the explainer half; [skill](https://github.com/f-labs-io/agent-html-skills/blob/main/plugins/html-skills/skills/html-code-review/SKILL.md); the repo has 68 stars), and [th0rz05/claude-pr-review-html](https://github.com/th0rz05/claude-pr-review-html) (2 stars; the reading-order half). |
+| Diff → one self-contained HTML page; branch, PR, range, **uncommitted** work | `HR/SKILL.md` "Decide the scope"; `HR/scripts/human-review.mjs` | Covers PRs and uncommitted changes. Not whole-repo onboarding (item 3). Peer products that already do this job: Saga (ordered chapters, one HTML file, comments pushed to GitHub; [post](https://jakeberesford.com/blog/saga), 20 stars, created 2026-07-11) and Guided Review (units from the parsed diff; the model does not invent the lines; [docs](https://guidedreview.dev/docs)). Also peers of this page, GitHub API on 2026-11-05: Trail of Bits Review Walkthrough (the HTML steps; findings are handed off; [page](https://trailofbits.com/skills/review-walkthrough/)), [qiushiyan/explain-diff](https://github.com/qiushiyan/explain-diff) (0 stars), [malav2110/explain-diff-html](https://github.com/malav2110/explain-diff-html) (19 stars), f-labs `html-code-review` (the explainer half; [skill](https://github.com/f-labs-io/agent-html-skills/blob/main/plugins/html-skills/skills/html-code-review/SKILL.md); the repo has 68 stars), and [th0rz05/claude-pr-review-html](https://github.com/th0rz05/claude-pr-review-html) (2 stars; the reading-order half). Co-Review's `/co-review:review` opens a change as a pull-request page in the app or a browser tab, not as one HTML file (9 stars, GitHub API 2026-11-11T13:20:30Z; findings and the GitHub post are handed off). |
 | Code on the page comes from git; annotations checked against real lines | `HR/SKILL.md` "Honesty", build `--check` | Same idea as Showboat's exec-pulled snippets. A box with no arrows in a drawn diagram is not evidence that a file is unused. Check a parsed graph (item 7). |
-| Reading order (`focus`, 3–6 stops, riskiest first) | `HR/SKILL.md` "fields that carry the most weight" | Matches the "literate diff" and tour-mode ideas (Litt, Tembo Tour Mode, constellagent code tour). Replicas Review's guided tour (2026-10-21) puts a plain-English explanation above each file's diff, starts with the most important file, and collapses tests, lockfiles, and generated files at the end ([post](https://replicas.dev/blog/replicas-review)). That matches this row and the mechanical tier below. Saga's chapters and Guided Review's units (schema, then logic, call sites, and tests) are the same job. Item 8 walks changed symbols from entry points down the call graph. Trail of Bits and th0rz05 also pick a reading order. See the HTML-page row. |
+| Reading order (`focus`, 3–6 stops, riskiest first) | `HR/SKILL.md` "fields that carry the most weight" | Matches the "literate diff" and tour-mode ideas (Litt, Tembo Tour Mode, constellagent code tour). Replicas Review's guided tour (2026-10-21) puts a plain-English explanation above each file's diff, starts with the most important file, and collapses tests, lockfiles, and generated files at the end ([post](https://replicas.dev/blog/replicas-review)). That matches this row and the mechanical tier below. Saga's chapters and Guided Review's units (schema, then logic, call sites, and tests) are the same job. Item 8 walks changed symbols from entry points down the call graph. Trail of Bits and th0rz05 also pick a reading order. See the HTML-page row. Origin Code Tours walk a pull request in review order, group related changes, and explain each group next to the code, on the Changes tab ([docs](https://cursor.com/docs/origin/code-tours), read 2026-11-06). |
 | Group by concern, tests next to their code, callees first | `HR/SKILL.md` `concerns` | Earlier report #1. |
 | Written for a newcomer: `background` ("Before this change"), `terms` with hover underlines, readability warnings | `HR/SKILL.md` "Write for someone new to this code"; `HR/references/format.md` | Like Litt's "Background" and codebase-to-course's glossary tooltips. |
 | Annotated diffs (note / decision / risk / question), 2–5 per file | `HR/SKILL.md` "Annotations" | |
 | Visuals: wireframes, data model, API, states matrix, Mermaid, diagrams, `code` of any file at head | `HR/references/{format,wireframes,diagrams}.md` | Like CodeRabbit sequence diagrams and lucidiff's flow diagram. |
-| Findings held back until the reviewer's own pass | `HR/SKILL.md` "The reviewer reads before they see your conclusions" | Earlier report #3. The same order as aictrl's teach-the-change, then reviewer notes. Item 11 adds the claims footer and diagram steps. It does not redo this row. |
+| Findings held back until the reviewer's own pass | `HR/SKILL.md` "The reviewer reads before they see your conclusions" | Earlier report #3. The same order as aictrl's teach-the-change, then reviewer notes. Item 11 adds the claims footer and diagram steps. It does not redo this row. White et al. (2026-11-10, on #2) name Displacement: roughly a quarter let the explanation stand in for reading the code ("I then almost exclusively read the LLM output instead of the code"). That is the failure this row holds findings back to prevent. |
 | Proven mechanical / generated tier | `HR/SKILL.md` `files` | Earlier report #2. Item 8 collapses same-file moves, renames, and generated or vendored noise, which path tags miss. |
 | Git signals with provenance tags (verified / author text / inference) | `HR/SKILL.md` "Signals" | Earlier report #4. |
 | Text blast radius (JS/TS/Py/Go/Ruby) | `HR/SKILL.md` "Blast radius" | Item 7 upgrades it. |
@@ -546,8 +1086,57 @@ reading Matt Pocock's `teach`.*
 | Precision check on every claim | `HR/SKILL.md` "Precision check" | Earlier report #7. Item 11 adds a visible count of claims that could not be tied to code. |
 | Comment, verdict, and **Copy feedback for the agent** loop | `HR/README.md`; `HR/assets/app.js` | Like hunk-review-changes / constellagent "submit to agent". |
 
+## Changes (2026-11-16 sweep)
+
+The draft header, the notes list under it, and the shipped table rows are unchanged. Open PRs #13,
+#17, #19, #21, #23, and #25 edit those. This section sits between the shipped table and the hand-off
+list. The other sweep changelogs sit with the draft history, lower in this file. Headings #1 through
+#17 stay numbered as they are. Notes:
+[`notes/sweep-2026-11-16.md`](notes/sweep-2026-11-16.md).
+
+- #9: GitHub Copilot Code Tour, in testing, from Lichin Lin (Design Engineer at GitHub), 2026-11-13.
+  [post](https://x.com/lichinlin/status/2121233913406214200). X `public_metrics` read 2026-11-16
+  ~13:35 UTC: likes 351, bookmarks 103, reposts 19, quotes 13, replies 28, impressions 18,223.
+  Evidence: `vendor` + `engagement`. The strongest vendor evidence on this item so far. The demo's
+  tone pad is secondhand. **Our own idea:** widen the two fixed depths to that two-axis re-render,
+  still cost S. Echo, one social post, no official GitHub announcement:
+  [vqv.me](https://vqv.me/s/qp7zi/).
+- #11: the same demo's diagram. Nodes are the chapters. Edges are typed. A file:line chip opens the
+  Diff tab. Wattenberger's prompt, on #14, asks for diagrams. The numbered chapters are a peer of the
+  shipped reading order and of grouping. Those rows were left unchanged.
+- #2: the demo's Diff tab shows "0/13 snippets". A peer of read-tracking. Secondhand. A count of
+  snippets, not a timestamp.
+- #14 and #3: Amelia Wattenberger, 2026-11-14.
+  [post](https://x.com/Wattenberger/status/2121640552458281016). likes 122, bookmarks 170, reposts 6,
+  replies 9, impressions 9,107. Bookmarks are above likes. Evidence: `practitioner` + `engagement`.
+  **Our own idea** for the test: run that prompt verbatim against the current human-review page on
+  one accelerate or limitless pull request, and score both with the #1 quiz.
+- #7: Rasoi, Sahni et al., Columbia, including Lydia B. Chilton.
+  [arXiv 2611.16293](https://arxiv.org/abs/2611.16293). The abs page says submitted 12 Nov 2026 (v1,
+  2026-11-12T04:47:39Z). Qualitative field study, 12 developers, one week, their own codebases. No
+  comprehension quiz in the abstract. Evidence: `measured-obs`. The structural map stays on #7.
+- #17: Rasoi maps the architecture after each agent edit. That is a per-edit delta, beside this
+  item's delta of the review page. The item body is unchanged. Open PRs #19, #21, #23, and #25 each
+  insert on a line of that item. The study does not move it.
+- #5 and #12: [gavel](https://github.com/photostructure/gavel), PhotoStructure, MIT, created
+  2026-11-07, 4 stars and 0 forks (GitHub API 2026-11-16, matching the brief).
+  [write-up](https://photostructure.com/coding/gavel/). The narrative's alternatives and why this
+  approach are #5. Purpose-ordered parts, each with a tab and a brief, are #12. Per-part Approve and
+  Reject, and the change-request loop, are in the hand-off list.
+- Shipped HTML page: [krishhgg/pr-walkthrough](https://github.com/krishhgg/pr-walkthrough). GitHub API
+  this session: 1 star, 0 forks, MIT. The brief said 0 stars. The backlog uses 1. One-line peer. The
+  table row is unchanged. Open PR #21 edits it.
+- Rank: unchanged. Measured evidence stays above vendor and practitioner evidence, so #9 stays below
+  #1, #2, #4, #6, and #7. Rasoi is field evidence on #7. Code Tour is vendor. The rise the rules
+  still allow is one place, above #8, which is cost M and a thin vendor source. The file leaves #9
+  where it is. Moving that section would cut text open PRs #19 and #21 insert into. TARS, already on
+  #9, was null on correctness. Nothing else moves. No new row. The tone pad widens #9 and stays cost S.
+
 ## Hand off to Code Review Research Bot (review quality and bug finding, out of scope here)
 
+- **Co-Review findings, verdict, and GitHub post (2026-11-11).** Proposed findings, a submit verdict, and an optional post of that review to GitHub. The audit guide, the check question, and coverage stay on #3, #1, and #2. [workflows](https://sdsvn.github.io/co-review/docs/guides/workflows/).
+- **Greptile merge status and bulk approve (2026-11-11).** CI, conflicts, required approvals, and the Greptile review, plus sending an issue to a coding agent and approving or merging several pull requests together. The Tour tab and the ask stay on the understanding side. [post](https://www.greptile.com/blog/code-review-is-evolving).
+- **CodeLens review actions (2026-11-11).** Comment, approve, or request changes through `gh`, and `codelens review --fail-on high`. The callers, the reach list, and the cache stay on #7, #8, and #17. [README](https://github.com/blong8334/codeLens).
 - **Macroscope Check Run Agents**: custom agents on every PR as GitHub check runs
   ([X @svpino](https://x.com/svpino/status/2050262803475472687): 47 likes, 39 bookmarks;
   [X @ai_for_success](https://x.com/ai_for_success/status/2050261619939361210): 22 likes).
@@ -556,11 +1145,21 @@ reading Matt Pocock's `teach`.*
 - **OpenAI's Codex plugin for Claude Code**: `/codex:review` and `/codex:adversarial-review` of uncommitted changes
   ([X](https://x.com/rezaul_arif/status/2043509181320413621), 1 like; not checked against OpenAI's docs).
 - **OpenQodex**: OSS review CLI for unpushed and uncommitted changes ([X](https://x.com/DanKornas/status/2110154613680902197): 39 likes).
+- **gavel, per-part verdicts (2026-11-16).** Approve lets the agent commit once comments are addressed
+  and the required checks pass. Reject stops the agent. A change request on a line sends the agent
+  back, and the reply stays in that thread. Each part keeps its own verdict. Review workflow. The
+  brief and the split stay on #5 and #12.
+  [write-up](https://photostructure.com/coding/gavel/).
+  [repo](https://github.com/photostructure/gavel) (4 stars, 0 forks, GitHub API 2026-11-16).
 - **Claude Code team review process**: incident-causing PRs used as a daily eval set; PRs merged more than doubled while
   the revert share fell by more than 40% (June–September). Article posted on @addyosmani's account
   ([X](https://x.com/addyosmani/status/2114604912520921136)).
 - **Steinberger claim** (second-hand): auto-review in a separate session after the PR loses judgment
   ([X](https://x.com/4to1planner/status/2075105831230800376)). Unverified paraphrase of an interview.
+- **LiveReview** (Hexmos, page dated 2026-11-07): a risk score, then automatic approval of a low-risk
+  share of pull requests. The subtitle says 40–50%. The body says the lowest-risk 30–50%. Those figures
+  are the page's. The same page describes summary decks and a short quiz on the diff. Both stay in this
+  list. [post](https://journal.hexmos.com/introducing-livereview/).
 - **lucidiff "Risks"**: severity plus failure mechanism, citations checked against the diff
   ([repo](https://github.com/Rishabjs03/pr-karpathy)).
 - **Tembo automated review** that runs tests and builds before posting ([Tembo](https://www.tembo.io/blog/tembo-vs-boat));
@@ -579,6 +1178,12 @@ reading Matt Pocock's `teach`.*
   read through a reader fetch the same day.
 - **PR Explainer's severity findings** (critical, warning, good practice) shown in the editor
   ([site](https://prexplainer.com/)). The narrated tour stays on #15.
+- **Level Up! AI-Driven Challenges and Adaptations to Code Review Practices** (Newman, Bird, Butler,
+  Murphy-Hill). 24 interviews and a survey (n=2,590) at a large company. The reviewer role shifts
+  to design and intent. AI-assisted authoring raises reviewer burden through a lack of author
+  stewardship and PR size. Review quality, for the code-review backlog. Not a way for a person to
+  understand a change
+  ([arXiv 2611.18939](https://arxiv.org/abs/2611.18939)).
 - **CodeRabbit, code explainability for AI-generated PRs** (Brandon Gubitosa, 2026-08-13): check intent against the
   diff, read a walkthrough, trace blast radius, then read adversarially. The guide cites a 470-PR report for higher
   issue rates in AI-authored pull requests (10.83 issues per PR versus 6.45, readability more than 3×, logic and
@@ -595,20 +1200,79 @@ reading Matt Pocock's `teach`.*
   The explainer half is a shipped peer.
 - **th0rz05 pr-review-html.** Severity-rated findings the README says are tagged confirmed or plausible
   ([repo](https://github.com/th0rz05/claude-pr-review-html)). The reading-order report is a shipped peer.
+- **ai-pr-review, review tips and the GitHub verdict** (2026-11-12). Tips are checked in a worktree and
+  marked verified, concern, or blocked. The viewer can approve, request changes, or comment. The
+  walkthrough was not added to #8. [repo](https://github.com/houshuang/ai-pr-review). GitHub API at
+  2026-11-12T13:32:13Z: 9 stars, 4 forks, created 2026-03-12. The API returned no license.
 - **GitWarren / prx.** Named on a tooling list. Not reviewed as products here
   ([X](https://x.com/vibeleaderboard/status/2117626768110596353): 1 like, 26 impressions, X API 2026-11-05).
 - **Clipboard, evidence before the diff.** The post says an agent runs the change on a preview build and posts an
   evidence bundle (scenarios, what happened, screenshots, and what it could not cover) before a person opens the
   diff ([X](https://x.com/ClipboardEng/status/2117624478213537983): 1 like, 116 impressions, X API 2026-11-05).
   Those results are the post's. They were not re-measured here.
+- **Atlas Review, findings and verdict** (Loomtide, launch post 2026-11-10). Structured findings with file
+  paths, severity, and suggested fixes. The app labels open high-severity findings as blocking approval.
+  The marketing page says Atlas does not configure GitHub required checks or branch protection, and that
+  the team decides when to merge. `reviewVerifier.js` describes two-pass verification for high and medium
+  recommendations. An unsupported finding can be hidden or demoted. No measured false-positive rate was
+  read. The walkthrough, the hunk question, the policy file, and the step-read marks stay on the
+  understanding items. [site](https://loomtide.ai/atlasreview),
+  [repo](https://github.com/Loomtide/atlas-review) (0 stars, GitHub API 2026-11-10T13:24:25Z).
+  [X](https://x.com/avinashpdy/status/2119996488168231062): 3 likes, 0 bookmarks, 4 replies, 170 views,
+  fxtwitter at that same clock read. X API `get_posts_by_id` returned `client-not-enrolled`.
 - **IronBee Code Review**: same launch post as Code Wiki. The post's note_tweet claims 67.4 F2 and 75.3 Recall
   on the Martian Code Review Benchmark ([X](https://x.com/serkan_ozal/status/2117633673461674225)).
+- **Repowise v0.60 PR bot.** A reply on a review thread becomes a decision that later reviews apply, and the
+  review names the decision it applied
+  ([changelog](https://repowise.dev/changelog/v0-60-0), read 2026-11-06). The parsed-versus-drawn diagram rule
+  stays on #7.
 
 ## Merged
 
 - **Old #3 slice explainer, old #10 repo onboarding course, old #14 learner profile → #3 `teach-code`** (2026-11-01).
   They are the same skill at three sizes: one lesson, a course, and the state that connects them. `teach` shows the
   state layer is what makes a multi-session course work (mission, learning records, zone of proximal development).
+
+## Changes (2026-11-10 sweep)
+
+The ranked list is still 17 items, in the same order. No row was added, shipped, or rejected. Notes:
+[`notes/sweep-2026-11-10.md`](notes/sweep-2026-11-10.md). The draft header on this branch is unchanged,
+so it can merge with open PR #13, which rewrites that header. This section sits before the draft 2
+changelog. Appending after Rejected shares an insertion point with open PR #17, and inserting before
+Rejected shares one with #13. Trial merges of both branches, and of the two together, applied cleanly
+and were not kept. The note has the commands.
+
+- #2: White et al., arXiv 2611.12019, published 2026-11-09T07:56:58Z. Within-subjects, N=20 (22 completed,
+  2 excluded). tDRT +11.2% with AI (chi-square 17.37, p<.001); quiz phase +6.9% in the results section
+  (p=0.007; the introduction and the discussion print 6.93%). NASA-TLX p=0.180, SEQ p=0.161. Quiz 3.22
+  vs 3.23 of 4 (p=.982), ceiling. Evidence is a within-subjects measurement on a small student sample,
+  not `measured-RCT`. Self-reported ease and time-to-approve stay off the comprehension signal. The quiz
+  and the extend task stay the guard.
+- #1: the same paper's four-question quiz, after the reader's pass, with the AI closed. Ask harder
+  mental-execution questions than a ceiling at about half perfect. `socratic-tutor`: a narrower question
+  on a wrong answer, and unprompted recall before a level rises.
+- Shipped hold-back: the paper's Displacement theme. Roughly a quarter, the paper's own phrase, read the
+  explanation instead of the code. One quoted line is in the note.
+- #3: Jane Street `socratic-tutor`. Diagnostic of 3–5 questions, a 0–5 map rendered after each change,
+  earned levels, spaced review that can drop a level, then a final assessment. GitHub API at
+  2026-11-10T13:24:25Z: 3140 stars. Compared with `teach`, already cited on this item: `teach` does not
+  place the learner with that diagnostic or render this map. The skill is a generic tutor. X is a promo
+  post by @0xRicker (fxtwitter views 3737 at the same clock read; the brief said 3732). Evidence:
+  `practitioner` + `engagement`.
+- #9: the 0–5 map is the level check, with earned levels. The paper does not vary explanation depth, so
+  it is not cited on #9. #13 ("Who to ask") is unchanged: the skill never names a person.
+- Shipped reading order: Atlas Review's step-by-step walkthrough, explanation beside the diff, for a
+  local branch and for a pull request. [repo](https://github.com/Loomtide/atlas-review), 0 stars at
+  2026-11-10T13:24:25Z, MIT, macOS and Windows. The README says Linux packages are not published. The
+  launch post is 2026-11-10. `docs.atlasengine.dev` did not resolve (NXDOMAIN), so it is not cited.
+- #6: Ask Atlas from a finding or a selected diff hunk. #10: versioned `.atlas/review-policy.json`.
+  #17: walkthrough steps marked read, kept in the browser. The review target that was verified is a
+  local branch's commits before push. A test in the repo says an uncommitted edit does not move the
+  branch review's head SHA.
+- Hand-off: Atlas findings, severity, the in-app "blocks approval" label, and two-pass verification.
+  The marketing page says Atlas does not set GitHub branch protection.
+- Ranking is unchanged. The paper tightens #1 and #2. 3140 stars and a promo post do not move #3 above
+  them. Atlas is a peer of a shipped row, at 0 stars and 3 likes, so it does not enter the ranked list.
 
 ## Changes in draft 2 (2026-11-01)
 
@@ -618,6 +1282,47 @@ reading Matt Pocock's `teach`.*
 - #8 two-depth background: added the level check (`teach`'s most reported gap).
 - New #10 "Who to ask" (from `teach`'s "wisdom → community" idea).
 - Old #11–#13 keep their content as #11–#13. Old #10 and #14 removed (merged).
+
+## Changes (2026-11-13 sweep)
+
+The draft header stays draft 5. Headings #1 through #17 are unchanged, so open PRs #13, #17, #19,
+#21, and #23 still cite them. PR #23 adds heading #18 on its own branch. This branch does not.
+The 2026-11-13 changelog sits between the draft 2 and draft 3 sections. PR #23's changelog sits
+between draft 3 and draft 4. A separate line above the ranked list links
+[`notes/sweep-2026-11-13.md`](notes/sweep-2026-11-13.md). It is not under the notes list. PR #13
+rewrites that list, and PR #23 already inserts its link there. The shipped-table rows are
+unchanged. PR #13 edits the reading-order row, PR #21 edits the HTML-page row, and PR #19 edits
+the visuals row. Rank is unchanged. Every finding folds into an item that is already ranked.
+Notes: [`notes/sweep-2026-11-13.md`](notes/sweep-2026-11-13.md).
+
+- #5: Theseus, a paid GitHub guide beside the diff. Starter is $99 a month for 100 guides
+  ([pricing](https://theseus.dev/pricing)). Hooks in Claude Code, Codex, and OpenCode, plus Linear
+  and Jira, feed a Motivation that includes alternatives considered. Evidence: `vendor`. No launch
+  date on the homepage, the guides page, the pricing page, or the quickstart, read 2026-11-13.
+  The change list is a peer of the shipped grouping and reading-order rows. Not a new row.
+- #11: Theseus puts an explicit Unknown in the change list. The homepage demo is "6 changes · 1
+  unknown", including "Unknown: does the production Worker have the new secret bound?"
+  ([home](https://theseus.dev/)).
+- #11, #1, and #4: "Does Confusing Code Confuse LLMs? A Pilot Study on C++"
+  ([arXiv 2611.15575](https://arxiv.org/abs/2611.15575), published 2026-11-11T14:59:11Z).
+  Explanation accuracy stayed about 100% across nearly all atoms. Output prediction fell on some
+  atoms. Evidence: `measured-obs` (pilot, small). **Our own idea:** a fluent explanation is weak
+  evidence the model traced the code. The quiz and the worked example should each include an
+  output check. A confident explanation is not a grounded claim. One line on each item. Rank
+  stays put.
+- #6, #7, and #8: crisperity/code-walkthrough, a Claude Code plugin and a shipped peer of the HTML
+  page. Ask in place can edit the page locally (#6). The call graph names a function called from
+  everywhere versus a leaf (#7). Inside a theme, callers come before callees (#8). GitHub API at
+  2026-11-13T13:21:22Z: 5 stars, 0 forks, created 2026-09-15, last push 2026-11-09, MIT.
+  Evidence: `practitioner`, low popularity.
+  [repo](https://github.com/crisperity/code-walkthrough).
+- #17: Theseus's daily digest of codebase themes. It does not move the item. The guides page also
+  keeps each push's guide and marks what changed.
+- Cline v3.39 Explain Changes, published 2025-12-02, is an old shipped peer. Inline comments on a
+  multi-file diff, including why, from the task conversation. `/explain-changes` covers any git
+  diff. It was not in `notes/` on main. Not a new row
+  ([post](https://cline.bot/blog/cline-v3-39-explain-changes)).
+- Hand-off: nothing new for review quality. PR Explainer's findings half is already handed off.
 
 ## Changes in draft 3 (2026-11-02)
 
@@ -638,6 +1343,33 @@ reading Matt Pocock's `teach`.*
 - "Who to ask" is now #11. The old #9–#13 are now #10–#11 and #13–#15.
 - Shipped reading-order notes: Replicas Review guided tour.
 - Hand-off: the XAI trust study ([arXiv 2607.24601](https://arxiv.org/abs/2607.24601)).
+
+## Changes (2026-11-12 sweep)
+
+The draft header stays draft 5. Open PR #13 rewrites that line, and the notes-list line under it,
+for the 2026-11-06 sweep. A separate line under the header links
+[`notes/sweep-2026-11-12.md`](notes/sweep-2026-11-12.md). Headings #1 through #17 are
+unchanged, so open PRs #13, #17, #19, and #21 still cite them. Trial merges of those
+four branches into this one were clean, and a throwaway merge of all four in date order
+was clean. Those merges were aborted. Nothing from them is in this branch. Notes:
+[`notes/sweep-2026-11-12.md`](notes/sweep-2026-11-12.md).
+
+- New #18 "Intent map and unexplained files", from dmoka/skills `pr-tour`. Cost S, target HR,
+  `proposed`. Evidence `practitioner` + `vendor` (the repo has 21 stars and 2 forks, GitHub API
+  2026-11-12T13:32:13Z). Rank 7 by gain per effort: after Ask (#6), before blast radius (#7). It does
+  not jump #1 through #6. The section is placed there and numbered 18 so the later headings stay put.
+  Human-review already reads the description, groups files, orders the reading, tiers noise, and asks
+  the reviewer questions. It does not quote the author verbatim or list the changed files those quotes
+  leave out.
+- #18 also cites MergeAtlas's intent frames. The cause-to-effect arrows into unchanged files are #7.
+  GitHub API at the same clock read: 7 stars, 0 forks. Show HN 2026-11-09T18:51:12Z, 4 points, no
+  comments.
+- #3 and #15: Sóþspell, a narrated repo walkthrough. 4 stars, 1 fork, at the same clock read. Show HN
+  1 point. Not a new row.
+- #17: SWE-Time, arXiv 2611.12083, published 2026-11-09T09:01:27Z. An agent benchmark (1,661 cases, 65
+  repos, best average 61.9). It does not move the item.
+- Hand-off: ai-pr-review's review tips and GitHub verdict. The walkthrough was checked against #8 and
+  not added there. 9 stars, 4 forks, created 2026-03-12.
 
 ## Changes in draft 4 (2026-11-03)
 
@@ -663,6 +1395,50 @@ reading Matt Pocock's `teach`.*
   "unused."
 - Hand-off: Qodo's Codex plugin, PR Explainer's severity findings, and CodeRabbit's explainability guide.
 
+## Changes (2026-11-11 sweep)
+
+The ranked list is still 17 items, in the same order. No row was added, shipped, or rejected. Notes:
+[`notes/sweep-2026-11-11.md`](notes/sweep-2026-11-11.md). The draft header on this branch is unchanged.
+This section sits between the draft 4 and draft 5 changelogs. Open PR #13 inserts before Rejected,
+open PR #17 appends after Rejected, and open PR #19 inserts before the draft 2 changelog. Trial
+merges of each branch, and of the three together, applied cleanly and were not kept. The note has
+the commands.
+
+- #3: Co-Review `/co-review:audit`, a four-chapter whole-repo guide. GitHub API at
+  2026-11-11T13:20:30Z: 9 stars, 1 fork, MIT, created 2026-09-25. fxtwitter at that read: 7 likes,
+  0 bookmarks, 15 replies, 139 views. X API `get_posts_by_ids` returned client-forbidden. Evidence:
+  `vendor`, plus tiny `engagement`. The stated goal is that afterwards, without the agent, you can
+  say where things live, use the vocabulary, trace the main flows, and place a change and predict
+  what it affects.
+- #1: one check question at the end of each chapter, answered as a comment. The multiple-choice
+  block stays. #2: files marked viewed per area, and each area's next unviewed file, as a reading
+  signal beside the quiz. #11: a claim that is not tied to code is tagged inferred or unknown.
+- Shipped HTML page: `/co-review:review` opens a change as a pull-request page in the app or a
+  browser tab. It is not one self-contained HTML file. Findings, the verdict, and the GitHub post
+  are handed off.
+- Shipped reading order: Greptile's Tour tab (Daksh Gupta, 2026-11-09) groups related edits,
+  explains each with the surrounding code, then the reader opens the full diff. #6: select code or
+  a finding and ask. The reading-order table cell is unchanged, because open PR #13 edits that
+  cell. Evidence: `vendor`. Merge status and bulk approve are handed off.
+- #15: Anatomy. An invented machine whose working is the concept. GitHub API at
+  2026-11-11T13:20:30Z: 26648 stars, 2245 forks (26647 stars at 2026-11-11T13:17:42Z). fxtwitter
+  views 78429, likes 12, bookmarks 4. The brief said 26647 stars, 2244 forks, and 78421
+  impressions. The backlog uses the later read. The metaphor is invented, so a use in HR stays
+  gated and the quiz is the guard. Not a new row. Evidence: `vendor` + `engagement`.
+- #7, #8, and #17: CodeLens. Callers outside the change, routes and jobs that reach it, and a
+  content-keyed cache. GitHub API at 2026-11-11T13:20:30Z: 1 star, Apache-2.0, created 2026-11-03.
+  npm `@blong8334/codelens` 0.1.2, published 2026-11-11T12:47:26Z. Evidence: `vendor`, about zero
+  engagement. The risk pass is not cached yet.
+- #9 and #11: SAFE, arXiv 2611.13041, published 2026-11-09T11:40:08Z. Within-subjects crossover,
+  N=24, security findings. SUS 77.3 to 85.0 (p=.011). Trust +0.04. Triage 0.46 against 0.53
+  (p=.59) and time 5.1 against 4.7 minutes (p=.21) are the paper's indistinguishable results.
+  Remediation odds 2.6 (95 percent CI 0.93 to 7.09, p=.069). The abstract's "2.6 times" sentence
+  is in the note. Not tagged `measured-RCT`. The two builds differ together, so the gain is the
+  bundle.
+- Ranking is unchanged. 26648 stars do not move #15 above the quiz. A usability gain on security
+  findings, with a remediation test that does not clear .05, does not move #9 or #11. Co-Review,
+  Greptile, and CodeLens fold into items and shipped rows that already exist.
+
 ## Changes in draft 5 (2026-11-05)
 
 - New #8 "Semantic lines to read, call-graph order, and test reach", from perspica. Cost M, target HR, proposed.
@@ -687,6 +1463,30 @@ reading Matt Pocock's `teach`.*
   (structural blast radius). IronBee Code Review is handed off. stack-diagram is rejected. Ranking is unchanged.
   Notes: [`notes/2026-11-04-daily-sweep.md`](notes/2026-11-04-daily-sweep.md).
 
+## Changes in draft 6 (2026-11-06)
+
+- Graphify is a source on #7, #11, and #3. GitHub API at 2026-11-06T13:57:28Z, confirmed by a read at
+  2026-11-06T13:55:10Z: `stargazers_count` 143301, `forks_count` 13705, Apache-2.0, `default_branch` `v8`,
+  created 2026-04-03. The sweep brief said 143299 stars. The backlog uses 143301. `EXTRACTED` versus
+  `INFERRED` is the trust split, next to OPVS and the repowise parsed-versus-drawn rule. The hosted wiki's
+  "How we know" panel is the #11 cite. The 14 October 2026 wiki post is the #3 cite. No engagement was
+  fetched for that post. X counts in those items are the brief's `public_metrics` for 2026-11-06. This
+  session's `get_posts_by_ids` returned `client-not-enrolled` and did not re-read them. Ranking is unchanged.
+  The star count does not move #7 above the quiz or the measurement items.
+- Voxyz "words versus names" is a source on #3 and a cross-reference on #7. Brief counts: parent post 131
+  likes, 215 bookmarks, 9620 impressions, 9 replies, 9 reposts; follow-up 12 likes, 32 bookmarks, 1248
+  impressions. A prompt recipe. The ranked list does not gain a row.
+- #1: one practitioner line for Addy Osmani's cognitive-surrender essay (5 May 2026). The named X thread
+  was not opened.
+- Shipped reading order: Origin Code Tours, from the docs page read on 2026-11-06. The HTML-page peer list
+  is unchanged. The tour is on Origin's Changes tab.
+- Hand-off: Repowise v0.60's PR bot, which learns from review replies. Qodo's Codex plugin and PR Lens
+  findings were already in the hand-off list.
+- Left off the backlog: Pyrovue (import map and guided tour, Floorplan's family, brief engagement 5
+  impressions). Repowise v0.60's C4 map and wiki. Graphify Cloud's marketing claims. No second copy of
+  codebase-memory-mcp, Floorplan, IronBee, PR Lens, DiffNotes, perspica, or Qodo.
+- Notes: [`notes/sweep-2026-11-06.md`](notes/sweep-2026-11-06.md).
+
 ## Rejected
 
 - **mind-expander** ([repo](https://github.com/mbbill/mind-expander), 103 stars per the GitHub API on 2026-11-05).
@@ -699,5 +1499,35 @@ reading Matt Pocock's `teach`.*
   [X](https://x.com/arsene_btc/status/2117723494762844600). Rejected because it draws a logo-rich stack diagram
   from a one-sentence description, not from reading the repo. README candy, not code understanding of existing
   structure.
+
+## Changes (2026-11-09 sweep)
+
+The ranked list is still 17 items, in the same order. No row was added, shipped, or rejected. Notes:
+[`notes/sweep-2026-11-09.md`](notes/sweep-2026-11-09.md). The draft header on this branch is unchanged,
+so it can merge with open PR #13, which rewrites that header for the 2026-11-06 sweep.
+
+- #1: the 2026-11-03 Osmani article (form an expected answer before asking; a perfect-score quiz before
+  merge) and Learn with Claude (a quiz peer, 0 stars, posts at 0 likes). The article's mirror counts are
+  the largest X-post like count and view count in this backlog. The rank stays with the measured quiz
+  results. X API `get_posts_by_ids` returned `client-not-enrolled`. The counts are api.fxtwitter.com at
+  2026-11-09T13:25:34Z for the article, and the same day's mirror read for the other posts.
+- #3: the same article's slice-on-demand line. LACY (five learners, guided-tour quiz 83%, AI-only 57%,
+  `measured-RCT`, small) and CodeMap (user study of time and ratings, no comprehension quiz in the
+  sections read). Cognitive Tours is the human-written waypoint tour. Its evidence is the author's own
+  six-month use.
+- #5: the author writes the why. Rank the diff's decisions, flag an ADR or the rules file, ask in the
+  author's words. That capture is `our own idea`, from Cognitive Tours' `suggest-waypoint`. Tracybot's
+  Tasklet (up to five planning prompts plus the build prompt) is the unit for an agent-written line.
+  GitHub API, call started at the 2026-11-09T13:23:42Z clock read: 10 stars. The Tracybot study is
+  usability (focus group of 7, survey of 24 on screenshots).
+- #6: the same Tasklet is what Ask returns for an agent-written line.
+- #8: one caution from arXiv 2609.24616. Structured reveal changed fixations. Comprehension scores for
+  static, structured, and character reveal sat together (Table 4, N=44). The item stays here.
+- Hand-off: LiveReview's risk-scored auto-approve. The page states both 40–50% and 30–50%. Its quiz
+  stays in the hand-off list.
+- Considered as a new row, and folded into #5 and #3: "author explains it." One author's use, and the
+  job is a rule on the decision log plus a lesson stop. A new number would shift the items PR #13 cites.
+- Left off the ranked list: Kiln's codebase-onboard line (0 likes, 25 views on the same mirror read).
+  Already covered by the onboarding skills on #3.
 
 
