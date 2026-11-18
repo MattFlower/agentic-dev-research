@@ -898,6 +898,58 @@ reading Matt Pocock's `teach`.*
   "Security and privacy").
 - **Test:** for 10 pages, ask Matt whether the named people are the ones he would ask.
 
+## Changes (2026-11-17 sweep)
+
+This section sits between #13 and #14. Open PRs #13, #17, #19, #21, #23, #25, and #27 each add a
+changelog at another `##` boundary: before Hand off, before the draft changelogs, before Rejected,
+and after Rejected. Those hunks include the lines around those headings. The lines around ### 14
+are in none of them. The second `## A. Ranked` below keeps #14–#17 in the ranked list. The draft
+header, the notes list, and the ranked item bodies are unchanged. Notes:
+[`notes/sweep-2026-11-17.md`](notes/sweep-2026-11-17.md).
+
+- #5 Decision log. DeltaDB, from Zed / Delta, is the strongest built version of line-to-conversation
+  provenance so far. A peer of Entire and DiffNotes, already cited.
+  [delta.dev/deltadb](https://delta.dev/deltadb). The page says "The version control system that
+  records every edit with the conversation behind it." Each edit, a person's or an agent's, is a
+  delta with an author and a base version. Messages and comments are deltas in the same history, so
+  "From the code, you can get back to the conversation behind it." Rewind to any message. Teammates
+  can read the conversation and comment before commit. Git stays for commits and pull requests.
+  Built on CRDTs. Evidence: `vendor` + `engagement`.
+  [2026-11-13](https://x.com/zeddotdev/status/2121317002803589376): likes 207, bookmarks 34,
+  reposts 3, impressions 8,636.
+  [2026-11-16](https://x.com/zeddotdev/status/2122445554865070376): likes 338, bookmarks 444,
+  reposts 5, replies 10, impressions 69,940. Bookmarks are above likes. The post links DeltaDB and
+  quotes the comprehension-debt post on #2.
+  [2026-11-14](https://x.com/zeddotdev/status/2121650009158435324): likes 70, bookmarks 26.
+  "Agent archaeology": piecing together why a teammate and their agent wrote code a certain way.
+  Talk by Richard Feldman: [YouTube](https://www.youtube.com/watch?v=Enn9dVrRXAo).
+  Pushback in replies, low engagement:
+  [kalminium](https://x.com/kalminium/status/2122598441977339944) ("It's not about keeping track of
+  what changed", 2 likes) and
+  [atticus_indica](https://x.com/atticus_indica/status/2122659443913699436) (0 likes). Provenance is
+  not comprehension. That is the open question.
+  **Our own idea** for the test: on one accelerate PR authored in a Claude Code session, have HR
+  map each hunk to the transcript turn that produced it and count how many decision entries get a
+  real source instead of "not stated". Cost unchanged. The item body is unchanged.
+- #6 "Ask about this". Per-span thread attribution is the lookup this item needs: a line to the
+  conversation that wrote it. The 2026-11-13 Zed post: "Attribution doesn't stop at the line. Turn
+  on highlights to see which threads and commits wrote each part of it." The item body is unchanged.
+- #2 Measure it. The comprehension-debt post is engagement-only demand for a team-level "how much
+  can we still explain" number.
+  [post](https://x.com/Prayag12B/status/2122350982705119490) (2026-11-16): likes 1,283, bookmarks
+  360, reposts 114, quotes 37, replies 222, impressions 171,444. The claim is that after the agent
+  builds a feature and the PR merges, the developer "only understands 30% of what was actually
+  changed", and that teams should "measure not just how quickly they ship, but how much of their
+  codebase they can still explain". The 30% is the author's illustration, not a measurement.
+  Evidence: `engagement` only. **Our own idea:** roll #1 quiz scores up per area or directory over
+  time. No cost change. The item body is unchanged.
+- Hand-off: Newman, Bird, Butler, Murphy-Hill, "Level Up! AI-Driven Challenges and Adaptations to
+  Code Review Practices" ([arXiv 2611.18939](https://arxiv.org/abs/2611.18939)). 24 interviews,
+  survey n=2,590 at a large company. The bullet is in the hand-off list.
+- Rank: unchanged. Vendor and engagement evidence does not move rows above measured ones.
+
+## A. Ranked
+
 ### 14. Explain the core change from two or three angles — `proposed`, cost S, target HR + #3
 - **Idea:** for the core of a change, give two or three short explanations, each from one angle: what it does,
   which concept it relies on, and why it exists.
@@ -1126,6 +1178,12 @@ list. The other sweep changelogs sit with the draft history, lower in this file.
   read through a reader fetch the same day.
 - **PR Explainer's severity findings** (critical, warning, good practice) shown in the editor
   ([site](https://prexplainer.com/)). The narrated tour stays on #15.
+- **Level Up! AI-Driven Challenges and Adaptations to Code Review Practices** (Newman, Bird, Butler,
+  Murphy-Hill). 24 interviews and a survey (n=2,590) at a large company. The reviewer role shifts
+  to design and intent. AI-assisted authoring raises reviewer burden through a lack of author
+  stewardship and PR size. Review quality, for the code-review backlog. Not a way for a person to
+  understand a change
+  ([arXiv 2611.18939](https://arxiv.org/abs/2611.18939)).
 - **CodeRabbit, code explainability for AI-generated PRs** (Brandon Gubitosa, 2026-08-13): check intent against the
   diff, read a walkthrough, trace blast radius, then read adversarially. The guide cites a 470-PR report for higher
   issue rates in AI-authored pull requests (10.83 issues per PR versus 6.45, readability more than 3×, logic and
