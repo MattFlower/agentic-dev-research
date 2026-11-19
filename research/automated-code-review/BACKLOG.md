@@ -206,9 +206,42 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
    fields — `proposed`, S. [Matt] Notes e2.
 2. **Other-vendor sample as an extra union finder** (comment channel only) — `proposed`, S, modest:
    Sol 30.6% → ∪ Opus any-severity 39.8% (~+5–9), clean 2/8 unchanged (RESULTS 0c). Opus alone is rejected.
+
+- **Note 2026-11-19, item 3 (re-review only the fix diff):**
+  [arXiv 2611.23275](https://arxiv.org/abs/2611.23275), *AI Code Review Requires Revision-Aware
+  Evidence of Concern Resolution* (Reval). A policy that stopped checking a concern after first
+  success detected no recurrences. Dependency-gated revalidation (re-check a prior concern only
+  when the code its evidence depends on changes) matched exhaustive reassessment across 6,420
+  paired comparisons with 34% fewer post-comment test executions. Scope re-runs to the fix diff
+  plus prior concerns whose dependencies the fix touched. ⚠️ Synthetic setting, position paper —
+  thin. [report.md](report.md) §2.3.
 3. **Re-review only the fix diff on re-runs** — `proposed`, S. Beko: redundant re-reviews, PR closure +42%. ⚠️
 4. **Outdated-rate tracking** (did flagged lines change later?) as an online acceptance metric — `proposed`, M.
    BitsAI-CR. ⚠️
+   - **Note 2026-11-19:** ⚠️ Counter-evidence from
+     [arXiv 2611.23275](https://arxiv.org/abs/2611.23275), *AI Code Review Requires Revision-Aware
+     Evidence of Concern Resolution* (Reval). On synthetic revision histories (441 concerns, 1284
+     assessments, 12 defect families, oracle ground truth) an outdated-line proxy that retains
+     resolution status falsely classified 72.9% of states where the concern was still present as
+     resolved. Line-changed ≠ fixed. If we keep the metric, pair it with a spot-check of actual
+     resolution. Synthetic setting, position paper — thin. [report.md](report.md) §2.3.
+24. **Prior concerns as revision-tied obligations on re-review** — `proposed`, cost M.
+    Also helps limitless (its review→fix loop with later-round scoping).
+    Ranks low: after the v1 core (section A), near item 3.
+    - **Idea:** On re-review, carry each earlier finding forward with a witness (a check or test
+      tied to a revision) and revalidate when its dependencies change, instead of trusting thread
+      resolution or line changes.
+    - **Source:** [arXiv 2611.23275](https://arxiv.org/abs/2611.23275) (*AI Code Review Requires
+      Revision-Aware Evidence of Concern Resolution*; Reval). [report.md](report.md) §2.3.
+    - **Why:** Catches "fixed then regressed" findings in review→fix loops. With three
+      oracle-sampled witnesses, false-resolution rate 0.11 (95% CI 0.06–0.16) and 80.4% of
+      recurrences detected; with witnesses built from review comments alone, false-resolution
+      rate 0.13 and 88.3% of recurrences detected.
+    - **Test:** Seed our eval's re-review cases with fix-then-regress revisions; measure
+      false-resolution and recurrence detection vs fix-diff-only.
+    - **Cost:** M.
+    - **Evidence:** ⚠️ Synthetic histories, microsecond-scale tests, no natural review data yet
+      (the authors pre-specify a protocol for that).
 5. **Learned suppression of disliked comments** (embedding similarity to ≥3 downvoted) — `proposed`, M.
    Greptile 19% → 55%+. Needs a feedback log; human-review already has a feedback channel.
 6. **Repo rules from the base commit** (AGENTS.md/CLAUDE.md/REVIEW.md, never from the change) —

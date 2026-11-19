@@ -188,6 +188,13 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   fail at head; union of tools beats the best single tool (figures in Matt's research/08). (in Matt's docs)
 - **Bugbot v1** used 8 passes with randomized diff order + majority vote + validator; v2 dropped the
   fixed pipeline for an agent (same Cursor post). Majority vote is in Matt's Don'ts.
+- *When Single Agent Is Enough: Rethinking Multi-Agent Systems for Automated Code Review*
+  [arXiv 2611.23283](https://arxiv.org/abs/2611.23283) (opened 2026-11-19) **[arXiv]**: single-agent
+  versions (e.g., Hydra Reviewer's 18 dimension agents merged into one prompt) performed
+  comparably to or better than the multi-agent systems on review-comment generation and code
+  refinement, at lower token cost. ⚠️ GPT-4o-mini, comment-generation/refinement tasks, not bug
+  recall. Corroborates the lens fan-out cost finding (CodeReviewBench, C16 in open
+  [PR #20](https://github.com/MattFlower/agentic-dev-research/pull/20)) and the single-pass default.
 - **Beyond Consensus** [arXiv 2510.11822](https://arxiv.org/abs/2510.11822): LLM validators accept valid
   items readily but reject few invalid ones; consensus made it worse (per Matt's Report). (in Matt's docs)
 - **Witnesses discriminate:** CMU/SEI static-alert adjudication [arXiv 2607.09979](https://arxiv.org/abs/2607.09979)
@@ -224,6 +231,23 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   ReviewFilter raised precision (ablation 54.5% → 67.1%); "Conclusion-First" filter output gave the
   best precision at Direct-Conclusion speed; **Outdated Rate** (share of flagged lines changed
   later) as an automatic acceptance metric: 26.7% vs a human-review baseline of 35–46%.
+- **Reval** [arXiv 2611.23275](https://arxiv.org/abs/2611.23275), *AI Code Review Requires
+  Revision-Aware Evidence of Concern Resolution* (opened 2026-11-19) **[arXiv]** ⚠️: on synthetic
+  revision histories an outdated-line proxy that retains resolution status falsely classified 72.9%
+  of states where the concern was still present as resolved, and a policy that stopped checking
+  a concern after first success detected no recurrences. Dependency-gated revalidation matched
+  exhaustive reassessment across 6,420 paired comparisons with 34% fewer post-comment test
+  executions. So line-changed ≠ fixed. Scope re-runs to the fix diff plus prior concerns whose
+  dependencies the fix touched
+  (backlog item 3, item 4, C24). Also helps limitless (review→fix loop, later-round scoping).
+  Synthetic setting, position paper — thin.
+- **GitHub Copilot code review** (2026-11-17) **[VB]**: "Adaptive" effort picks Lite/Balanced/Max
+  per PR from complexity and risk
+  ([changelog](https://github.blog/changelog/2026-11-17-copilot-code-review-adaptive-effort-secret-detection-and-more/)),
+  and Repository insights reports an addressed rate for review comments
+  ([changelog](https://github.blog/changelog/2026-11-17-track-copilot-code-review-outcomes-in-repository-insights/)).
+  No accuracy data. Report-only. Relevant to how quality-review exposes effort and to the
+  actioned-finding metric.
 - **Automated Code Review in Practice (Beko, Qodo PR-Agent)** [arXiv 2412.18531](https://arxiv.org/abs/2412.18531):
   73.8% of bot comments labelled resolved, but mean PR closure time rose from 5h52 to 8h20 and
   re-reviews after each fix became "redundant and unhelpful". Older model (GPT-4); one company. ⚠️
@@ -256,6 +280,14 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
 - **Statistics:** Miller, *Adding Error Bars to Evals* [arXiv 2411.00640](https://arxiv.org/abs/2411.00640);
   Bowyer et al., *Don't use the CLT with fewer than a few hundred datapoints* [arXiv 2503.01747](https://arxiv.org/abs/2503.01747);
   TREC pooling (Buckley & Voorhees) [NIST](https://www.nist.gov/node/761376). (in Matt's docs)
+- *We Fixed the Scorer First, and Cluster Correction Killed Our Own Planted-Defect Result in AI
+  Code Review* [arXiv 2611.21635](https://arxiv.org/abs/2611.21635) (opened 2026-11-19) **[arXiv]**:
+  with 3 repetitions nested in 8 cases, contrasts significant under independence (Fisher p=0.017,
+  0.019) became 0.0625 and 0.109 under a permutation test over cases, and none survive Holm.
+  Baselines on byte-identical prompts differed 15/24 vs 20/24. They estimate 12–25 cases are
+  needed. Repetitions do not substitute for cases. An error rate measured only on findings a
+  filter kept says nothing about what it dropped. Supports the PR-clustered bootstrap (backlog
+  item 1, design-v1 §7) and per-stage retention reporting.
 - Other corpora Matt's Report lists, opened: AACR-Bench [2601.19494](https://arxiv.org/abs/2601.19494),
   SecBench.js [repo](https://github.com/cristianstaicu/SecBench.js), Greptile benchmarks
   [page](https://www.greptile.com/benchmarks), agentpatterns review [page](https://agentpatterns.ai/verification/open-code-review-benchmarks/),
