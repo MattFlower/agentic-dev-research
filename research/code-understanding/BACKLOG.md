@@ -153,6 +153,18 @@ factory's deliver/review stages.
   the end of the page stays. Evidence: `vendor`. The guide is #3. Coverage is #2. See "Changes
   (2026-11-11 sweep)".
 - **Risk:** questions can leak held-back findings. Keep them after the pass, and phrase them about behavior, not bugs.
+- **Comprehension gap, reliance (2026-11-19).** Oertel, Klünder, and Hebig. Crossover, 35
+  participants, a local Qwen3-32B chat. High reliance on generated lines, and prompts that copy
+  the task, went with slower mutation finding.
+  [arXiv 2611.24216](https://arxiv.org/abs/2611.24216). Participants were not in separate groups,
+  so this is not tagged `measured-RCT`. Supports active questioning over a passive summary. The
+  planted-mutation numbers are on #2. See "Changes (2026-11-19 sweep)".
+- **Comprehension gate (2026-11-19).** Tavantzis et al., a grey-literature review of 76 sources.
+  A comprehension gate makes a developer show they understand AI-generated code before accepting
+  or merging it. GR10 quizzes them and blocks the commit until they can explain it.
+  [arXiv 2610.37888](https://arxiv.org/abs/2610.37888). Evidence: `practitioner`. Outside the
+  window. Decision documents are #5. Review-sized changes are #12. See "Changes (2026-11-19
+  sweep)".
 - **Quiz shape from the 2026-11-10 paper and from `socratic-tutor`.** White et al. asked four multiple-choice
   questions after the reader's pass, with the AI closed: maintenance, summarization, mental execution, and
   structure (Wyrich et al.). Means were 3.22 and 3.23 of 4, and a perfect four was about half of tasks, so
@@ -195,6 +207,16 @@ factory's deliver/review stages.
   `measured-RCT`. The arXiv comment says "Accepted to ICSE 2027." Themes and the hold-back cite are in
   the 2026-11-10 changes section. Notes:
   [`notes/sweep-2026-11-10.md`](notes/sweep-2026-11-10.md).
+- **Planted mutations, comprehension gap (2026-11-19).** The same paper as the reliance note on
+  #1. [arXiv 2611.24216](https://arxiv.org/abs/2611.24216). Mutations found on average 88.5% self,
+  80% llm, 66.9% unseen, in 37.1, 60.4, and 108.5 raw seconds per mutation. Four semantic
+  mutations for self and llm, five for unseen. Java, a chat, a mixed sample. A crossover:
+  participants were not in separate groups, so this is not tagged `measured-RCT`. The authors say
+  the task may measure recall. Outside evidence that planted-defect finding separates self-written,
+  chat-generated, and unseen code. **Our own idea** for the test: on one accelerate PR, plant 3-4
+  semantic mutations in the agent-written hunks after the HR page is read, and log
+  seconds-per-mutation and share found, with vs. without the HR page. See "Changes (2026-11-19
+  sweep)".
 - **Why it helps:** every other item here is a guess without it. It tells us whether a block saves minutes or only
   moves them. The extend task tells us whether the reader can still work once the page is closed.
 - **Test:** 10 reviews with the export on. Check the timings add up to wall-clock time, and that viewed-but-skipped
@@ -479,6 +501,17 @@ reading Matt Pocock's `teach`.*
   for the item: `practitioner` + `vendor`.
 - **Why it helps:** "what instigated the change" is reviewers' biggest information need (Bacchelli & Bird, cited in
   the earlier report). The agent already has that information, and HR throws it away.
+- **Plan versus build (2026-11-19).** Qodo Agent Session Review (Research Preview), 18 November
+  2026. The work package lists where the build departed from the plan or added work nobody asked
+  for.
+  [blog](https://www.qodo.ai/blog/introducing-auto-approval-workflows-and-agent-session-review/).
+  Evidence: `vendor`. No outcome data. **Our own idea** for the test: on one limitless run that
+  produced 2+ PRs, have HR emit a plan-vs-build deviation list from the session transcript and
+  count how many entries Matt confirms as real deviations. The reading plan is #8. The session
+  page is #16. Auto-approval is in the hand-off list. See "Changes (2026-11-19 sweep)".
+- **Decision documents (2026-11-19).** The grey-literature review on #1 recommends decision
+  documents for non-trivial AI changes, beside the comprehension gates. Evidence: `practitioner`.
+  See "Changes (2026-11-19 sweep)".
 - **Test:** on 5 agent-built changes, have Matt rate each entry as accurate, useful, or neither, and count the
   `not stated` gaps. Make sure no decision entry leaks a held-back finding. On one real limitless or
   accelerate session diff, check whether the author's explanation names a mismatch with an ADR or a
@@ -739,6 +772,9 @@ reading Matt Pocock's `teach`.*
   callees first. This item walks entry points, then what they call. The compiler-or-parser caveat
   and the stars are on #6 and #7
   ([README](https://github.com/crisperity/code-walkthrough)). Evidence: `practitioner`.
+- **Reading plan, Qodo (2026-11-19).** The same work package as #5. A reading plan says what
+  needs close attention, what can be skimmed, and why. Evidence: `vendor`. No outcome data. See
+  "Changes (2026-11-19 sweep)".
 
 ### 9. Two-depth background (newcomer vs. owner) — `proposed`, cost S, target HR
 - **Idea:** split `background` into a *deep background* (collapsed when the git signals say the reader has history in
@@ -782,6 +818,13 @@ reading Matt Pocock's `teach`.*
   are against the scale midpoint in the TARS condition. Adapting depth may save time. It has not been shown to
   improve understanding. Keep this item at cost S, and keep quiz score as the guard. Evidence: `measured-RCT`
   (small, null on correctness).
+- **Semantic outlines, XR (2026-11-19).** Zakharov et al., JetBrains Research. Eight of twelve
+  developers tried an XR prototype that replaced viewed code with a short purpose description and
+  reopened the source on demand. Descriptions helped as an overview and as a reminder. Comparing
+  them with the source was hard.
+  [arXiv 2611.24334](https://arxiv.org/abs/2611.24334). Exploratory qualitative, small, a headset.
+  A minor note on two depths. The return to the code is #11. Not a reason to move this item. See
+  "Changes (2026-11-19 sweep)".
 - **Earned levels from `socratic-tutor` (2026-11-10).** The skill on #3 places each of 4–10 subskills at
   0–5 and raises a level only after demonstrated checks, including one unprompted recall. That is a level
   check with earned levels. The one optional "new to this area?" question stays the fallback when no map
@@ -860,6 +903,9 @@ reading Matt Pocock's `teach`.*
   panel), so it stays under #6 through #10 and above the split advisor (#12).
 - **Test:** on 5 PRs, the footer counts match a hand count of claims, and every diagram step opens a line
   `build --check` can resolve. A step with no line fails the check.
+- **Back to the code, XR outlines (2026-11-19).** The same study as #9. A stated requirement is
+  straightforward inspection of the original code, and manual input reopened it. One click from a
+  summary back to the code. Exploratory qualitative. See "Changes (2026-11-19 sweep)".
 - **Code Tour diagram (2026-11-16).** Secondhand, from the same demo as #9. A diagram, "How the
   changes fit together," uses the chapters as nodes. Edges are typed, including "verified by",
   "state consumed by", and "busy/exit logic coordinates with", and they expand. A chapter chip such
@@ -885,6 +931,9 @@ reading Matt Pocock's `teach`.*
   "Start here" tour with Next links is the shipped reading order. Per-part Approve and Reject are
   handed off.
 - **Test:** on 10 past limitless PRs, does the advisor's split match what Matt would split?
+- **Review-sized changes (2026-11-19).** The grey-literature review on #1 lists review-sized
+  changes, and PR-size thresholds so a change stays reviewable, as a comprehension gate.
+  Evidence: `practitioner`. See "Changes (2026-11-19 sweep)".
 
 ### 13. "Who to ask" for the area — `proposed`, cost S, target HR + #3
 - **Idea:** one visible line naming the two or three people with the most recent commits to the slice or changed files,
@@ -897,6 +946,87 @@ reading Matt Pocock's `teach`.*
 - **Note:** HR's privacy rules already say signals name contributors, so check before sharing (`HR/SKILL.md`
   "Security and privacy").
 - **Test:** for 10 pages, ask Matt whether the named people are the ones he would ask.
+
+## Changes (2026-11-19 sweep)
+
+This section sits before the 2026-11-17 changelog, after item #13. Open PR #31 inserts its
+changelog after that 2026-11-17 section and before the second `## A. Ranked`, appends to the ends
+of #1, #2, #3, #5, #9, and #11, and adds a pointer after the 2026-11-13 sweep line. Those lines
+are left alone. Dated sub-notes on #1, #5, and #9 sit above the paragraphs that diff appends
+after. The #11 sub-note sits above the 2026-11-16 Code Tour bullet, whose last lines that diff
+appends after. #2's sub-note sits above "Why it helps". #8, #12, and #16 are not in that diff.
+The hand-off bullets are at the end of the hand-off list. Other open pull requests do not edit
+this file. Rank unchanged. No new numbered item. Status stays `proposed`. This branch is cut from
+`main` and does not copy PR #31. Notes:
+[`notes/sweep-2026-11-19.md`](notes/sweep-2026-11-19.md).
+
+- #2 and #1. Oertel, Klünder, and Hebig, "The Comprehension Gap in LLM-Assisted Software
+  Development: An Experiment."
+  [arXiv 2611.24216](https://arxiv.org/abs/2611.24216), published 2026-11-18T10:55:37Z. Oertel and
+  Hebig, University of Rostock. Klünder, University of Applied Sciences | FHDW Hannover. Crossover
+  plus interviews. 35 participants (students, academic personnel, software developers), each meeting
+  three Java tasks: self, llm chat (locally hosted Q8_0 Qwen3-32B, thinking disabled), and unseen.
+  Comprehension is finding mutations the experimenter injected. Four for self and llm, five for
+  unseen. Semantic errors and runtime exceptions only. Raw share found: 88.5% self, 80% llm, 66.9%
+  unseen. Raw seconds per mutation: 37.1, 60.4, 108.5. The model's marginal means are 32.5 s, 41.6 s,
+  and 87.2 s. Time until submit was 2 min 3 s self and 2 min 33 s llm, which is the abstract's
+  20%. The model separately reports a 21.7% reduction in seconds per mutation for self versus llm
+  (p=0.043). Solution-comprehension rating predicted seconds per mutation (p=0.041;
+  one step reduced it by 19.6%). Programming time averaged 14 min 31 s with the LLM and 24 min 41 s
+  without (91.3% higher without it, p<0.001). High reliance on generated lines, and prompts
+  copied from the task, went with slower finding. Participants were not in separate groups, so this is not tagged `measured-RCT`.
+  The authors say the task may measure recall. The tool is a chat, not an agent. On #2, outside
+  evidence that planted-defect finding separates self-written, chat-generated, and unseen code.
+  **Our own idea** for the test: on one accelerate PR, plant 3-4 semantic mutations in the
+  agent-written hunks after the HR page is read, and log seconds-per-mutation and share found, with
+  vs. without the HR page. On #1, the reliance result supports active questioning over a passive
+  summary.
+- #11 and #9. Zakharov et al., JetBrains Research, "Exploring multimodal AI–XR interactions for
+  software development."
+  [arXiv 2611.24334](https://arxiv.org/abs/2611.24334), published 2026-11-18T12:36:29Z. Submitted to
+  HIMAS 2027, co-located with ACM IUI 2027. 13 expert interviews, then two XR prototypes with 12
+  professional developers. Four tried code that faded to become invisible after it was looked at.
+  Eight tried viewed sections replaced by a short purpose description. Head direction helped
+  determine when to offer the change. Manual input applied it and reopened the source. A demo with
+  seven researchers. Descriptions gave an overview and a reminder.
+  Comparing them with the source was hard. Requirements: summaries easy to recognize and reach,
+  straightforward inspection of the original code, familiar navigation and editing. Exploratory
+  qualitative, small, a headset. Minor notes only. #11: one click from a summary back to the code.
+  #9: two depths. Does not move either item.
+- #5, #8, and #16. Qodo Agent Session Review (Research Preview), Nastasha Casale, 18 November 2026,
+  with Auto Approval Workflows (Beta).
+  [blog](https://www.qodo.ai/blog/introducing-auto-approval-workflows-and-agent-session-review/).
+  The `/qodo-agent-session-review` skill gathers every PR the agent created in a session, across
+  repositories, plus the decisions behind them, and opens one work package on the builder's machine.
+  The package lists deviations from the plan, including work nobody asked for; a reading plan (what
+  to read closely, what to skim, and why) with merge order and where the PRs interact; and risks
+  tied to evidence, with gaps left explicit. The blog's example: the plan said re-run review when
+  the code changes, and the build also re-runs review when a settings value changes. Every check
+  passes, and no single diff points to it. Evidence: `vendor`. No outcome data. X, supplied for this
+  sweep and not re-counted:
+  [@QodoAI](https://x.com/QodoAI/status/2123054786971152475), 13 likes, 2 bookmarks, 2 reposts,
+  4 replies, 632 impressions. On #5, a plan-versus-build deviation list.
+  **Our own idea** for the test: on one limitless run that produced 2+ PRs, have HR emit that list
+  from the session transcript and count how many entries Matt confirms as real deviations. On #8,
+  the reading plan. On #16, one page for the whole multi-PR session. Auto-approval is in the
+  hand-off list, not here.
+- #1, #12, and #5. Tavantzis et al., "Cognitive Debt in the GenAI Era."
+  [arXiv 2610.37888](https://arxiv.org/abs/2610.37888), published 2026-10-27T19:27:21Z. Comment:
+  12 pages, 3 figures, manuscript under review at ICSE-SEIP. Outside the window. Not cited here
+  before this pass. Grey literature, 76 sources. Practices include design rationale, review-sized
+  changes, comprehension gates, and knowledge-sharing rituals. "Comprehension Gate practices require
+  developers to demonstrate understanding of AI-generated code before accepting or merging it."
+  Practitioners suggest explaining unfamiliar code, video walkthroughs (GR3), or a quiz (GR10). The
+  team-lead recommendation: PR-size thresholds and decision documents for non-trivial AI changes.
+  Evidence: `practitioner`. On #1, the quiz as a gate. On #12, review-sized changes. On #5, decision
+  documents.
+- Hand-off: Qodo Auto Approval Workflows (same blog), and Gao, "When Passing Checks Do Not
+  Establish Completion"
+  ([arXiv 2611.22835](https://arxiv.org/abs/2611.22835), published 2026-11-17T14:17:43Z). The
+  partnered X article is in the hand-off bullet. Neither is a ranked item.
+- Rank: unchanged. The comprehension-gap result belongs on #2, which is already the measurement
+  row. It does not clearly move #2 above the quiz: small Java tasks, a chat, and the authors say
+  the metric may be recall. No new numbered item. Status stays `proposed`.
 
 ## Changes (2026-11-17 sweep)
 
@@ -1036,6 +1166,10 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
 - **Note:** HR's privacy rules say not to publish the page unless asked (`HR/SKILL.md` "Security and privacy"), so
   keep it as a local or private artifact.
 - **Test:** 10 limitless runs. Does Matt open the page before the diff, and does review latency change?
+- **One page for the session (2026-11-19).** Qodo Agent Session Review, the same launch as #5,
+  gathers every PR the agent created in a session, across repositories, and opens one work package
+  on the builder's machine: merge order, and where the PRs interact. Evidence: `vendor`. No
+  outcome data. See "Changes (2026-11-19 sweep)".
 
 ### 17. "Since you last looked" interdiff — `proposed`, cost M, target HR
 - **Theseus daily digest (2026-11-13).** The homepage says a daily digest highlights the important
@@ -1226,6 +1360,22 @@ list. The other sweep changelogs sit with the draft history, lower in this file.
   review names the decision it applied
   ([changelog](https://repowise.dev/changelog/v0-60-0), read 2026-11-06). The parsed-versus-drawn diagram rule
   stays on #7.
+- **Qodo Auto Approval Workflows (Beta) (2026-11-19).** Same post as Agent Session Review on #5.
+  Policy-based auto-approval as qodo-bot, from finding severity and category, blast radius, and
+  Qodo rules. Guards for repositories, paths, and authors. On a new commit the approval is
+  withdrawn if the PR no longer qualifies. The page also says a workflow can add a "Qodo approved"
+  label without approving, and that an author who dismisses their own finding does not clear
+  approval. The session-review half stays on #5, #8, and #16.
+  [blog](https://www.qodo.ai/blog/introducing-auto-approval-workflows-and-agent-session-review/).
+  Partnered article by @omarsar0, "Auto-Approving PRs for Coding Agents"
+  ([X](https://x.com/omarsar0/status/2123054854100652258)). Counts supplied for this sweep, not
+  re-counted: 179 likes, 356 bookmarks, 11 reposts, 11 replies, 31,076 impressions. The article
+  says "Thanks to @QodoAI, for the partnership on this article." The Qodo launch post
+  ([X](https://x.com/QodoAI/status/2123054786971152475)) was 13 likes, 2 bookmarks, 2 reposts,
+  4 replies, 632 impressions.
+- **When Passing Checks Do Not Establish Completion (2026-11-19).** Xueping Gao. Evidence
+  interpretation in coding agents, not a person understanding a change.
+  [arXiv 2611.22835](https://arxiv.org/abs/2611.22835), published 2026-11-17T14:17:43Z.
 
 ## Merged
 
