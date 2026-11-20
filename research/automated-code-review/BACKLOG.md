@@ -238,6 +238,54 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
      escapes-heldout.
    - **Cost:** S for a 25–50 task slice; M for full verified.
 10. **External smoke check on ReviewBench test set (25 tasks, has Codex CLI example)** — `proposed`, S.
+25. **Symmetric verification of dismissals (ruled-out list + per-case proof)** — `proposed`,
+    cost S–M. Also helps limitless (its review verifier stage).
+    Ranks below the measured S items (C1, C2), the harness (item 1, C19 in PR #24), and the S
+    eval checks (C9–C10), and below C20. Same band as the other verifier-stage items: above C11,
+    beside C17 (PR #22). C16 (PR #20) is separate: the cost/precision trade-off noted there
+    applies to the specialist sessions, not this step.
+    - **Idea:** Each finder pass outputs two lists: concerns it believes are real, and candidates
+      it investigated and ruled out, each with the code supporting the conclusion. A verifier
+      audits both. Clear-cut bugs and locally-proven dismissals pass through. Contested findings
+      and shaky self-dismissals (dismissed by assuming an unseen caller or lock prevents the bug)
+      each get their own focused verification call, under a symmetric rule: neither a bug claim
+      nor a dismissal is accepted without concrete code proof across call sites. A wrongly
+      dismissed bug is promoted back to a finding.
+    - **Source:** Google Cloud blog, "Lessons from building Sashiko, an agentic code review
+      system" (Roman Gushchin, Eric Brewer, 2026-11-18)
+      ([post](https://cloud.google.com/blog/products/application-development/lessons-from-building-sashiko-an-agentic-code-review-system));
+      practitioner pointer
+      ([post](https://x.com/rseroter/status/2123526478054969466)).
+      Opened 2026-11-20. [report.md](report.md) §2.2.
+    - **Why:** Limitless misses were mostly out-of-diff (13/30 production misses needed files
+      outside the diff, [report.md](report.md) §1.2). A finder that wrongly assumes an
+      out-of-diff guard is the case this targets. Overlaps C17 (PR #22, "dismissed doubts
+      written down as candidates for the verifier"): C25 adds the symmetric proof rule and
+      per-case verifiers. If C17 lands, consider merging them. Distinct from the rejected
+      reproduce-or-drop filter, which only drops; this also promotes a dismissal back to a
+      finding.
+    - **Test:** On the item-1 eval (escapes-dev slice + clean cases), arm A = current
+      finder+verifier, arm B = finder also emits a ruled-out list and the verifier re-checks
+      unproven dismissals with one focused call each. Measure blocking recall, clean must-fix
+      rate, and cost/tokens. Count how many gold defects were promoted back from a dismissal.
+      3 trials per arm (per the item-1 noise-floor note, PR #30). Do not contaminate
+      escapes-heldout.
+    - **Secondary (not a separate item):** Once the skill is in use, a production outcome
+      check — 60-day follow-up-fix rate of PRs with a clean review vs PRs merged over a
+      must-fix warning — as an online signal.
+    - **Evidence:** ⚠️ Vendor self-report. No ablation isolates the ruled-out list or the
+      symmetric-verification step. The 75.8% has no reported precision or false-alarm rate.
+      The release-over-release drop is observational; the authors say they cannot credit
+      Sashiko for the whole drop. From the blog: up to 7 single-focus specialist sessions
+      (commit intent, implementation match, control flow, resource lifetimes, locking,
+      security, hardware), about 100 tool calls per review; the planner picks the passes and
+      sets a per-pass reasoning budget by patch complexity. On a benchmark of nearly 1,000
+      real Linux kernel bugs that passed human review and were later fixed, Sashiko with
+      Gemini 4 Carbon (high thinking) catches 75.8%. Production since March 2026 (about
+      241,000 reviews): the 60-day follow-up-fix rate of merged commits fell from a 3.4%
+      baseline (Linux 6.2–6.19) to 2.8% (7.1) and 2.2% (7.2). Across 21,500 tracked mainline
+      commits, clean-review commits needed a 60-day fix 0.9% of the time vs 7.6% for commits
+      merged despite a critical warning (8×; 6.3× after adjusting for patch size).
 11. **Same-agent review as a measured anti-pattern** — `proposed`, M. Also helps limitless.
     - **Idea:** Treat "author agent then same-agent review" as a measured anti-pattern; prefer independent
       review samples (already in adversarial×2); optionally test a foresight-style pack (unstated edge
