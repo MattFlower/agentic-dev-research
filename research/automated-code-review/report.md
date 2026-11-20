@@ -4,11 +4,14 @@
 
 *Sweep 2026-11-02: ultrareview description (§2.6), ORION, Macroscope Terra note. Eval-baseline arm rejected 2026-11-06.*
 
+*Sweep 2026-11-20: Sashiko (§2.2), extracted review rules (§2.3). Opened 2026-11-20.*
+
 Status: first draft, written to be revised once Matt's prior docs are folded in further. Every
 external source below was opened on 2026-10-31, except the 2026-11-02 sweep items named above,
-CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), and Foresight-SWE
-(opened 2026-11-05); anything that could not be opened is listed in "Not verified". Numbers from
-different benchmarks are not comparable.
+CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), Foresight-SWE
+(opened 2026-11-05), and Sashiko and the extracted-rules study (opened 2026-11-20); anything
+that could not be opened is listed in "Not verified". Numbers from different benchmarks are not
+comparable.
 
 **Precedence for Matt's figures** (as instructed): the 2026-10-31 escapes-dev run beats Phase 0
 `RESULTS.md` (2026-10-29), which beats the working notes on overlapping figures; where the notes
@@ -197,6 +200,28 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   ([post](https://x.com/_alphashark_/status/2097274562077508040)); another requires a failing test
   before a bug claim ([post](https://x.com/terminalxw/status/2097213279240413198)). Anecdotes;
   note the second conflicts with Matt's "no reproduce-or-drop" finding.
+- **Sashiko** [blog](https://cloud.google.com/blog/products/application-development/lessons-from-building-sashiko-an-agentic-code-review-system)
+  (Roman Gushchin, Eric Brewer, 2026-11-18; practitioner pointer
+  [post](https://x.com/rseroter/status/2123526478054969466)) **[VB]** **[X]**: each specialist
+  pass emits concerns it believes are real and candidates it ruled out, each with the code
+  behind the conclusion. A verifier audits both. Clear-cut bugs and locally proven dismissals
+  pass through; contested findings and shaky self-dismissals (an unseen caller or lock assumed
+  to prevent the bug) each get their own check. Neither a bug claim nor a dismissal stands
+  without code proof across call sites, and a wrongly dismissed bug is promoted back. Up to 7
+  single-focus sessions (commit intent, implementation match, control flow, resource lifetimes,
+  locking, security, hardware), about 100 tool calls per review; the planner picks the passes
+  and sets a per-pass reasoning budget by patch complexity. On nearly 1,000 real Linux kernel
+  bugs that passed human review and were later fixed, Sashiko with Gemini 4 Carbon (high
+  thinking) catches 75.8%. Production since March 2026 (about 241,000 reviews): the 60-day
+  follow-up-fix rate of merged commits fell from a 3.4% baseline (Linux 6.2–6.19) to 2.8%
+  (7.1) and 2.2% (7.2); the authors say they cannot credit Sashiko for the whole drop. Across
+  21,500 tracked mainline commits, a clean review needed a 60-day fix 0.9% of the time vs 7.6%
+  when merged despite a critical warning (8×; 6.3× after adjusting for patch size). ⚠️ Vendor
+  self-report; no ablation of the ruled-out-list / symmetric-verification step; the 75.8% has
+  no reported precision or false-alarm rate; the release-over-release drop is observational.
+  Backlog **C25**. Also helps limitless (its review verifier stage). Overlaps C17 (PR #22).
+  Distinct from the rejected reproduce-or-drop filter, which only drops. The specialist
+  sessions are the C16 cost/precision trade-off (PR #20), not this step.
 
 ### 2.3 Severity, caps and what developers act on
 
@@ -227,6 +252,20 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
 - **Automated Code Review in Practice (Beko, Qodo PR-Agent)** [arXiv 2412.18531](https://arxiv.org/abs/2412.18531):
   73.8% of bot comments labelled resolved, but mean PR closure time rose from 5h52 to 8h20 and
   re-reviews after each fix became "redundant and unhelpful". Older model (GPT-4); one company. ⚠️
+- *From Code Review Comments to Reuse in Production: An Industrial Study of Extracted Rules*
+  [arXiv 2611.25918](https://arxiv.org/abs/2611.25918) (Asada, Nakasaka, Tabuchi, Hayashi;
+  submitted 2026-11-19; abstract only) **[arXiv]**: 65 days of production use of the Kleene
+  system's rules extracted from review comments. Of 464 deployed rules, 259 (55.8%) were named
+  in a later comment, 195 (42.0%) produced a non-withheld comment, and 94 (20.3%) one with a
+  recorded code change. Of 56 clauses in 12 named rules, only 2 were explicit in the source
+  thread, 38 added conditions, and 16 had no locatable passage. 45 of 79 comments naming those
+  rules requested no change. On 20 constructed changes, a reviewer given only the unedited
+  source thread met detection on 8 of the 10 that require a report, vs 10/10 with the extracted
+  rule (CI includes zero). Keeping the top-ranked half preserved 53.8% of the rules that later
+  produced a non-withheld comment, vs 49.2% at random (CI includes zero). Rule-attribution
+  counts are a misleading keep/drop signal; log each stage (named / commented / code change)
+  per rule. Caution for C21's miss-to-rule loop (PR #28) and for any repo-rules item (C6).
+  Not a new backlog item.
 
 ### 2.4 Benchmarks and eval method
 
