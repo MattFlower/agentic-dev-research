@@ -983,6 +983,73 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
   against the current human-review page, on one real accelerate or limitless pull request, and score
   both with the #1 quiz.
 
+### 19. Attention and risk as two axes, with a five-minute path and a per-section unproven list — `proposed`, cost S, target HR
+- **Idea:** On each section (a concern, or a focus stop), store two fields that stay separate.
+  Attention is how hard to look: `skim`, `review`, or `scrutinize`. Risk is how bad if that
+  section is wrong: `low`, `medium`, or `high`. A section can be important to follow and still
+  low risk, or short and high risk. Do not fold them into one importance score, and do not
+  build the five-minute path by risk alone. Name a critical path of two or three sections for
+  a reader who has five minutes. That path can include a high-attention, low-risk section when
+  the rest of the page does not make sense without it. `focus` stays the longer list, three to
+  six stops. The critical path is the first cut of it, chosen with both axes. Add one visible
+  line for the author's own certainty (`low`, `medium`, or `high`), separate from the held-back
+  `risk.why`. On each section, an unproven list of what the author did not verify: two bullets
+  at most, visible with the section. A blank list is allowed. This item does not add a proof
+  tree. That stays on #11. It does not add a session dump. That stays on #5.
+- **What human-review already does:** `files[].review` is `careful` or `skim`, per file.
+  `careful` means "logic, security, data, or contracts" (`HR/SKILL.md` "The fields that carry
+  the most weight"). That mixes "read this carefully" with "this is the dangerous kind of
+  change". There is no `scrutinize`, and there is no per-section risk beside the file tier.
+  `risk` is one level for the whole page. `focus` is three to six stops, "riskiest or most
+  consequential" first, and `concerns` is the full order. A reader who stops after two stops
+  is already using the top of `focus`. It is not a named five-minute list, and it is ordered
+  by one mixed score. `notExamined` is one list for the page, shown only after every file has
+  been viewed. `tests.doesNotCover` is the test gaps, always visible, and it is not a
+  per-section list of what the author left unchecked. #11 counts claims that are not tied to
+  a line. It does not ask, per section, what the author did not verify. Open PR #33 adds
+  Qodo's read-closely versus skim on #8. That is one axis. It is not this split.
+- **Sources:** Garden, "Proof-carrying review"
+  ([concepts](https://docs.gardenscm.ai/concepts/walkthroughs/),
+  [reference](https://docs.gardenscm.ai/reference/walkthrough/)). No date on either page.
+  The concepts page: "important to understand" and "dangerous if wrong" are not the same
+  property. `attention` is `skim`, `review`, or `scrutinize`. `risk` is `low`, `medium`, or
+  `high`. "A subtle-but-reversible block and an obvious-but-irreversible one need different
+  handling from a reviewer, and collapsing them into one "importance" score loses exactly the
+  distinction that routes attention well." `confidence` and `critical_path` are "the author's
+  own certainty, and the two or three blocks to read if you only have five minutes." The
+  schema comment on `critical_path` is "5 minutes? read these". The concepts heading is
+  "`unproven` is the most valuable field". "An honest gap list beats any amount of prose".
+  The reference says "`unproven` is the highest-value field", "bullets only, 2 maximum", and
+  "A blank `unproven` is honest; a padded one trains reviewers to skip the field." Evidence:
+  `vendor`. No outcome data. The brief's X search for gardenscm.ai / "garden pr explain"
+  returned 0 posts. This session's `search_posts_all` and `get_posts_counts_recent` returned
+  `client-forbidden` (the token lacks `developer.billing.write`). The 0 was not re-counted.
+  The proof tree, the unaccounted-for hunks, and "not a session dump" are on #11, #18, and
+  #5, in "Changes (2026-11-20 sweep)". They are not this item.
+- **Why it helps:** A reviewer with five minutes currently gets one risk label and a focus
+  list sorted by "riskiest or most consequential". That sends them to danger and can skip the
+  section the rest of the page depends on. A gap list at the end of the page arrives after
+  they have already read the section as if it were checked.
+- **Why it sits here:** Cost S. The fields sit on `focus`, `files.review`, `risk`, and
+  `notExamined`, which already exist. The only evidence is one vendor's docs, and the X
+  search supplied for this sweep was not re-counted, so this does not pass #1 through #14.
+  #14 has a measured result, even one that did not clear a multiple-comparison correction.
+  This page has no outcome data, so it sits below #14. It sits above #15 because #15 is
+  cost M and gated to an algorithmic core, and this is a small addition on every page. No
+  other row moves. The heading is 19, so #1 through #18 keep their numbers. Open PRs #31
+  and #33 cite those numbers.
+- **Test:** On [MattFlower/agentic-dev-research#29](https://github.com/MattFlower/agentic-dev-research/pull/29)
+  (merged; the 2026-11-17 sweep), run human-review as it ships, then fill attention, risk, a
+  two-or-three section critical path, the author's certainty, and a per-section unproven list
+  by hand from the same diff. A search for `repo:MattFlower/accelerate is:pr` on 2026-11-20
+  returned `total_count` 0, so there is no merged accelerate pull request to use. #29 changes
+  research notes, so it is a weak case for "dangerous if wrong". Ask whether any section is
+  important to follow and not dangerous, or dangerous and not the section to read first. The
+  test fails if that section cannot be said with the two fields, or if a line that would have
+  gone in `notExamined` cannot be placed on the section it belongs to. **Our own idea.** If
+  #29 has no such section, run the same comparison on the next merged pull request that
+  changes code.
+
 ### 15. Interactive or animated explainer for the algorithmic core — `proposed`, cost M, target HR (gated)
 - **Idea:** for a change whose core is an algorithm or state machine, allow one `interactive` block (a sandboxed
   inline script, still no network) that steps through it. A second modality, not limited to algorithms: a narrated
@@ -1064,6 +1131,103 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
   last look, from the snapshot's commit id. The per-change risk pass is not cached yet, and a cached
   "why" can go stale when only callers change. The README is on #7. Evidence: `vendor`. This item
   stays the interdiff of hunks and notes since the last page.
+
+## Changes (2026-11-20 sweep)
+
+This section sits after #17 and before the shipped table. The new item, #19, sits between #14
+and #15. Open PR #31 inserts its changelog after the 2026-11-17 section and before the second
+`## A. Ranked`, and appends to #1, #2, #3, #5, #9, and #11. Open PR #33 inserts its changelog
+before the 2026-11-17 heading, appends to #1, #2, #5, #8, #9, #11, #12, and #16, and appends
+at the end of the hand-off list. Those hunks do not include the lines around ### 15, the end
+of #17, or the Level Up hand-off bullet. Item bodies #1 through #18 are unchanged. The
+findings are here. Notes:
+[`notes/sweep-2026-11-20.md`](notes/sweep-2026-11-20.md).
+
+- #19, new. Attention (`skim` / `review` / `scrutinize`) and risk (`low` / `medium` / `high`)
+  on each section, a critical path of two or three sections "if you only have five minutes",
+  the author's certainty, and a per-section `unproven` list. Garden,
+  [concepts](https://docs.gardenscm.ai/concepts/walkthroughs/) and
+  [reference](https://docs.gardenscm.ai/reference/walkthrough/). No date on either page.
+  Evidence: `vendor`. No outcome data. The brief's X search for gardenscm.ai / "garden pr
+  explain" returned 0 posts. This session's X calls returned `client-forbidden`. The 0 was
+  not re-counted. Human-review has one page-level risk, a file tier of careful or skim, a
+  focus list of three to six, and one held-back `notExamined`. Open PR #33's Qodo reading
+  plan is one axis (close attention versus skim) on #8. It is not this split. Cost S. Placed
+  below #14 and above #15. No other row moves. The test is on merged pull request #29.
+  Accelerate has no pull requests (`total_count` 0 on 2026-11-20).
+- #11 Grounded claims. Garden: a block's claim is established by its own proof plus the
+  claims of its children, and each proof entry is exactly one kind (`test`, `command`,
+  `attachment`, `pointer`, `external`, or `note`). "Garden does not verify proofs". A
+  `pointer` can be any code, in the diff or not. Proofline's walkthrough puts cited code
+  beside each step, and "illustrations are labeled as illustrations and are not checked
+  against the code"
+  ([post](https://proofline.sh/blog/faster-reviews-and-walkthroughs/), 10 Nov 2026). newpr's
+  stated density is "3–6 line anchors per paragraph"
+  ([page](https://jiwonme.github.io/newpr/)). Author check's "claims unsupported by the
+  implementation" is the other half of that Proofline line. The omitted-behavior half is
+  #18. Evidence: `vendor`. The item body is unchanged.
+- #18 Intent map. Garden shows the hunks no block covers as an "unaccounted for" list. "An
+  uncovered hunk is a signal that the author judged it didn't need explaining". Proofline's
+  Author check "highlights behavior omitted from the description or claims unsupported by
+  the implementation." The omitted behavior is this item. Evidence: `vendor`. The item body
+  is unchanged.
+- #8 Lines to read. Garden's sibling order "is the reading order — it is never re-sorted."
+  `layout` is `top-down`, `bottom-up`, or `sandwich`. That is an author-chosen order. The
+  shipped `focus` and `concerns` already are. The page does not describe a semantic diff or
+  a call-graph walk, so this item does not gain a design change. AR Labs' Comprehend guide
+  is a fixed order (overview, runtime flow, architecture placement, five to nine reading
+  chunks with margin notes, a file map, invariants), "Flow order, not file order"
+  ([page](https://arlabs.tech/engineering/understanding-agent-written-code), Rev 2026-11-13).
+  A pointer only. Evidence: `vendor` for Garden, `practitioner` for AR Labs. The item body
+  is unchanged.
+- #5 Decision log. Garden: "This is deliberately not a session dump." The walkthrough is
+  frozen at merge as "a permanent record of why this was done and what was verified".
+  AR Labs writes the walkthrough during the build, "one entry per step, recording what
+  changed and why, in the order it happened", "because a walkthrough reconstructed
+  afterwards from the diff loses the why." Evidence: `vendor` and `practitioner`. The item
+  body is unchanged.
+- #6 "Ask about this". Proofline: "choose Ask about this, or select specific lines and
+  choose Ask about lines." An answer that "cites code and leaves nothing unsettled" is
+  saved under "Answered questions for other organization members." Evidence: `vendor`. The
+  item body is unchanged.
+- #17 "Since you last looked". Proofline: after a later push, "the answer stays under steps
+  whose code did not change, while Changed markers identify rewritten steps. The earlier
+  walkthrough remains available for comparison." Garden keys "I have seen these hunks" by a
+  content hash of the covered lines, so a re-blocked walkthrough does not force a re-read
+  of lines already seen. Evidence: `vendor`. The item body is unchanged.
+- #12 Split and size advisor. newpr "analyzes file dependencies, groups changes by concern,
+  and creates a chain of small, focused PRs — each building on the last." "Topological sort
+  ensures each PR builds cleanly on its parent." It "Publishes as connected draft PRs on
+  GitHub." `$ bunx newpr --web`. It "Auto-detects Claude, OpenCode, or Codex". The page
+  also prints "10k+ Lines handled per PR" and "<2min Full analysis". Those are the page's
+  figures. No study. Not an outcome. Evidence: `vendor`. #12 still proposes the split. It
+  does not open the pull requests. The item body is unchanged. The brief's X search found
+  no posts. This session did not re-count.
+- #1 Quiz. AR Labs' Comprehend "can finish with a short self-check quiz. It is run on demand
+  by a person who wants to understand, never as a gate." The page's rule is "Explain, then
+  ask." The ask-before-reveal slice already on this item is the other order. That slice
+  stays. Evidence: `practitioner`. The worked example is labeled illustrative. The item
+  body is unchanged.
+- #3 `teach-code`. The same page's Code Tutor writes a guide before the person writes code
+  ("purpose, current structure, dependents, likely pitfalls and a suggested order of
+  work"), edits nothing in that phase, then tutors while "the person writes every line."
+  The page attributes the first phase to Geoffrey Litt's essay "Code like a surgeon" and
+  links it. This pass did not read the essay. The Walkthrough skill is a linear codebase
+  tour whose excerpts "are pulled from the real files by a command, using Simon Willison's
+  Showboat tool." Showboat is already on #4 and on the shipped table. Evidence:
+  `practitioner`. The item body is unchanged. Open PR #31's rederive note is a different
+  tutor and is not copied.
+- #7 Blast radius. Comprehend "adds a C4 diagram showing only what moved" when the change
+  altered the structure. Proofline: "walkthrough steps can show consumers in related
+  repositories". Same organization and GitHub installation, and only when every reader of
+  the pull request can read that repository. A pointer. No design change. The item body is
+  unchanged.
+- Hand-off: Proofline's Maintainability and quality review, same post as the walkthrough.
+  Off by default. The bullet is in the hand-off list. The 9× figure on that post is review
+  runtime ("From November 4 to November 9, daily median review time fell from 31 minutes
+  to 3.6 minutes"). It is not a comprehension result, and it is not on a ranked item.
+- Rank: one new row, #19, between #14 and #15. Nothing else moves. Status of #1–#18 stays
+  `proposed`.
 
 ---
 
@@ -1184,6 +1348,14 @@ list. The other sweep changelogs sit with the draft history, lower in this file.
   stewardship and PR size. Review quality, for the code-review backlog. Not a way for a person to
   understand a change
   ([arXiv 2611.18939](https://arxiv.org/abs/2611.18939)).
+- **Proofline Maintainability and quality review (2026-11-20).** The 10 Nov 2026 post. It
+  examines unnecessary complexity, implicit assumptions, duplicated responsibilities, and
+  verification gaps introduced or worsened by a change. For each simplification candidate,
+  the review must explain a concrete maintenance cost, cite the source, and suggest a
+  smaller alternative. "Style preferences and unsupported concerns are excluded". The
+  feature is off by default. Review quality. The walkthrough,
+  Author check, Ask about this, and the Changed markers stay on #11, #18, #6, and #17.
+  [post](https://proofline.sh/blog/faster-reviews-and-walkthroughs/).
 - **CodeRabbit, code explainability for AI-generated PRs** (Brandon Gubitosa, 2026-08-13): check intent against the
   diff, read a walkthrough, trace blast radius, then read adversarially. The guide cites a 470-PR report for higher
   issue rates in AI-authored pull requests (10.83 issues per PR versus 6.45, readability more than 3×, logic and
