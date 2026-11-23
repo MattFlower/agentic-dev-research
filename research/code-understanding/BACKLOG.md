@@ -247,6 +247,17 @@ reading Matt Pocock's `teach`.*
     [repo](https://github.com/Egonex-AI/Understand-Anything/), 89,517 stars per the API), DeepWiki, Google Code Wiki,
     CodeTour, and [Busjahn et al.](https://researchonline.gcu.ac.uk/ws/portalfiles/portal/24953094/ICPC2015_authors_version.pdf)
     (execution-order reading).
+  - **Code lessons, Understand-Anything v2.9.8 (2026-11-23).** Per-file explanations aligned with
+    the guided tour. Tour-covered files get detailed sections; other files an overview. Clicking a
+    section highlights its source lines. Lessons are generated when the tour is built, pruned when
+    files leave the graph, kept across a partial update, and a tour rebuild refreshes their line
+    ranges. The dashboard and the skills that read the graph report when saved analysis is stale.
+    The same release adds a stdio MCP server whose tools include onboarding, explanation, and
+    change-impact.
+    [release](https://github.com/Egonex-AI/Understand-Anything/releases/tag/v2.9.8), published
+    2026-11-15T12:10:30Z. Evidence: `vendor`. A concrete design for v2: lessons that survive code
+    changes (prune, re-anchor the line ranges, and a staleness flag). The highlight is #11.
+    See "Changes (2026-11-23 sweep)".
   - **LACY, CodeMap, and Cognitive Tours.** LACY
     ([arXiv 2603.25391](https://arxiv.org/abs/2603.25391), FSE 2026 companion) is expert-curated code
     tours plus comprehension questions. Within-subjects, five learners on one legacy codebase:
@@ -526,6 +537,14 @@ reading Matt Pocock's `teach`.*
   [site](https://loomtide.ai/atlasreview), [repo](https://github.com/Loomtide/atlas-review).
   Evidence: `vendor`. The walkthrough is a shipped peer. The policy file is #10. Step-read marks are #17.
   Findings and the verdict are handed off.
+- **diffle, comment on selected words (2026-11-23).** diffle 0.5.2, 2026-11-13. Pressing c comments
+  on the selected words, and the comment reaches the agent like any other review comment.
+  `diffle comments reply` (0.5.2) lets the agent answer in the thread. `diffle comments list`
+  (0.5.0) prints the threads as JSON mid-review.
+  [changelog](https://diffle.app/changelog/),
+  [repo](https://github.com/moritzwilksch/diffle). Evidence: `vendor`. No X engagement found
+  (X search 2026-11-10..23 returned nothing). The tour itself confirms the shipped reading order
+  and "What I need from you". See "Changes (2026-11-23 sweep)".
 
 ### 18. Intent map and unexplained files — `proposed`, cost S, target HR
 - **Idea:** Quote, verbatim, each thing the author says the pull request does. Take the words from a spec,
@@ -853,6 +872,8 @@ reading Matt Pocock's `teach`.*
   216 impressions; [mchulet](https://x.com/mchulet/status/2118347490596712702) 3 likes, 4 bookmarks,
   352 impressions; [dextune](https://x.com/dextune/status/2118694891685331436) 1 like, 0 bookmarks,
   84 impressions. Evidence: `vendor` + `engagement`.
+- **Understand-Anything v2.9.8 (2026-11-23).** Clicking a code-lesson section highlights its
+  source lines. The lessons are on #3. Evidence: `vendor`.
 - **Why it helps:** the precision check already rejects a claim that does not match the diff. It does not show the
   reader how many claims were left untied. A diagram the reader cannot open at a line cannot be checked.
 - **Why it sits here:** the footer and the step links apply to every page, and both sit on checks HR already runs.
@@ -1073,7 +1094,7 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
 |---|---|---|
 | Diff → one self-contained HTML page; branch, PR, range, **uncommitted** work | `HR/SKILL.md` "Decide the scope"; `HR/scripts/human-review.mjs` | Covers PRs and uncommitted changes. Not whole-repo onboarding (item 3). Peer products that already do this job: Saga (ordered chapters, one HTML file, comments pushed to GitHub; [post](https://jakeberesford.com/blog/saga), 20 stars, created 2026-07-11) and Guided Review (units from the parsed diff; the model does not invent the lines; [docs](https://guidedreview.dev/docs)). Also peers of this page, GitHub API on 2026-11-05: Trail of Bits Review Walkthrough (the HTML steps; findings are handed off; [page](https://trailofbits.com/skills/review-walkthrough/)), [qiushiyan/explain-diff](https://github.com/qiushiyan/explain-diff) (0 stars), [malav2110/explain-diff-html](https://github.com/malav2110/explain-diff-html) (19 stars), f-labs `html-code-review` (the explainer half; [skill](https://github.com/f-labs-io/agent-html-skills/blob/main/plugins/html-skills/skills/html-code-review/SKILL.md); the repo has 68 stars), and [th0rz05/claude-pr-review-html](https://github.com/th0rz05/claude-pr-review-html) (2 stars; the reading-order half). Co-Review's `/co-review:review` opens a change as a pull-request page in the app or a browser tab, not as one HTML file (9 stars, GitHub API 2026-11-11T13:20:30Z; findings and the GitHub post are handed off). |
 | Code on the page comes from git; annotations checked against real lines | `HR/SKILL.md` "Honesty", build `--check` | Same idea as Showboat's exec-pulled snippets. A box with no arrows in a drawn diagram is not evidence that a file is unused. Check a parsed graph (item 7). |
-| Reading order (`focus`, 3–6 stops, riskiest first) | `HR/SKILL.md` "fields that carry the most weight" | Matches the "literate diff" and tour-mode ideas (Litt, Tembo Tour Mode, constellagent code tour). Replicas Review's guided tour (2026-10-21) puts a plain-English explanation above each file's diff, starts with the most important file, and collapses tests, lockfiles, and generated files at the end ([post](https://replicas.dev/blog/replicas-review)). That matches this row and the mechanical tier below. Saga's chapters and Guided Review's units (schema, then logic, call sites, and tests) are the same job. Item 8 walks changed symbols from entry points down the call graph. Trail of Bits and th0rz05 also pick a reading order. See the HTML-page row. Origin Code Tours walk a pull request in review order, group related changes, and explain each group next to the code, on the Changes tab ([docs](https://cursor.com/docs/origin/code-tours), read 2026-11-06). |
+| Reading order (`focus`, 3–6 stops, riskiest first) | `HR/SKILL.md` "fields that carry the most weight" | Matches the "literate diff" and tour-mode ideas (Litt, Tembo Tour Mode, constellagent code tour). Replicas Review's guided tour (2026-10-21) puts a plain-English explanation above each file's diff, starts with the most important file, and collapses tests, lockfiles, and generated files at the end ([post](https://replicas.dev/blog/replicas-review)). That matches this row and the mechanical tier below. Saga's chapters and Guided Review's units (schema, then logic, call sites, and tests) are the same job. Item 8 walks changed symbols from entry points down the call graph. Trail of Bits and th0rz05 also pick a reading order. See the HTML-page row. Origin Code Tours walk a pull request in review order, group related changes, and explain each group next to the code, on the Changes tab ([docs](https://cursor.com/docs/origin/code-tours), read 2026-11-06). diffle 0.5.2 (2026-11-13) is a peer: an agent-written tour beside the diff, in order, showing the lines each section talks about, ending on the questions the reviewer needs to decide, and exporting as one offline HTML file ([changelog](https://diffle.app/changelog/), [repo](https://github.com/moritzwilksch/diffle)). Evidence: `vendor`. No X engagement found (X search 2026-11-10..23 returned nothing). The comment loop is #6. |
 | Group by concern, tests next to their code, callees first | `HR/SKILL.md` `concerns` | Earlier report #1. |
 | Written for a newcomer: `background` ("Before this change"), `terms` with hover underlines, readability warnings | `HR/SKILL.md` "Write for someone new to this code"; `HR/references/format.md` | Like Litt's "Background" and codebase-to-course's glossary tooltips. |
 | Annotated diffs (note / decision / risk / question), 2–5 per file | `HR/SKILL.md` "Annotations" | |
@@ -1085,6 +1106,51 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
 | "What I need from you" + tests cover / don't cover | `HR/SKILL.md` `ask`, `tests` | Earlier report #6. Item 8 names which changed tests reach which changed functions, with the call path. |
 | Precision check on every claim | `HR/SKILL.md` "Precision check" | Earlier report #7. Item 11 adds a visible count of claims that could not be tied to code. |
 | Comment, verdict, and **Copy feedback for the agent** loop | `HR/README.md`; `HR/assets/app.js` | Like hunk-review-changes / constellagent "submit to agent". |
+
+## Changes (2026-11-23 sweep)
+
+This section sits between the shipped table and the 2026-11-16 changelog. Open PR #31 inserts its
+changelog after the 2026-11-17 section and before the second `## A. Ranked`, and appends to #1,
+#2, #3, #5, #9, and #11. Open PR #33 inserts its changelog before the 2026-11-17 heading, and
+appends to #1, #2, #5, #8, #9, #11, #12, and #16. Open PR #35 inserts item #19 between #14 and
+#15, and its changelog after #17 and before the shipped table. The #3 source sits in the
+course-evidence list, above the paragraph #31 appends after. The #11 pointer sits above "Why it
+helps", above the lines #31 and #33 append around. #6 is in none of those diffs. The draft header
+and the notes list are unchanged. Rank unchanged. No new numbered item. Notes:
+[`notes/sweep-2026-11-23.md`](notes/sweep-2026-11-23.md).
+
+- #6 "Ask about this". diffle 0.5.2, 2026-11-13. Pressing c comments on the selected words, and
+  the comment reaches the agent. `diffle comments reply` answers in the thread. `diffle comments
+  list` (0.5.0) prints the threads as JSON mid-review.
+  [changelog](https://diffle.app/changelog/),
+  [repo](https://github.com/moritzwilksch/diffle). Evidence: `vendor`. No X engagement found
+  (X search 2026-11-10..23 returned nothing). The ordered tour is not a new item.
+- Shipped. The same tour is an ordered walkthrough beside the diff. It shows the lines each
+  section talks about, ends on the questions the reviewer needs to decide, and exports as one
+  offline HTML file. Confirmation of the reading-order row, of "What I need from you", and of the
+  one-HTML-file row. The reading-order cell records it. The other two rows are unchanged.
+- #3 `teach-code` v2. Understand-Anything v2.9.8, published 2026-11-15T12:10:30Z.
+  [release](https://github.com/Egonex-AI/Understand-Anything/releases/tag/v2.9.8). Per-file lessons
+  aligned with the guided tour. Tour-covered files get detailed sections; others an overview.
+  Lessons are generated on tour build, pruned when files leave the graph, kept on a partial
+  update, and a tour rebuild refreshes their line ranges. The dashboard and the skills that read
+  the graph report when saved analysis is stale. Evidence: `vendor`. A concrete design to copy
+  for lessons that survive code changes. The same release's stdio MCP server is on the item.
+- #11. Clicking a lesson section highlights its source lines. One-line pointer. Evidence:
+  `vendor`. The lessons stay on #3.
+- Notes only, not added to an item. intent-graph `ig`, an interactive architecture map and a diff
+  view. Show HN 2026-11-21, no comments.
+  [story](https://hackdot.org/story/50588411),
+  [repo](https://github.com/mrzdevcore/intent-graph). Gnosis, Show HN 2026-03-03, 3 points, turns
+  a pull request into a grouped, ordered slideshow walkthrough.
+  [item](https://news.ycombinator.com/item?id=47230603). Older, not previously catalogued, the
+  same pattern as the shipped reading order.
+- X, 2026-11-20 through 2026-11-23. Mostly generic "comprehension debt" and "explain the diff
+  before you ship" sentiment. No new tool or technique with real engagement. One practitioner
+  habit post:
+  [LiveLoveSEO](https://x.com/LiveLoveSEO/status/2124835605074858031) ("ask to explain the diff
+  before i accept it", 4 likes). Noise-level. Note only.
+- Rank: unchanged. The tool evidence is `vendor` only. No new row.
 
 ## Changes (2026-11-16 sweep)
 
