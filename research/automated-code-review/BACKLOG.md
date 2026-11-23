@@ -42,6 +42,10 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
 - **Test:** validate the ported judge on ~50 hand-checked pairs (target ≥90% agreement, like limitless's
   93–97%); A/A on production-equivalent arm shows drift < effect sizes we care about.
 - **Note:** keep escapes-heldout (57 / 103) untouched for limitless's decision run.
+- **Note:** RTLReviewBench RQ2 ([arXiv 2611.21678](https://arxiv.org/abs/2611.21678);
+  [report.md](report.md) §2.4): synthetic mutants make reviewers look safer than real bugs on the
+  same designs. Keep this harness on real escaped defects, and treat seeded cases as plumbing
+  checks only.
 - **Note:** RegBench-Py (ORION, arXiv 2610.35223; 154 verified real-world Python PRs) is a possible
   secondary corpus. ⚠️ Python, while the main slice is TypeScript. ORION is **also relevant to
   limitless** (Option A / T5); see item 11.
@@ -202,6 +206,41 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
       privacy prompt's false-alarm cost is measured only on non-fix PRs. Reverted-fix defects may
       be easier than organic ones.
 
+*2026-11-23 sweep.*
+
+26. **Reasoning before verdict in the finding / must-fix schema** — `proposed`,
+    cost S. Also helps limitless (its reviewer/verifier and adjudicator verdict schemas).
+    Ranks below the measured S items (C1, C2), the harness (item 1), the S eval checks
+    (C9–C10), and C20, and ahead of C11. The possible gain is a lower clean must-fix rate at
+    cost S. The measured lift was on weaker short-answer models, so a frontier reasoning
+    reviewer may not move. Literature only, so this stays under items with a replicated
+    measurement.
+    - **Idea:** In the finding and must-fix schema, put the evidence or trace field before
+      verdict and severity. Hold the instruction fixed. Same order for limitless's reviewer,
+      verifier, and adjudicator verdict schemas.
+    - **Source:** [RTLReviewBench](https://arxiv.org/abs/2611.21678) (*RTLReviewBench: LLM
+      Hardware Reviewers Rarely Miss Bugs but Routinely Reject Correct RTL*; Yasir Mahmud,
+      University of Florida; code
+      [yasirmahmud/RTLReviewBench](https://github.com/yasirmahmud/RTLReviewBench)).
+      Opened 2026-11-23. [report.md](report.md) §2.4.
+    - **Why:** Errors are asymmetric. 11 of 12 models miss at most 3.5% of bugs, while false
+      rejection of correct modules ranges from 2% to 59% (more than five false rejections per
+      missed bug). A 2×2 ablation shows the position of the reason field matters more than the
+      instruction to reason, improving three short-answer models by 11–16 points. Our finder
+      and verifier emit verdicts and severity; if that schema puts verdict or severity before
+      the evidence, the clean-PR false must-fix rate may be inflated. Cheap to try. Sampling
+      and majority voting over samples did not help (a cross-provider 3-model vote only matched
+      the best single model, 97.4%), which corroborates the existing rejection of majority vote.
+    - **Test:** On the eval harness (item 1), A/B the current output schema against the same
+      prompt with the evidence/trace field moved before verdict/severity, holding the
+      instruction fixed. Measure clean must-fix rate and blocking recall over 3 trials per arm.
+      Do not contaminate escapes-heldout.
+    - **Evidence:** ⚠️ Hardware RTL. Single-module judgments with a spec, not PR review. The
+      gains were for weaker short-answer models; frontier reasoning models may show no effect.
+      A blinded audit found that some correct "buggy" verdicts rest on false technical claims.
+      Evidence for software review is thin. 114 matched pairs of buggy vs correct Verilog
+      modules, labels confirmed by simulation, 12 models.
+
 1. **Rated-severity rater as a separate pass** (v3 rater with "nuisance" class, 18/20) instead of in-finder
    fields — `proposed`, S. [Matt] Notes e2.
 2. **Other-vendor sample as an extra union finder** (comment channel only) — `proposed`, S, modest:
@@ -261,6 +300,9 @@ Each with the evidence so it isn't retried without new reason.
 
 - **Majority vote across samples** — kills recall; validators accept nearly everything and consensus
   worsens it (Report: Bugbot dropped its voting pipeline; Beyond Consensus TNR 19.2%). [Plan Don'ts]
+  *2026-11-23 sweep.* RTLReviewBench ([arXiv 2611.21678](https://arxiv.org/abs/2611.21678))
+  corroborates the rejection: sampling and majority voting over samples did not help, and a
+  cross-provider 3-model vote only matched the best single model (97.4%).
 - **Multi-round debate** — raises recall and false positives, not precision (Report: VulTrial). [Plan Don'ts]
 - **Reproduce-or-drop filter** — execution must add findings, never filter; arm probe+setup −9.2 judged
   (22.4 vs 31.6), −6.4 pool gold; #661 21.4% vs 31.6% (Report: AIxCC SoK). [RESULTS; `L` issue #661]
