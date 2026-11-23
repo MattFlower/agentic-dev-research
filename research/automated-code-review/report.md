@@ -250,6 +250,40 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   set); one labeled defect per instance; LLM-generated reference comments and taxonomy (Claude
   Opus 4.5); eval harnesses in the paper are mostly non-tool/non-execution; absolute judge scores
   disagree even when direction agrees. Not in Matt's 2026-10-31 docs.
+- *2026-11-23 sweep.* **RTLReviewBench**, *LLM Hardware Reviewers Rarely Miss Bugs but Routinely
+  Reject Correct RTL* [arXiv 2611.21678](https://arxiv.org/abs/2611.21678) (Yasir Mahmud,
+  University of Florida; code
+  [yasirmahmud/RTLReviewBench](https://github.com/yasirmahmud/RTLReviewBench)) **[arXiv]**:
+  114 matched pairs of buggy vs correct Verilog modules, labels confirmed by simulation, 12
+  models. Errors are asymmetric: 11 of 12 models miss at most 3.5% of bugs, while false
+  rejection of correct modules ranges from 2% to 59% (more than five false rejections per
+  missed bug). A 2×2 ablation shows the position of the reason field (reason before verdict in
+  the output schema) matters more than the instruction to reason, improving three short-answer
+  models by 11–16 points. Sampling and majority voting over samples did not help; a
+  cross-provider 3-model vote only matched the best single model (97.4%), which corroborates
+  the rejection of majority vote ([BACKLOG.md](BACKLOG.md) Rejected). A blinded audit found
+  that some correct "buggy" verdicts rest on false technical claims. RQ2: synthetic mutants
+  make reviewers look safer than real bugs on the same designs, so the eval harness (item 1)
+  stays on real escaped defects and treats seeded cases as plumbing checks only. ⚠️ Hardware
+  RTL; single-module judgments with a spec, not PR review. The gains were for weaker
+  short-answer models; frontier reasoning models may show no effect. Evidence for software
+  review is thin. Backlog **C26**. Also relevant to limitless: its reviewer, verifier, and
+  adjudicator verdict schemas.
+- *2026-11-23 sweep.* **CodeReviewBench**, *An Automated Benchmark for Evaluating the Software
+  Factory* [arXiv 2611.26942](https://arxiv.org/abs/2611.26942) (Martian et al.) **[arXiv]**:
+  the paper write-up of the Martian Code Review Bench in the next bullet (online set scored
+  against developers' post-review actions). Not Kodus's codereviewbench.com (C16, open
+  [PR #20](https://github.com/MattFlower/agentic-dev-research/pull/20)). 500K+ judged PRs
+  across 18 tools, mined daily from GitHub events. Of 518K bot-reviewed merged PRs, more than
+  half show zero human activity after the bot's review, so an action-based metric has to
+  filter those PRs out. Human-assessed accuracy correlates with automated precision at
+  Spearman ρ=0.688 (p=0.019) across 11 tools. Precision rankings transfer between the online
+  (developer-action) and offline (gold-set) benchmarks (ρ=0.69); F1 does not (ρ=−0.05). F0.5
+  vs F2 rankings correlate only at ρ=0.273. Report precision and recall separately rather than
+  a single F-score. An actioned-finding metric (C23, open
+  [PR #30](https://github.com/MattFlower/agentic-dev-research/pull/30)) must exclude PRs with
+  no post-review human activity. Vendor-authored (Martian, with Greptile and Augment
+  co-authors). Not a new backlog item.
 - **Martian Code Review Bench** [repo](https://github.com/withmartian/code-review-benchmark): 50 PRs /
   173 golden comments offline plus an online set scored against developers' post-review fixes;
   three judge models. (in Matt's docs)
