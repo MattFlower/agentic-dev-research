@@ -4,11 +4,14 @@
 
 *Sweep 2026-11-02: ultrareview description (§2.6), ORION, Macroscope Terra note. Eval-baseline arm rejected 2026-11-06.*
 
+*Sweep 2026-11-24: Orus (§2.2, §2.3), Claude Ship (§2.3), Teamscale (§2.2), ReviewBench gold provenance and CodeHealth (§2.4). Opened 2026-11-24.*
+
 Status: first draft, written to be revised once Matt's prior docs are folded in further. Every
 external source below was opened on 2026-10-31, except the 2026-11-02 sweep items named above,
-CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), and Foresight-SWE
-(opened 2026-11-05); anything that could not be opened is listed in "Not verified". Numbers from
-different benchmarks are not comparable.
+CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), Foresight-SWE
+(opened 2026-11-05), and the 2026-11-24 sweep (Orus, Claude Ship, Teamscale, the ReviewBench
+gold-provenance post, and CodeHealth); anything that could not be opened is listed in "Not
+verified". Numbers from different benchmarks are not comparable.
 
 **Precedence for Matt's figures** (as instructed): the 2026-10-31 escapes-dev run beats Phase 0
 `RESULTS.md` (2026-10-29), which beats the working notes on overlapping figures; where the notes
@@ -192,6 +195,22 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   items readily but reject few invalid ones; consensus made it worse (per Matt's Report). (in Matt's docs)
 - **Witnesses discriminate:** CMU/SEI static-alert adjudication [arXiv 2607.09979](https://arxiv.org/abs/2607.09979)
   (no false positive produced a valid trigger; 60% of true positives did, per Report). (in Matt's docs)
+- **Orusaurus** [post](https://backstage.orus.eu/code-review-at-orus/) (Orus Engineering Blog,
+  "Code Review: How AI and humans share the work at Orus", Nov 4, 2026) **[X]**: in-house
+  reviewer, vendor-free, one company. Finders optimise recall. A separate validator optimises
+  precision and is told not to invent new blockers. "No finding is required." Every finding
+  must show a concrete situation. The per-stage model swap is backlog **C27**. ⚠️ One company,
+  small sample (the post does not give the PR count for that experiment), different pipeline.
+- **Teamscale**, "Nine Months In: Learning to Scale Code Review" [post](https://teamscale.com/blog/learning-to-scale-code-review)
+  (Sven Amann, Nov 20, 2026) **[VB]** **[X]**: five review agents (general, plus correctness,
+  performance, security, and test quality). A separate agent tries to refute each comment, then
+  consolidation merges duplicates. Developers rate every comment. Agents nearly always find
+  something, so comments get weaker the cleaner the change (corroborates clean fixtures, C18,
+  [PR #22](https://github.com/MattFlower/agentic-dev-research/pull/22)). Rerunning produces new
+  comments of the same quality. Under $10 per review on average, about $2,500/month team-wide.
+  Paired model benchmark on 126 changes rated by developers; recall counted against the union of
+  useful comments either model found. Opus 5.5 close to Opus 5 at about 40% less cost; cheaper
+  models markedly worse. Practitioner/vendor post. No new backlog item.
 - ⚠️ **[X]** practitioners converge on the same shape: one reports 73% false positives across 344
   hand-checked findings until "a second adversarial pass tries to kill it first"
   ([post](https://x.com/_alphashark_/status/2097274562077508040)); another requires a failing test
@@ -207,6 +226,19 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   84% of >1,000-line PRs get findings (avg 7.5) vs 31% of <50-line PRs (avg 0.5); agents scale
   with PR size; `REVIEW.md` is read from the base branch, never from the PR
   ([customize](https://code.claude.com/docs/en/code-review-customize.md)). Vendor-reported. (partly in Matt's docs)
+- **Claude Ship** [post](https://claude.com/resources/articles/introducing-claude-ship)
+  (Anthropic, Nov 23, 2026) **[VB]**: Code Review (GA) reviews through multiple lenses,
+  adversarially verifies findings, and categorizes them. Quick, Standard, and Deep levels per
+  repo. PR Steward (beta) fixes CI and feedback, and cannot approve or merge. Claude Approvals
+  (beta) applies an approval policy file in the repo, recommended in observe-only mode first.
+  That is a shipped instance of C12 (risk-based auto-approval,
+  [PR #12](https://github.com/MattFlower/agentic-dev-research/pull/12)). No new item. On the
+  Claude Code team, merged PRs more than doubled June–September while the reverted share fell
+  by more than 40%, with review as one layer of a broader process. Confounded, vendor.
+- **Orus** (same [post](https://backstage.orus.eu/code-review-at-orus/) as §2.2) **[X]**: point
+  out the problem and leave the fix to the author (proposed fixes were often subtly wrong and
+  applied blindly). Only problems introduced or exposed by the diff. Never blocks (approve or
+  comment only). Median review 4 min, about $3.
 - **Codex review rubric** ([`codex-rs/prompts/templates/review/rubric.md`](https://github.com/openai/codex/blob/main/codex-rs/prompts/templates/review/rubric.md)):
   flag only bugs introduced by the commit that the author would fix; "do not stop at the first
   qualifying finding"; name the provably affected code; P0–P3 priorities plus a numeric confidence;
@@ -234,6 +266,16 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   [repo](https://github.com/review-bench/ReviewBench) (2026-10-05, MIT): 219 PRs, 19 languages, pooled
   gold (humans, LLMs, static analysis), grounded/augmented precision and recall, a 25-task offline test
   set and a judging CLI. Vendor-run; gold mostly machine-made (Report). (in Matt's docs)
+- *2026-11-24 sweep.* aicodereview.io, "AI code review benchmark: read the ground truth first"
+  [post](https://aicodereview.io/blog/ai-code-review-benchmark-read-the-ground-truth-first/)
+  (Nov 8, 2026): analysis of GitHub ReviewBench (this entry). Per the post, 98.2% of
+  ground-truth findings came from LLM reviewers. Across 15 leaderboard rows, precision spans
+  92.0–96.9% (sd 1.42) while recall spans 20.2–74.4% (sd 13.11). Recall–F1 correlation 0.989,
+  precision–F1 −0.075. Caution for our eval: pooled LLM-sourced gold can make precision
+  non-discriminating, so keep clean-PR and false-alarm measures separate. Sits with
+  Itamar Friedman's Martian-bias note (2026-11-18 sweep,
+  [PR #30](https://github.com/MattFlower/agentic-dev-research/pull/30)). Third-party analysis,
+  not peer reviewed. No new backlog item.
 - **CR-Bench-v2** [arXiv 2611.02566](https://arxiv.org/abs/2611.02566)
   ([v2 HTML](https://arxiv.org/html/2611.02566v2); Pereira, Sinha, Ghosh, Dutta, Nutanix;
   submitted 2026-11-02, v2 2026-11-03; opened in the 2026-11-04 daily sweep and again on
@@ -256,6 +298,13 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
 - **Statistics:** Miller, *Adding Error Bars to Evals* [arXiv 2411.00640](https://arxiv.org/abs/2411.00640);
   Bowyer et al., *Don't use the CLT with fewer than a few hundred datapoints* [arXiv 2503.01747](https://arxiv.org/abs/2503.01747);
   TREC pooling (Buckley & Voorhees) [NIST](https://www.nist.gov/node/761376). (in Matt's docs)
+- *CodeHealth Predicts the Token Cost of Agentic Code Review: A Pre-Registered Study of 465
+  Agent-Authored Pull Requests* [arXiv 2610.21914](https://arxiv.org/abs/2610.21914) **[arXiv]**:
+  465 agent-authored PRs, 246 repos, a frozen five-agent review-and-fix pipeline, three LLMs.
+  Each CodeHealth point is associated with 3.5–6.1% lower token cost, but the association
+  disappears after controlling for scored-file size, so file size is the driver. Cost-budgeting
+  note for the eval: stratify cost by touched-file size. CodeScene sells the score. No new
+  backlog item.
 - Other corpora Matt's Report lists, opened: AACR-Bench [2601.19494](https://arxiv.org/abs/2601.19494),
   SecBench.js [repo](https://github.com/cristianstaicu/SecBench.js), Greptile benchmarks
   [page](https://www.greptile.com/benchmarks), agentpatterns review [page](https://agentpatterns.ai/verification/open-code-review-benchmarks/),
