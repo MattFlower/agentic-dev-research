@@ -84,11 +84,22 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
 - **Source:** Claude Code skills docs (same-name skill replaces bundled command); Codex build-skills docs.
 - **Test:** install via plugin in Claude Code and via `.agents/skills` in Codex; both invoke and produce
   schema-valid JSON on one fixture.
+- **Note 2026-11-24 (Orus):** Claude broke the JSON contract on about 6% of step attempts vs 0.1%
+  for their earlier OpenAI setup; fixed by making the contract a tool with deterministic checks
+  and letting the model repair while it has context
+  ([post](https://backstage.orus.eu/code-review-at-orus/)).
 
 ### 6. Hide author self-assessment; gate results authoritative — `proposed`, cost S
 - **Source:** [Matt] `L/src/pipeline/prompts.ts` (implementer report omittable; "author framing lowers defect
   detection"; l.640 gate rules), `L/docs/research/08-code-review.md`; CRBugBench (misleading PR descriptions).
 - **Test:** A/B on the eval with PR description included vs summarised to requirements only.
+- **Note 2026-11-24 (Orus):** In an early test on ten PRs where a teammate had requested changes,
+  the reviewer would have approved seven, because a well-written PR description explained the
+  design choice and the reviewer accepted it. Their fix keeps the description but instructs that
+  "Those reasons are claims, not evidence that the choice is right" and treats all repo/PR text
+  as untrusted material. Test that as an alternative arm alongside "summarise to requirements
+  only". N=10, one company. **Also relevant to limitless.**
+  ([post](https://backstage.orus.eu/code-review-at-orus/)).
 
 ### 7. Out-of-diff impact pack (deterministic) — `rejected on stored data, not built`, cost M
 - = Report **Option F** / Plan **T8**. 13/30 production misses needed files outside the diff
@@ -201,6 +212,50 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
       LLM-generated; both annotators endorsed 72% of the LLM's GDPR-principle assignments. The
       privacy prompt's false-alarm cost is measured only on non-fix PRs. Reverted-fix defects may
       be easier than organic ones.
+
+*2026-11-24 sweep.*
+
+27. **Per-stage model tiering, accepted only within the A/A noise floor** — `proposed`,
+    cost S–M. **Also relevant to limitless.**
+    Ranks with the other cost items: C12 (commit-risk prefilter,
+    [PR #12](https://github.com/MattFlower/agentic-dev-research/pull/12)), C16 (matched-cost
+    lens comparison, [PR #20](https://github.com/MattFlower/agentic-dev-research/pull/20)), and
+    T9 (cheap-model lever). Post-v1. Not a v1 blocker. The gain is lower cost per review when a
+    stage swap stays inside our own A/A spread.
+    - **Idea:** Run cheaper models on the finder and lens stages and keep the strong model on
+      validation and rule application. Accept a substitution only when its findings differ from
+      the reference model's no more than two runs of the reference model differ from each other.
+    - **Source:** Orus Engineering Blog, "Code Review: How AI and humans share the work at Orus"
+      (Nov 4, 2026) ([post](https://backstage.orus.eu/code-review-at-orus/)). In-house reviewer
+      "Orusaurus". Vendor-free, single company, practitioner post. Their table (blind judge
+      grouping findings by problem, two runs per setup): Opus everywhere, two runs, $4.41/review,
+      blocker agreement 0.81, rule-defect agreement 0.83, same verdict 88%; Sonnet on the lenses
+      $3.61, 0.91, 0.81, 94%; Sonnet on the rule batches $3.55, 0.69, 0.68, 77%; Haiku on the
+      rule batches $2.97, 0.90, 0.50, 74%. Sonnet on the lenses found every blocker both Opus
+      runs found, for 18% less. Sonnet missed a third of the rule violations Opus always found.
+      Haiku left rules undecided. Experiment cost $475. About 4% of cost is reasoning, the rest
+      is reading; about half the cost is applying 185 rules to every changed file.
+      [report.md](report.md) §2.2.
+    - **Why:** Cuts cost without a recall loss on the stage that tolerates it. The decision rule
+      is tied to our own A/A drift measurement (the eval design already plans A/A runs), so it
+      does not need a bigger eval.
+    - **Test:** On the eval set, A/A the reference arm, then swap the model on one stage at a
+      time. Accept if blocker agreement and clean must-fix rate stay within the A/A band.
+    - **Evidence:** Thin. One company, small sample (the post does not give the PR count for
+      this experiment), different pipeline.
+
+- **Item 1 evidence note (2026-11-24).** Not a new item. Where run-to-run variance from Rane
+  is recorded (2026-11-18 sweep,
+  [PR #30](https://github.com/MattFlower/agentic-dev-research/pull/30)): Orus reports two runs
+  share about 80% of their findings, consistent with that variance evidence
+  ([post](https://backstage.orus.eu/code-review-at-orus/)).
+- **C21 evidence note (2026-11-24).** Not a new item. Diff-triggered checklist (C21,
+  [PR #28](https://github.com/MattFlower/agentic-dev-research/pull/28)): Orus found rule
+  application is judgement, not the mechanical part. Cheaper models failed on the rule batches
+  (C27: Sonnet on the rule batches, blocker agreement 0.69, rule-defect agreement 0.68, same
+  verdict 77%; Haiku on the rule batches 0.90, 0.50, 74%; Haiku left rules undecided;
+  [same post](https://backstage.orus.eu/code-review-at-orus/)). One company, small sample,
+  different pipeline.
 
 1. **Rated-severity rater as a separate pass** (v3 rater with "nuisance" class, 18/20) instead of in-finder
    fields — `proposed`, S. [Matt] Notes e2.
