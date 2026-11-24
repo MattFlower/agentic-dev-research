@@ -429,6 +429,13 @@ reading Matt Pocock's `teach`.*
   ([home](https://theseus.dev/), [guides](https://theseus.dev/product/guides),
   [pricing](https://theseus.dev/pricing)). Starter is $99 a month for 100 guides. GitHub only.
   No launch date on those pages. Evidence: `vendor`. Unknown entries are #11. The daily digest is #17.
+  **inline.dev Walkthroughs (2026-11-24).** Groups a pull request into 2–6 ordered layers, with
+  file ranges and Mermaid diagrams, a visual recap (before/after wireframes, and data-model and
+  endpoint cards for UI and API changes), and an "Ask inline" chat scoped to the diff. Off by
+  default. Two passes by a fast model. The diff is frozen into a shareable link.
+  [docs](https://inline.dev/docs/walkthrough.html). Evidence: `vendor`. A peer of the shipped
+  grouping and reading-order rows, same as the Theseus change list above. Those table cells are
+  unchanged. Not a new row. See "Changes (2026-11-24 sweep)".
   **DiffNotes** is the same premise, built: the agent that wrote the PR annotates it with a summary, a deploy card
   (migrations, flags, rollback), a risk list, and one why-not-what note per changed block. A browser extension
   overlays the notes on GitHub's Files changed tab. Nothing is posted to the PR. Notes expire. Per-repo rules live
@@ -474,6 +481,21 @@ reading Matt Pocock's `teach`.*
   [repo](https://github.com/TracyTeam/tracybot). GitHub API on 2026-11-09, in the call that started at
   the clock read 2026-11-09T13:23:42Z: `stargazers_count` 10, `forks_count` 0, GPL-3.0. Evidence:
   `vendor` for the tool. The study measured usability. It did not measure comprehension.
+  **Catalan et al. (2026-11-24).** "Useful but Unwieldy: How Software Engineers Perceive the
+  Design of Chain-of-Thought Explanations in Coding Agents"
+  ([arXiv 2611.30894](https://arxiv.org/abs/2611.30894); Samsung R&D Philippines / Hanyang /
+  UC Berkeley). Survey of 36 software engineers and semi-structured interviews, on chain-of-thought
+  messages in Cline. The messages are valued for transparency, scrutability, and trust. They are
+  too verbose, mismatched to the user's expertise, and feel "detached" ("the agent monologue-ing,
+  like it's talking to itself"). Engineers mostly skip them and "re-attach" only when they suspect
+  an error in the output, then scan the reasoning to find the cause. Participants asked for
+  "visual links of answers back to the chain of thought" and "grouping of relevant contexts and
+  reasoning". The authors propose visible links between the chain-of-thought content and the
+  agent's output, building on Callisto. Takeaway: keep decisions short and collapsed by default,
+  link each decision to the exact hunk it explains, and make this log the place to jump when a
+  reader distrusts a hunk. Evidence: paper (qualitative, n=36, no controlled task measure). The
+  method's interview count is 4. The expertise step is #9. The diagram caution is #11. See
+  "Changes (2026-11-24 sweep)".
   The earlier report recommended "label each why by source; write *why: not stated*" (`report.md`, row "Brief and
   summary drawn from…"). It hasn't shipped: HR tags signals and `risk.why`, not the brief or rationale. Evidence
   for the item: `practitioner` + `vendor`.
@@ -766,6 +788,7 @@ reading Matt Pocock's `teach`.*
   signals, (b) the learner records from #3, or (c) when neither exists, one optional question at the top ("new to this
   area?"). The community "teach pr" skill asks for a teaching level 1–4 up front
   ([#727](https://github.com/mattpocock/skills/issues/727)).
+- **Getting-to-know (2026-11-24).** Catalan et al. on #5: expertise mismatch was a main reason engineers abandoned the explanations; their DC1 is an up-front "getting-to-know" step that asks the user's expertise and goals. [arXiv 2611.30894](https://arxiv.org/abs/2611.30894).
 - **Tiered on demand, SAFE (2026-11-11).** Johnson et al.
   ([arXiv 2611.13041](https://arxiv.org/abs/2611.13041), published 2026-11-09T11:40:08Z) open a
   security finding with a one-sentence summary, then what, why, where, and how to fix, and put the
@@ -858,6 +881,11 @@ reading Matt Pocock's `teach`.*
 - **Why it sits here:** the footer and the step links apply to every page, and both sit on checks HR already runs.
   The evidence is still vendor material (aictrl's docs, PR Lens, and Graphify's edge labels and "How we know"
   panel), so it stays under #6 through #10 and above the split advisor (#12).
+- **Caution, diagrams beside the code (2026-11-24).** Catalan et al., section 4.3, the paper on
+  #5. Fewer participants wanted visualizations for the source code (8.3%) than for the prose
+  parts (19.4%). "Adding it (visualizations) to code would just be bloat". Diagrams should sit
+  beside the code, not replace it. Evidence: paper (qualitative, n=36, no controlled task
+  measure).
 - **Test:** on 5 PRs, the footer counts match a hand count of claims, and every diagram step opens a line
   `build --check` can resolve. A step with no line fails the check.
 - **Code Tour diagram (2026-11-16).** Secondhand, from the same demo as #9. A diagram, "How the
@@ -1131,6 +1159,48 @@ list. The other sweep changelogs sit with the draft history, lower in this file.
   still allow is one place, above #8, which is cost M and a thin vendor source. The file leaves #9
   where it is. Moving that section would cut text open PRs #19 and #21 insert into. TARS, already on
   #9, was null on correctness. Nothing else moves. No new row. The tone pad widens #9 and stays cost S.
+
+## Changes (2026-11-24 sweep)
+
+This section sits after the 2026-11-16 changelog and before Hand off. Open PR #31 inserts its
+changelog after the 2026-11-17 section and before the second `## A. Ranked`, and appends to #1,
+#2, #3, #5, #9, and #11. Open PR #33 inserts its changelog before the 2026-11-17 heading, and
+appends to #1, #2, #5, #8, #9, #11, #12, and #16. Open PR #35 inserts item #19 between #14 and
+#15, and its changelog after #17 and before the shipped table. Open PR #37 inserts its changelog
+between the shipped table and this 2026-11-16 section, and edits the reading-order cell. The #5
+paper sits inside Sources, after Tracybot and before "The earlier report". The inline peer sits
+after the Theseus paragraph on #5. The #9 line sits after the level-check bullet and before SAFE.
+The #11 caution sits between "Why it sits here" and "Test". Those lines are in none of the four
+diffs. The shipped table is unchanged. Rank unchanged. No new numbered item. Notes:
+[`notes/sweep-2026-11-24.md`](notes/sweep-2026-11-24.md).
+
+- #5 Decision log. Catalan et al., "Useful but Unwieldy: How Software Engineers Perceive the
+  Design of Chain-of-Thought Explanations in Coding Agents"
+  ([arXiv 2611.30894](https://arxiv.org/abs/2611.30894); Samsung R&D Philippines / Hanyang /
+  UC Berkeley). Survey of 36, and semi-structured interviews, on chain-of-thought messages in
+  Cline. Valued for transparency, scrutability, and trust. Too verbose, mismatched to expertise,
+  and "detached" ("the agent monologue-ing, like it's talking to itself"). Engineers mostly skip
+  them and "re-attach" only when they suspect an error, then scan the reasoning for the cause.
+  They asked for "visual links of answers back to the chain of thought" and "grouping of relevant
+  contexts and reasoning". The authors propose visible links from the chain of thought to the
+  agent's output, building on Callisto. Takeaway: keep decisions short and collapsed by default,
+  link each decision to the exact hunk it explains, and make the log the place to jump when a
+  reader distrusts a hunk. Evidence: paper (qualitative, n=36, no controlled task measure). The
+  method's interview count is 4. See the note.
+- #9. One line. The same paper. Expertise mismatch was a main reason engineers abandoned the
+  explanations. DC1 is an up-front "getting-to-know" step that asks expertise and goals.
+- #11. Section 4.3 of the same paper. Fewer participants wanted visualizations for the source
+  code (8.3%) than for the prose parts (19.4%). "Adding it (visualizations) to code would just
+  be bloat". Diagrams should sit beside the code, not replace it. Filed here, not on #15. The
+  interactive block already says it does not replace the page.
+- Shipped reading order and grouping. [inline.dev Walkthroughs](https://inline.dev/docs/walkthrough.html).
+  2–6 ordered layers, file ranges, and Mermaid diagrams; a visual recap with before/after
+  wireframes and data-model and endpoint cards for UI and API changes; an "Ask inline" chat
+  scoped to the diff. Off by default. Two passes by a fast model. The diff is frozen into a
+  shareable link. Evidence: `vendor`. The bullet sits beside Theseus on #5, which already calls
+  that change list a peer of these rows. The table cells are unchanged. Open PR #37 edits the
+  reading-order cell.
+- Rank: unchanged. No new numbered item.
 
 ## Hand off to Code Review Research Bot (review quality and bug finding, out of scope here)
 
