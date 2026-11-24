@@ -1171,7 +1171,8 @@ between the shipped table and this 2026-11-16 section, and edits the reading-ord
 paper sits inside Sources, after Tracybot and before "The earlier report". The inline peer sits
 after the Theseus paragraph on #5. The #9 line sits after the level-check bullet and before SAFE.
 The #11 caution sits between "Why it sits here" and "Test". Those lines are in none of the four
-diffs. The shipped table is unchanged. Rank unchanged. No new numbered item. Notes:
+diffs. The shipped table is unchanged. A trial merge with each of the four applied cleanly.
+Rank unchanged. No new numbered item. Notes:
 [`notes/sweep-2026-11-24.md`](notes/sweep-2026-11-24.md).
 
 - #5 Decision log. Catalan et al., "Useful but Unwieldy: How Software Engineers Perceive the
