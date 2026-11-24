@@ -276,6 +276,13 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   Itamar Friedman's Martian-bias note (2026-11-18 sweep,
   [PR #30](https://github.com/MattFlower/agentic-dev-research/pull/30)). Third-party analysis,
   not peer reviewed. No new backlog item.
+- *CodeHealth Predicts the Token Cost of Agentic Code Review: A Pre-Registered Study of 465
+  Agent-Authored Pull Requests* [arXiv 2610.21914](https://arxiv.org/abs/2610.21914) **[arXiv]**:
+  465 agent-authored PRs, 246 repos, a frozen five-agent review-and-fix pipeline, three LLMs.
+  Each CodeHealth point is associated with 3.5–6.1% lower token cost, but the association
+  disappears after controlling for scored-file size, so file size is the driver. Cost-budgeting
+  note for the eval: stratify cost by touched-file size. CodeScene sells the score. No new
+  backlog item.
 - **CR-Bench-v2** [arXiv 2611.02566](https://arxiv.org/abs/2611.02566)
   ([v2 HTML](https://arxiv.org/html/2611.02566v2); Pereira, Sinha, Ghosh, Dutta, Nutanix;
   submitted 2026-11-02, v2 2026-11-03; opened in the 2026-11-04 daily sweep and again on
@@ -298,13 +305,6 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
 - **Statistics:** Miller, *Adding Error Bars to Evals* [arXiv 2411.00640](https://arxiv.org/abs/2411.00640);
   Bowyer et al., *Don't use the CLT with fewer than a few hundred datapoints* [arXiv 2503.01747](https://arxiv.org/abs/2503.01747);
   TREC pooling (Buckley & Voorhees) [NIST](https://www.nist.gov/node/761376). (in Matt's docs)
-- *CodeHealth Predicts the Token Cost of Agentic Code Review: A Pre-Registered Study of 465
-  Agent-Authored Pull Requests* [arXiv 2610.21914](https://arxiv.org/abs/2610.21914) **[arXiv]**:
-  465 agent-authored PRs, 246 repos, a frozen five-agent review-and-fix pipeline, three LLMs.
-  Each CodeHealth point is associated with 3.5–6.1% lower token cost, but the association
-  disappears after controlling for scored-file size, so file size is the driver. Cost-budgeting
-  note for the eval: stratify cost by touched-file size. CodeScene sells the score. No new
-  backlog item.
 - Other corpora Matt's Report lists, opened: AACR-Bench [2601.19494](https://arxiv.org/abs/2601.19494),
   SecBench.js [repo](https://github.com/cristianstaicu/SecBench.js), Greptile benchmarks
   [page](https://www.greptile.com/benchmarks), agentpatterns review [page](https://agentpatterns.ai/verification/open-code-review-benchmarks/),
