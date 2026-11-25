@@ -1588,6 +1588,7 @@ code-walkthrough. The #11 sentence sits in the Idea bullet, after "This item doe
 The #15 sentences sit after Test. The #17 sentence sits after Test and before the CodeLens cache
 bullet. The hand-off line sits after the Atlas Review bullet and before IronBee. Those lines are
 in none of the five diffs. The shipped table, the draft header, and the notes list are unchanged.
+A trial merge with each of #31, #33, #35, #37, and #39 applied cleanly.
 Rank unchanged. No new numbered item. Notes:
 [`notes/sweep-2026-11-25.md`](notes/sweep-2026-11-25.md).
 
