@@ -13,6 +13,8 @@ until a `report.md` is written.*
 
 *2026-11-12 sweep: [`notes/sweep-2026-11-12.md`](notes/sweep-2026-11-12.md).*
 
+*2026-11-25 sweep: [`notes/sweep-2026-11-25.md`](notes/sweep-2026-11-25.md).*
+
 **Baseline.** `accelerate/skills/human-review` (v0.6.2, 2026-10-30) is ground truth. Everything here is ranked by
 what it adds *on top of* that skill. Ideas the skill already does are listed under **Shipped**, with the file path.
 Abbreviations: `HR/` = `https://github.com/MattFlower/accelerate/blob/main/skills/human-review/`.
@@ -73,6 +75,12 @@ factory's deliver/review stages.
   Evidence: `measured-obs` (pilot, small). **Our own idea:** at least one question should ask for an
   output, checked against the code or a run. A fluent explanation is weak evidence the model traced
   the code. See #4 and #11.
+  **PRIMM predict-run (2026-11-25).** Kerslake, Koli Calling '26, published 2026-11-04
+  ([doi](https://doi.org/10.1145/3856208.3856264)). Undergraduates explain Python in plain English
+  with GenAI, then predict outputs and check them by running the code (PRIMM: predict, run,
+  investigate, modify, make). Evidence: `measured-obs` (novice/education; abstract only, no effect
+  sizes quoted). Supports the output-prediction question above, checked against a run. See
+  "Changes (2026-11-25 sweep)".
   **RepoProbe** is a model benchmark, not a study of people: 500 GitHub Discussions pairs from 50 repositories,
   scored by a checklist of atomic weighted facts and discrete rubrics, rationale written before the score. That
   protocol was more stable than a scalar LLM-as-a-Judge. In the results table, every model's clarity score is
@@ -735,6 +743,14 @@ reading Matt Pocock's `teach`.*
 - **Test:** on 5–8 real PRs (limitless, plus public PRs like the perspica examples), compare HR's mechanical tags
   with perspica's noise tags by hand. Time the questions "what is the real logic delta?" and "do the tests hit
   the risky functions?" Check false move collapses.
+- **Genesis Map, test reach (2026-11-25).** Local CLI and skill, open source (Apache 2.0 per X
+  posts), 0 stars when fetched
+  ([repo](https://github.com/GenesisAgentInfra/genesis)). It flags agent changes that are untested
+  or risky. Author-reported, unverified, no methodology seen: Claude Code flagged 38% of untested
+  changes with it vs 8% without
+  ([poweredbymuse](https://x.com/poweredbymuse/status/2125370422225256857),
+  [jayjayq8](https://x.com/jayjayq8/status/2125530667564097627)). Evidence: `vendor`. The flow map
+  is #7. See "Changes (2026-11-25 sweep)".
 - **code-walkthrough** orders callers before callees inside a theme. The shipped concerns row says
   callees first. This item walks entry points, then what they call. The compiler-or-parser caveat
   and the stars are on #6 and #7
@@ -825,6 +841,12 @@ reading Matt Pocock's `teach`.*
   are new or changed in this pull request. Trace and Walk, numbering the steps to an ending and stepping through
   them, are optional controls on that diagram. Teaching the change before the findings is already shipped. This
   item does not redo it.
+  **diagram-design (2026-11-25).** MIT skill for Claude Code, Codex, Cursor, and others
+  ([repo](https://github.com/cathrynlavery/diagram-design),
+  [site](https://diagramdesign.dev/)). One self-contained HTML+SVG file, 52 diagram types, and it
+  can redraw Mermaid, draw.io, Excalidraw, and PlantUML. GitHub showed 72,340 stars on 2026-11-25.
+  Evidence: `vendor` + `engagement` (stars). A possible renderer instead of Mermaid. Test whether
+  sequence and architecture output stays linkable to `path:line`. See "Changes (2026-11-25 sweep)".
   **Co-Review inferred and unknown (2026-11-11).** The audit guide on #3 links each claim to code and
   tags a claim the agent could not verify as inferred or unknown
   ([workflows](https://sdsvn.github.io/co-review/docs/guides/workflows/)). Evidence: `vendor`. 9 stars.
@@ -1023,6 +1045,16 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
   to the real code, and the quiz (#1) is the guard. Not a new row.
 - **Test:** only on PRs tagged algorithmic. Compare quiz and time with and without the block. The narrated
   modality is a separate pass: on 3 PRs, does the reader still open the page for a line the voice mentioned?
+- **Flyovers (2026-11-25).** [Flyovers](https://flyovers.dev/) turns a pull request into an
+  interactive video walkthrough in chapters you can jump to: Components, Deployment, Sequence,
+  State machine, Implementation care, Code walkthrough, Impact (example PR "Add rate limiting to
+  checkout", 7 chapters). Evidence: `vendor`. Narrated video conflicts with the preference for
+  skimmable, code-linked text. Worth testing only as this gated view. Re-render on new commits
+  is #17. See "Changes (2026-11-25 sweep)".
+- **Narrated explainer videos (2026-11-25).** @tonkotsuboy_com built a Claude Code skill that
+  makes narrated explainer videos to digest large pull requests and unfamiliar projects
+  ([post](https://x.com/tonkotsuboy_com/status/2125579370777747775), 3 likes, 4 bookmarks).
+  Evidence: `practitioner`. See "Changes (2026-11-25 sweep)".
 
 ### 16. Attach the page to every limitless PR — `proposed`, cost M, target limitless
 - **Idea:** limitless's deliver stage runs human-review's `collect`/`build` and attaches `review.html` (or a link) to
@@ -1059,6 +1091,8 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
   large review. This item remains the interdiff of hunks and notes since the last page. See #6 for the
   repo. Evidence: `vendor`.
 - **Test:** count re-read minutes on the second round across 5 feedback loops.
+- **Flyovers, re-render (2026-11-25).** The same product as #15 re-renders the walkthrough on new
+  commits, so it does not drift from the branch. Evidence: `vendor`. See "Changes (2026-11-25 sweep)".
 - **CodeLens cache (2026-11-11).** Parses and descriptions are stored by content hash, so a later
   review pays for content that changed. The explore page also lists what is new or changed since the
   last look, from the snapshot's commit id. The per-change risk pass is not cached yet, and a cached
@@ -1220,6 +1254,10 @@ list. The other sweep changelogs sit with the draft history, lower in this file.
   [repo](https://github.com/Loomtide/atlas-review) (0 stars, GitHub API 2026-11-10T13:24:25Z).
   [X](https://x.com/avinashpdy/status/2119996488168231062): 3 likes, 0 bookmarks, 4 replies, 170 views,
   fxtwitter at that same clock read. X API `get_posts_by_id` returned `client-not-enrolled`.
+- **Tufano et al., AI-generated code issues (2026-11-25).** "AI-Generated Code Issues: A Taxonomy
+  from Repository Histories, AI Conversations, and Developer Interviews." 87 issue types from 914
+  commits, 299 AI conversations, and 20 interviews. Review quality, out of scope here.
+  [arXiv 2611.32676](https://arxiv.org/abs/2611.32676).
 - **IronBee Code Review**: same launch post as Code Wiki. The post's note_tweet claims 67.4 F2 and 75.3 Recall
   on the Martian Code Review Benchmark ([X](https://x.com/serkan_ozal/status/2117633673461674225)).
 - **Repowise v0.60 PR bot.** A reply on a review thread becomes a decision that later reviews apply, and the
@@ -1529,5 +1567,51 @@ so it can merge with open PR #13, which rewrites that header for the 2026-11-06 
   job is a rule on the decision log plus a lesson stop. A new number would shift the items PR #13 cites.
 - Left off the ranked list: Kiln's codebase-onboard line (0 likes, 25 views on the same mirror read).
   Already covered by the onboarding skills on #3.
+
+## Changes (2026-11-25 sweep)
+
+This section sits at the end of the file, after the 2026-11-09 changelog. Open PR #31 inserts its
+changelog after the 2026-11-17 section and before the second `## A. Ranked`, appends to the ends of
+#1, #2, #3, #5, #9, and #11, and adds a notes pointer after the 2026-11-13 sweep line. Open PR #33
+inserts its changelog before the 2026-11-17 heading, appends inside #1 (after Risk, before Quiz
+shape), #2, #5, #8 (after code-walkthrough), #9, #11 (after Test, before Code Tour), #12, and #16,
+and appends at the end of the hand-off list. Open PR #35 inserts item #19 between #14 and #15, its
+changelog after #17 and before the shipped table, and a hand-off bullet after the Level Up bullet.
+Open PR #37 inserts its changelog between the shipped table and the 2026-11-16 changelog, appends
+to #3, #6, and #11 (after Graphify, before Why it helps), and edits the reading-order cell. Open
+PR #39 inserts its changelog after the 2026-11-16 section and before Hand off, and appends to #5,
+#9, and #11 (between Why it sits here and Test).
+
+The 2026-11-25 pointer sits after the 2026-11-12 sweep line. The #1 sentence sits after the
+2026-11-13 output-prediction paragraph. The #8 sentence sits after Test and before
+code-walkthrough. The #11 sentence sits in the Idea bullet, after "This item does not redo it."
+The #15 sentences sit after Test. The #17 sentence sits after Test and before the CodeLens cache
+bullet. The hand-off line sits after the Atlas Review bullet and before IronBee. Those lines are
+in none of the five diffs. The shipped table, the draft header, and the notes list are unchanged.
+A trial merge with each of #31, #33, #35, #37, and #39 applied cleanly.
+Rank unchanged. No new numbered item. Notes:
+[`notes/sweep-2026-11-25.md`](notes/sweep-2026-11-25.md).
+
+- #15. [Flyovers](https://flyovers.dev/), `vendor`. Chaptered video walkthrough of a pull request
+  (Components, Deployment, Sequence, State machine, Implementation care, Code walkthrough, Impact).
+  Narrated video, so it stays on the gated view. @tonkotsuboy_com's narrated explainer skill,
+  `practitioner` (3 likes, 4 bookmarks).
+- #17. Flyovers re-renders the walkthrough on new commits. `vendor`.
+- #8. Genesis Map test reach
+  ([repo](https://github.com/GenesisAgentInfra/genesis)). `vendor`. Author-reported 38% of
+  untested changes flagged with it vs 8% without, unverified, no methodology seen. The flow map
+  is #7, and that body is unchanged.
+- #1. Kerslake, PRIMM predict-run, Koli Calling '26, published 2026-11-04. `measured-obs`
+  (novice/education). Abstract only. No effect sizes quoted.
+- #11. [diagram-design](https://github.com/cathrynlavery/diagram-design), `vendor` + `engagement`
+  (72,340 GitHub stars on 2026-11-25). Possible renderer instead of Mermaid, if steps stay
+  linkable to `path:line`.
+- Hand-off: Tufano et al., "AI-Generated Code Issues: A Taxonomy from Repository Histories, AI
+  Conversations, and Developer Interviews"
+  ([arXiv 2611.32676](https://arxiv.org/abs/2611.32676)). 87 issue types from 914 commits, 299 AI
+  conversations, and 20 interviews.
+- Notes only, no item body: @moritzplassnig, "The Pull Request Is Dead"; screen-capture pull
+  request walkthroughs. See the note.
+- Rank: unchanged. No new numbered item.
 
 
