@@ -58,6 +58,8 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
   (one-sided 95% lower bound +5.3), 2/18 clean false blocks. In production (49 reviews) p50 went from 63 s to
   77 s and median cost about doubled; request-changes rate held at about 30%.
 - **Test:** accelerate eval in both runtimes.
+- **Note:** C30 runs low / medium / high on the v1 eval before this "high effort" default freezes
+  ([report.md](report.md) §2.4).
 
 ### 3. Rule-guided severity (consequence × trigger → deterministic mapping) — `proposed`, cost S
 - **Idea:** finder emits `consequence` + `trigger` + scenario; script maps to severity using the Rubric line
@@ -130,6 +132,15 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
   this backlog.
 - **Test:** security-slice recall on the eval (SecBench.js-style cases already cited) without raising
   clean-case false blocks.
+- **Evidence note (2026-11-26), not a new item.** CyberDual
+  ([arXiv 2610.34435](https://arxiv.org/abs/2610.34435); Yang, Lee et al.; submitted 2026-10-25;
+  not previously in this repo). Attacker agents hide an exploitable bug in real maintenance
+  work, and execution of the PoC decides. Three agentic reviewers caught 85–91% of 1,088 valid
+  attacks. When the bug is spread over real upstream commits, about 1 in 6 attack slots still
+  ends with a working exploit. When Claude reviewers miss they mostly approve; GPT-6-Sol mostly
+  repairs the wrong code. A reviewer from a second vendor catches about two thirds of a Claude
+  reviewer's misses, which supports a cross-vendor union for this lens specifically. Also
+  relevant to limitless. [report.md](report.md) §2.5.
 
 ### 11. PR-specific brief + mutation check (oracle replica) — `proposed`, cost M–L
 - = Report **Option A** / Plan **T5**. "Gold comes from a procedure, not a better model" (Report; Notes).
@@ -202,10 +213,59 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
       privacy prompt's false-alarm cost is measured only on non-fix PRs. Reverted-fix defects may
       be easier than organic ones.
 
+*2026-11-26 sweep.*
+
+30. **Effort-level arm in the v1 eval** — `proposed`, cost S. **Also relevant to limitless**
+    (its reviewer runs at medium; "no setting is a strong gate" supports keeping the failing-test /
+    mutation procedure rather than leaning on reviewer verdicts).
+    Ranks near the top of the C-items, behind C1 and C2 and ahead of C20, C27 and C28. C1 and C2
+    are measured on escaped defects at cost S; this is literature only, so it stays under them.
+    It is one extra arm, and it decides item 2's effort before that default freezes, so the gain
+    per effort is higher than a later lens. C20 depends on item 10. C27
+    ([PR #38](https://github.com/MattFlower/agentic-dev-research/pull/38)) uses the same A/A
+    acceptance rule but is a post-v1 cost swap, not a v1 blocker. C28
+    ([PR #40](https://github.com/MattFlower/agentic-dev-research/pull/40)) is literature only and
+    S–M, and it does not choose the core default.
+    - **Idea:** Run the core reviewer at low, medium and high reasoning effort on the same eval
+      PRs before freezing the default. Ship medium only if it stays within the A/A noise floor of
+      high, the same acceptance rule as C27 and item 1's noise floor.
+    - **Source:** [arXiv 2611.33639](https://arxiv.org/abs/2611.33639) (*How Much Effort Does an
+      AI Code Reviewer Need? Evidence from Claude 5.5 Models on Plausible-but-Wrong Patches*;
+      Shen, Zhang, Wang; submitted 2026-11-25; Opus preregistered
+      [osf.io/r8q2m](https://osf.io/r8q2m); data and code
+      [trustmybot/research-artifacts](https://github.com/trustmybot/research-artifacts)).
+      Opened 2026-11-26. [report.md](report.md) §2.4.
+    - **Why:** Item 2 currently says "high effort" for accelerate while limitless runs at medium.
+      This is the first controlled evidence on that knob. Low is clearly worse. Medium versus
+      high is unresolved per model, so measure it rather than assume it.
+    - **Test:** Three arms on the v1 eval set, 3 trials per PR (item 1 variance). Compare blocking
+      recall and clean must-fix rate. Accept the cheaper level only when it stays within the A/A
+      noise floor of high. That is C27's rule (a swap is accepted only when its findings differ
+      from the reference no more than two runs of the reference differ from each other) and item
+      1's rule (A/A drift stays below the effect sizes we care about).
+    - **Evidence:** moderate. 90 agent-written Django patches from SWE-bench Verified (55 wrong,
+      35 correct by strengthened SWE-ABS tests); Opus, Sonnet and Haiku 5.5 at low, medium and
+      high. High effort accepted fewer wrong patches than low in every model (false success .45
+      vs .67 Opus, .49 vs .65 Sonnet, .51 vs .78 Haiku), supported for Opus and Haiku. For Opus,
+      medium was non-inferior to high within 15 percentage points (difference .018, 95% CI
+      [-.065, .108]) at 20% lower cost. For Sonnet and Haiku, medium was 39% and 51% cheaper but
+      not shown non-inferior. Haiku at high cost about 8% as much per review as Opus at medium;
+      the accuracy difference is unresolved. No setting is a strong gate: each accepted at least
+      45% of wrong patches. Caveats: patch-acceptance verdicts, not finding-level review; one
+      repo (Django); a 15-percentage-point non-inferiority margin is wide; for 32 of the 55 wrong
+      patches the issue may not require what the failing test checks, and without them neither
+      accuracy hypothesis holds for any model. Sonnet and Haiku are exploratory.
+
 1. **Rated-severity rater as a separate pass** (v3 rater with "nuisance" class, 18/20) instead of in-finder
    fields — `proposed`, S. [Matt] Notes e2.
 2. **Other-vendor sample as an extra union finder** (comment channel only) — `proposed`, S, modest:
    Sol 30.6% → ∪ Opus any-severity 39.8% (~+5–9), clean 2/8 unchanged (RESULTS 0c). Opus alone is rejected.
+   **Evidence note (2026-11-26), not a new item.** CyberDual
+   ([arXiv 2610.34435](https://arxiv.org/abs/2610.34435)): a reviewer from a second vendor catches
+   about two thirds of a Claude reviewer's misses, and the misses fail differently (Claude
+   reviewers mostly approve; GPT-6-Sol mostly repairs the wrong code). That supports a
+   cross-vendor union for the security lens (item 10) specifically, not a general recall claim
+   for this finder. Also relevant to limitless. [report.md](report.md) §2.5.
 3. **Re-review only the fix diff on re-runs** — `proposed`, S. Beko: redundant re-reviews, PR closure +42%. ⚠️
 4. **Outdated-rate tracking** (did flagged lines change later?) as an online acceptance metric — `proposed`, M.
    BitsAI-CR. ⚠️

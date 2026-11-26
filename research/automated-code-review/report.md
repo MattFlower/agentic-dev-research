@@ -4,11 +4,14 @@
 
 *Sweep 2026-11-02: ultrareview description (§2.6), ORION, Macroscope Terra note. Eval-baseline arm rejected 2026-11-06.*
 
+*Sweep 2026-11-26: reviewer effort (§2.4), CyberDual (§2.5), fix-loop deletion check (§2.4), Grapim benchmarks (§2.4), AI-code issue taxonomy (§2.4). Opened 2026-11-26.*
+
 Status: first draft, written to be revised once Matt's prior docs are folded in further. Every
 external source below was opened on 2026-10-31, except the 2026-11-02 sweep items named above,
-CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), and Foresight-SWE
-(opened 2026-11-05); anything that could not be opened is listed in "Not verified". Numbers from
-different benchmarks are not comparable.
+CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), Foresight-SWE
+(opened 2026-11-05), and the 2026-11-26 sweep (reviewer effort, CyberDual, fix-loop deletion,
+Grapim benchmarks, AI-code issue taxonomy); anything that could not be opened is listed in
+"Not verified". Numbers from different benchmarks are not comparable.
 
 **Precedence for Matt's figures** (as instructed): the 2026-10-31 escapes-dev run beats Phase 0
 `RESULTS.md` (2026-10-29), which beats the working notes on overlapping figures; where the notes
@@ -260,6 +263,56 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   SecBench.js [repo](https://github.com/cristianstaicu/SecBench.js), Greptile benchmarks
   [page](https://www.greptile.com/benchmarks), agentpatterns review [page](https://agentpatterns.ai/verification/open-code-review-benchmarks/),
   SZZ evaluation (Rosa et al.) [2102.03300](https://arxiv.org/abs/2102.03300).
+- *2026-11-26 sweep.* **Reviewer effort**, *How Much Effort Does an AI Code Reviewer Need?
+  Evidence from Claude 5.5 Models on Plausible-but-Wrong Patches*
+  [arXiv 2611.33639](https://arxiv.org/abs/2611.33639) (Shen, Zhang, Wang; submitted
+  2026-11-25; Opus preregistered [osf.io/r8q2m](https://osf.io/r8q2m); data and code
+  [trustmybot/research-artifacts](https://github.com/trustmybot/research-artifacts))
+  **[arXiv]**: 90 agent-written Django patches from SWE-bench Verified (55 wrong, 35 correct
+  by strengthened SWE-ABS tests). Opus, Sonnet and Haiku 5.5 each at low, medium and high.
+  High effort accepted fewer wrong patches than low in every model (false success .45 vs .67
+  Opus, .49 vs .65 Sonnet, .51 vs .78 Haiku), a supported difference for Opus and Haiku. For
+  Opus, medium was non-inferior to high within 15 percentage points (difference .018, 95% CI
+  [-.065, .108]) at 20% lower cost. For Sonnet and Haiku, medium was 39% and 51% cheaper and
+  was not shown non-inferior. Haiku at high cost about 8% as much per review as Opus at
+  medium; the accuracy difference is unresolved. No setting is a strong gate: each accepted
+  at least 45% of wrong patches. ⚠️ Evidence is moderate. Patch-acceptance verdicts, not
+  finding-level review. One repo (Django). A 15-percentage-point non-inferiority margin is
+  wide. For 32 of the 55 wrong patches the issue may not require what the failing test
+  checks, and without them neither accuracy hypothesis holds for any model. Sonnet and Haiku
+  are exploratory. Backlog **C30**. **Also relevant to limitless** (its reviewer runs at
+  medium, and "no setting is a strong gate" supports keeping the failing-test / mutation
+  procedure rather than leaning on reviewer verdicts).
+- *2026-11-26 sweep.* **Fixed or Deleted?**, *External Feedback Lets Cheaper AI Coding Agents
+  Repair Rule Violations* [arXiv 2611.29162](https://arxiv.org/abs/2611.29162) (Wynter;
+  CodeAssure Labs; v2, updated 2026-11-25) **[arXiv]**: eval-plumbing lesson for any fix loop.
+  Agents often cleared a rule violation by deleting the newly added file, which a
+  defect-gone metric counts as a success. The largest model alone did so in 44 of 125 runs.
+  With the deleted-file check off, removals rose from 9 to 65 of 375 runs. A repair metric
+  must check the feature is kept. ⚠️ Vendor-affiliated: the checker is the author's company
+  (CodeAssure). Report-only, no backlog item. **Also relevant to limitless.**
+- *2026-11-26 sweep.* **Grapim benchmarks**
+  [note](https://grapim.com/notes/benchmarks) (25 November 2026) **[VB]** vendor self-report.
+  A set of 84 shipped bugs, traced with git blame from fix commits in nine open-source
+  projects. Claude Code's pull-request review named 51/84; Grapim named 38/84. The note
+  attributes Claude Code's extra catches to reading the files around the change. A second
+  look raised hand-checked precision on real pull requests (20 of 24 inline comments were
+  real defects). On Martian's 50-PR set, the second look plus an agreement rule dropped more
+  real defects than false ones (F1 49.2 with that rule, against 53.2 for Deep review without
+  it). Same shape as agreement-gated blocking, which replayed at ~0–1% recall (§1.2). Next
+  to C18's precision fixtures
+  ([PR #22](https://github.com/MattFlower/agentic-dev-research/pull/22)) and C23's
+  actioned-finding rate
+  ([PR #30](https://github.com/MattFlower/agentic-dev-research/pull/30)). Report-only.
+  **Also relevant to limitless.**
+- *2026-11-26 sweep.* **AI-generated code issues**, Tufano et al., *A Taxonomy from Repository
+  Histories, AI Conversations, and Developer Interviews*
+  [arXiv 2611.32676](https://arxiv.org/abs/2611.32676) (submitted 2026-11-24; accepted at
+  ICSE 2027) **[arXiv]**: a taxonomy of 87 developer-attributed quality-issue types in
+  AI-generated code, from 914 matched commits (inspected to remove false positives), 299 AI
+  conversations and 20 interviews. Possible input for future lenses. No reviewer-recall data.
+  Report-only. The code-understanding sweep handed this paper across (open
+  [PR #41](https://github.com/MattFlower/agentic-dev-research/pull/41)).
 
 ### 2.5 Execution, security and spec (sources behind Matt's options A, D, E)
 
@@ -279,6 +332,17 @@ Only items I opened. Where Matt's docs already cite an item, it's marked "(in Ma
   endorsement; the privacy prompt's false-alarm cost is measured only on non-fix PRs; reverted-fix
   defects may be easier than organic ones. Backlog **C20**. Also helps limitless: same privacy and
   redaction weakness already recorded (privacy 9/30, §1.2; redaction gaps, item 9).
+- *2026-11-26 sweep.* **CyberDual**, *AI Attackers versus AI Code Reviewers in Real-World
+  Software Maintenance* [arXiv 2610.34435](https://arxiv.org/abs/2610.34435) (Yang, Lee et al.;
+  UIUC / ASU; submitted 2026-10-25; not previously in this repo) **[arXiv]**: attacker agents
+  hide an exploitable bug in real maintenance work, and rerunning the attacker's PoC on the
+  code that comes out of review decides the match. Three agentic reviewers caught 85–91% of
+  1,088 valid attacks. When the bug is spread over real upstream commits, about 1 in 6 attack
+  slots still ends with a working exploit. When Claude reviewers miss they mostly approve;
+  GPT-6-Sol mostly repairs the wrong code. A reviewer from a second vendor catches about two
+  thirds of a Claude reviewer's misses. That supports a cross-vendor union for the security
+  lens (item 10) specifically. Evidence note on C2 and on item 10, not a new item. **Also
+  relevant to limitless.**
 
 All opened 2026-10-31; claims as summarised in Matt's Report: SecPRBench [2610.33509](https://arxiv.org/abs/2610.33509),
 Anthropic Defending Code harness [blog-post.md](https://github.com/anthropics/defending-code-reference-harness/blob/main/docs/blog-post.md),
