@@ -24,6 +24,8 @@ report warns that saving time by reading less core logic lets defects through). 
 engagement alone. Measurement items come first because nothing below can be ranked honestly without them. That is the
 same rule as the code-review backlog's "fix the eval first".
 
+*2026-11-26 sweep: [`notes/sweep-2026-11-26.md`](notes/sweep-2026-11-26.md).*
+
 **Evidence labels.** `measured-RCT` (randomized or controlled study) · `measured-obs` (observational or field data) ·
 `practitioner` (someone describes their own use) · `vendor` (launch post or docs) · `engagement` (X numbers only, as
 returned by the X API on the date written next to the number: 2026-11-01 in draft 2, 2026-11-02 in draft 3,
@@ -696,6 +698,19 @@ reading Matt Pocock's `teach`.*
   abstract reports no comprehension quiz. Evidence: `measured-obs` (qualitative field study). The
   per-edit map is #17, in Changes (2026-11-16 sweep).
 
+- **Archify, one hop (2026-11-26).** `archify-pr` skill for Claude Code, Codex, and Cursor
+  ([repo](https://github.com/tt-a1i/archify),
+  [pr-review](https://github.com/tt-a1i/archify/blob/main/archify/references/pr-review.md)).
+  Views follow the change: storage shape (`erd`), then boundaries and state (`lifecycle`,
+  `architecture`, `workflow`), then interaction and payloads (`sequence`, `dataflow`, before
+  and after payloads). Unchanged context stops at one hop: the direct caller, the store
+  written, the state left. GitHub API on 2026-11-26: `stargazers_count` 100316. v3.3.0
+  released 2026-11-22
+  ([write-up](https://codebumble.net/insights/archify-v3-3-agent-skill-interactive-diagrams)).
+  X: [@EthanLinAI](https://x.com/EthanLinAI/status/2125925092970664446), 5 likes when read.
+  Evidence: `vendor` + `engagement` (stars). No measured outcome. Diagram rules are #11. The
+  materiality gate is #12. See "Changes (2026-11-26 sweep)".
+
 ### 8. Semantic "lines to read", call-graph order, and test reach — `proposed`, cost M, target HR
 - **Idea:** before the model's prose, and beside it, run a local tree-sitter semantic diff. Collapse moves,
   formatting, rename-only lines, and generated or vendored files. Report how many lines are left ("N of M lines
@@ -722,6 +737,11 @@ reading Matt Pocock's `teach`.*
   static, 5.000 structured, and 4.932 character (Table 4, N=44). The scores sit together. The study is
   about how a short snippet appears on screen. Evidence: `measured-RCT` (lab snippets). The item stays
   at this rank.
+  **LeadDev, where to look (2026-11-26).** Key takeaways on
+  [The AI Code Review Report 2026](https://leaddev.com/the-ai-code-review-report-2026):
+  26% "fully understand the AI code they review", and 68% "don't always know which changes
+  need deeper scrutiny" (377 engineers and engineering leaders; the full report is behind
+  login). Evidence: `survey`, vendor-partnered. A pointer only. See "Changes (2026-11-26 sweep)".
 - **Why it helps:** agent pull requests are often majority mechanical. HR's mechanical tier is path-based, so a
   move or a rename inside a file still looks like logic. The `focus` order is not taken from the call graph.
   "Tests cover / don't cover" does not say which changed test reaches which changed function.
@@ -836,6 +856,13 @@ reading Matt Pocock's `teach`.*
   0.93 to 7.09, p=.069). Correct proposals were 19 percent and 41 percent. The abstract prints the
   2.6 figure as the odds of a correct remediation. Evidence: within-subjects, security findings. Not
   tagged `measured-RCT`. The domain and that p-value keep the item where it is.
+  **Archify change diagrams (2026-11-26).** The same skill as #7. Each view is one merged
+  superset of before and after. Elements are marked added, modified, or removed. Removed
+  elements are drawn as ghosts in place, and the layout does not move. The reference says
+  "The code is the authority; the diagrams show what changed, where, and with what
+  neighbours. They never grade the change." Diagrams can be attached to a GitHub pull
+  request or a GitLab merge request. The CLI runs deterministic layout-verification gates.
+  Stars and the X post are on #7. Evidence: `vendor`. See "Changes (2026-11-26 sweep)".
 - **Sources:** aictrl's explanation card, which keeps reviewer notes last and counts grounded against ungrounded
   claims ([blog, 2026-10-22](https://aictrl.dev/blog/understand-a-pull-request-before-you-review-it),
   [docs](https://aictrl.dev/docs/pr-explanations)). Evidence: `vendor`.
@@ -879,6 +906,10 @@ reading Matt Pocock's `teach`.*
   [site](https://www.dyff.sh/), which did not load on 2026-11-02). The README does not describe a 34-file PR grouped
   into 4-5 dependency-order stages, so that claim stays unchecked. Not enough to move this item. The symbol-search
   half is noted on #7. Evidence for Dyff: `vendor`.
+  **Archify materiality (2026-11-26).** The same skill as #7. Preflight computes materiality
+  from changed files, changed lines, and path classes, and only offers diagrams for a
+  material diff. A small schema or migration change still qualifies. Stars are on #7. Evidence:
+  `vendor`. A size gate for those diagrams. See "Changes (2026-11-26 sweep)".
   **gavel (2026-11-16).** The same tool as #5 groups a large change by purpose. Each part has its own
   tab and its own brief. A refactor can come before the behavior that depends on it. That is this
   advisor's split, ordered by purpose. Stars and the write-up are on #5. Evidence: `vendor`. The
@@ -1009,6 +1040,22 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
   **PR Lens** animates architecture and data flow inside the pull request, and a step opens the diff
   ([site](https://prlens.dev/)). Stars and posts are on #7. Findings are handed off. Evidence: `vendor`.
   perspica's Learn figure, when the model draws one, is the concept-lesson case of this block. See #1 and #3.
+  **1904, screen on the PR (2026-11-26).** "Pull requests from your agents now show what
+  changed on screen" (2026-11-14)
+  ([news](https://1904.ai/news/pr-shows-the-screen)). For a UI change, the pull request gets
+  a "Visual changes" comment with up to four screenshots the agent took while checking its
+  work. Only screenshots of the exact submitted files qualify. Stale ones are dropped, and
+  the comment says so when none match. Each caption names the page, the view, and the
+  commit. Submitting again updates the same comment. For a bigger change, captioned scenes
+  tied to steps of a UI check become a silent video of at most 45 seconds, recorded only
+  when checks pass on the submitted commit. Evidence: `vendor`. The commit pin is #17. See
+  "Changes (2026-11-26 sweep)".
+  **RunThru (2026-11-26).** Comment `/runthru` on a pull request. An agent uses the feature
+  on the preview and films a narrated walkthrough with captions and chapters. Narration is
+  written only from what is on screen
+  ([hunted.space](https://hunted.space/product/runthru), featured 2026-11-10, 63 upvotes,
+  Product of the Day #39 when read). A peer of Flyovers (2026-11-25 sweep, open PR #41).
+  Evidence: `vendor`. See "Changes (2026-11-26 sweep)".
   **Anatomy (2026-11-11).** A skill that explains an idea by inventing a physical machine whose working
   is the concept. The README's example is a cache key as a pin-tumbler lock. The quick-start prompt is
   a token-bucket rate limiter. The figure is an interactive isometric SVG, with WebGL for effects lines
@@ -1052,6 +1099,11 @@ header, the notes list, and the ranked item bodies are unchanged. Notes:
   requested change would affect behavior, given the developer's intent and the repository before the
   change. This item is the delta of the review page since the reader last looked. The paper does not
   move it. Evidence: `measured-obs` (agents).
+- **1904, commit pin (2026-11-26).** The same product as #15. A screenshot stays only when
+  it shows the exact files submitted. Stale pictures are dropped, and the comment says so
+  when none match. The caption names the commit. The silent video is recorded only when
+  checks pass on the submitted commit. Evidence: `vendor`. This item stays the interdiff of
+  hunks and notes since the last page. See "Changes (2026-11-26 sweep)".
 - **Sources:** `our own idea`. A related review-quality idea is the code-review backlog's C3 "re-review only the fix
   diff".
   **Atlas Review** stores which walkthrough steps the reader marked read, in localStorage, per review.
@@ -1499,6 +1551,61 @@ the commands.
   [X](https://x.com/arsene_btc/status/2117723494762844600). Rejected because it draws a logo-rich stack diagram
   from a one-sentence description, not from reading the repo. README candy, not code understanding of existing
   structure.
+
+## Changes (2026-11-26 sweep)
+
+This section sits after Rejected and before the 2026-11-09 changelog. Open PR #31 inserts its
+changelog after the 2026-11-17 section and before the second `## A. Ranked`, appends to the ends of
+#1, #2, #3, #5, #9, and #11, and adds a notes pointer after the 2026-11-13 sweep line. Open PR #33
+inserts its changelog before the 2026-11-17 heading, appends inside #1 (after Risk, before Quiz
+shape), #2, #5, #8 (after code-walkthrough), #9, #11 (after Test, before Code Tour), #12, and #16,
+and appends at the end of the hand-off list. Open PR #35 inserts item #19 between #14 and #15, its
+changelog after #17 and before the shipped table, and a hand-off bullet after the Level Up bullet.
+Open PR #37 inserts its changelog between the shipped table and the 2026-11-16 changelog, appends
+to #3, #6, and #11 (after Graphify, before Why it helps), and edits the reading-order cell. Open
+PR #39 inserts its changelog after the 2026-11-16 section and before Hand off, and appends to #5,
+#9, and #11 (between Why it sits here and Test). Open PR #41 inserts its changelog at the end of
+the file, after the 2026-11-09 section, a pointer after the 2026-11-12 sweep line, and appends
+inside #1 (after the 2026-11-13 output-prediction paragraph), #8 (after Test, before
+code-walkthrough), #11 (in the Idea bullet, after "This item does not redo it."), #15 (after
+Test), #17 (after Test, before the CodeLens cache bullet), and the hand-off list (after Atlas
+Review, before IronBee).
+
+The 2026-11-26 pointer sits after the "How this is ranked" paragraph and before the evidence
+labels. The #7 sentence sits after the Rasoi bullet and before ### 8. The #8 sentence sits at
+the end of Sources, after the structured-reveal paragraph and before Why it helps. The #11
+sentence sits at the end of the Idea bullet, after SAFE and before Sources. The #12 sentence
+sits in Sources, after Dyff and before gavel. The #15 sentences sit in Sources, after the
+perspica Learn line and before Anatomy. The #17 sentence sits after the Idea bullet and before
+Sources. Those lines are in none of the six diffs. The draft header, the notes list that stops
+at the 2026-11-06 note, the shipped table, and the hand-off list are unchanged.
+Rank unchanged. No new numbered item. Notes:
+[`notes/sweep-2026-11-26.md`](notes/sweep-2026-11-26.md).
+
+- #7. [Archify](https://github.com/tt-a1i/archify) `archify-pr`, `vendor` + `engagement` (GitHub
+  API `stargazers_count` 100316 on 2026-11-26). Views follow the change, and unchanged context
+  stops at one hop. v3.3.0 released 2026-11-22. X is weak: 5 likes on the
+  [EthanLinAI](https://x.com/EthanLinAI/status/2125925092970664446) post when read. No measured
+  outcome.
+- #11. The same skill. One merged superset per view, removed elements drawn as ghosts in place,
+  attached to a GitHub pull request or a GitLab merge request. The reference says the diagrams
+  never grade the change. Deterministic layout-verification gates in the CLI. `vendor`.
+- #12. Archify preflight materiality, from changed files, changed lines, and path classes. A
+  small schema or migration change still qualifies. `vendor`.
+- #15. [1904](https://1904.ai/news/pr-shows-the-screen) (2026-11-14), `vendor`. A "Visual
+  changes" comment, up to four screenshots, and a silent video of at most 45 seconds.
+  [RunThru](https://hunted.space/product/runthru), `vendor`, featured 2026-11-10, 63 upvotes,
+  Product of the Day #39 when read. A peer of Flyovers (2026-11-25 sweep).
+- #17. 1904 drops a screenshot that is not of the exact submitted files, and records the video
+  only when checks pass on the submitted commit. `vendor`.
+- #8. LeadDev, "The AI Code Review Report 2026", `survey`, vendor-partnered. 377 engineers and
+  engineering leaders. Key takeaways: 26% "fully understand the AI code they review", and 68%
+  "don't always know which changes need deeper scrutiny". The full report is behind login. A
+  pointer only.
+- Notes only, no item body: [Codiff](https://github.com/nkzw-tech/codiff), OSS,
+  `stargazers_count` 1485 on 2026-11-26. A peer for uncommitted-change walkthroughs. RunThru's
+  pass/fail grade, and the rest of the LeadDev report, stay in the sweep note.
+- Rank: unchanged. No new numbered item.
 
 ## Changes (2026-11-09 sweep)
 
