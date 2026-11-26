@@ -1578,7 +1578,8 @@ sentence sits at the end of the Idea bullet, after SAFE and before Sources. The 
 sits in Sources, after Dyff and before gavel. The #15 sentences sit in Sources, after the
 perspica Learn line and before Anatomy. The #17 sentence sits after the Idea bullet and before
 Sources. Those lines are in none of the six diffs. The draft header, the notes list that stops
-at the 2026-11-06 note, the shipped table, and the hand-off list are unchanged.
+at the 2026-11-06 note, the shipped table, and the hand-off list are unchanged. A trial merge
+with each of #31, #33, #35, #37, #39, and #41 applied cleanly.
 Rank unchanged. No new numbered item. Notes:
 [`notes/sweep-2026-11-26.md`](notes/sweep-2026-11-26.md).
 
