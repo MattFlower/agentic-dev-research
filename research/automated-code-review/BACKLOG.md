@@ -202,6 +202,63 @@ defects, k=2 (eval-mvw0y6v31sec2vc1agx2t1; cheap arms eval-mvvv3pum0kriw040gi0x2
       privacy prompt's false-alarm cost is measured only on non-fix PRs. Reverted-fix defects may
       be easier than organic ones.
 
+*2026-11-27 sweep.*
+
+31. **Unneeded-edit check for agent-written PRs** — `proposed`, cost M. **Also relevant to
+    limitless** (the gold procedure's edge was a mutation check: revert the source diff and the
+    PR's tests must fail, §1.2 and item 11).
+    Ranks mid-to-low in section C, near the other execution checks. Below C1 and C2 (measured
+    on escaped defects, cost S), the harness (item 1), the S eval checks (C9–C10), C20, and
+    C11. The nearest method is item 11's mutation check (Option A / T5), which reverts the
+    source diff once and is already the v1 finder. This probe reruns tests once per non-test
+    hunk, and the paper measures unneeded code. Reviewer gain is unmeasured, so the expected
+    recall gain per test run is smaller. Same family as C13
+    ([PR #12](https://github.com/MattFlower/agentic-dev-research/pull/12)), an edit-and-recheck
+    that adds evidence. C13's prompt prototype is the cheaper experiment, and it gates
+    must-fix. This probe proposes hunks. Above C12 (same PR), which does not aim at per-review
+    recall.
+    The 36% self-audit recall is further evidence for C11. This item is the execution probe.
+    - **Idea:** On agent-written PRs, revert each non-test hunk and rerun the PR's tests and the
+      repo's tests. Hand the reviewer the hunks whose revert leaves tests green: "this hunk is
+      not required by any test, yet it changes behavior — explain or drop it." The probe
+      surfaces candidate findings. Reproduce-or-drop, which used execution to remove findings
+      and cut recall, stays rejected. Self-audit of the diff is the weaker instrument (36%
+      recall), so the check runs the tests.
+    - **Source:** [arXiv 2611.34875](https://arxiv.org/abs/2611.34875) (*How Much Do Coding
+      Agents Over-Edit, and Why? An Empirical Study of Unneeded Edits in Repository-Level Agent
+      Patches*; Goel, Steenhoek, Hu; Microsoft; Nov 25, 2026). Opened 2026-11-27.
+      [report.md](report.md) §2.5.
+    - **Why:** Unneeded code that changes behavior is an unrequested behavior change, a bug-lens
+      target that reading the diff tends to accept as plausible. A hunk-revert-and-rerun probe
+      gives the reviewer execution evidence for that claim, close to the mutation check the
+      limitless research credited for the gold reviewer's edge. Asking the agent to audit its
+      own diff recalled 36% of unneeded code, so the probe is execution-based.
+    - **Test:** On the eval set's agent-authored PRs, revert each non-test hunk and rerun the
+      PR's tests and the repo's tests. Surface hunks whose revert leaves tests green as
+      candidate findings for the reviewer to judge. Compare gold-defect recall and precision
+      with the baseline reviewer, and require the gain to clear item 1's A/A noise floor. Also
+      report how many flagged hunks were real defects versus harmless. Do not contaminate
+      escapes-heldout.
+    - **Evidence:** moderate on prevalence, thin on reviewer gain. DRA replays the trajectory,
+      traces each block (unit) of the final patch to the step that wrote it, reverts the unit,
+      and reruns the task tests. 7,660 resolved GitHub Copilot CLI trajectories, 18 models,
+      SWE-bench Verified (6,728) and DeepSWE (932). Agent patches change a median 2.33× the
+      lines of developer patches. On SWE-bench Verified the extra edits are mostly tests (61%)
+      and docs (13%); on DeepSWE most extra edits are code (58%). Agent code is on average at
+      least as necessary as developers' (mean NP_code 0.887 vs 0.864 on SWE-bench Verified;
+      0.797 vs 0.785 on DeepSWE). On average 11% of an agent patch's code units on SWE-bench
+      Verified are still unneeded, and 89% of those change behavior. Pruning with DRA using
+      only tests the agent can see: 67% recall, 46% precision on unneeded code, and 89% of
+      pruned patches still resolve the task. Asking the agent to audit its own diff: 36%
+      recall, 66% precision. Agent-added tests detect 68% of injected bugs (vs 77% for task
+      tests); 5% of injected bugs are caught only by the agent's new or strengthened tests.
+      Code necessity is unrelated to resolve rate on SWE-bench Verified and negatively
+      correlated on DeepSWE (Spearman −0.59, p=0.01). ⚠️ Preprint. Judges are LLMs (second-judge
+      agreement 84.4%, kappa 0.69 on role labels). The unneeded verdict depends on the test
+      oracle (the paper's own developer baseline flips sign under a stronger oracle). The paper
+      measures unneeded code. Defects a reviewer would find are unmeasured. Cost M: a runnable
+      test env per PR, one test run per hunk.
+
 1. **Rated-severity rater as a separate pass** (v3 rater with "nuisance" class, 18/20) instead of in-finder
    fields — `proposed`, S. [Matt] Notes e2.
 2. **Other-vendor sample as an extra union finder** (comment channel only) — `proposed`, S, modest:
