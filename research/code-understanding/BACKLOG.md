@@ -128,6 +128,43 @@ factory's deliver/review stages.
   ([essay](https://addyosmani.com/blog/cognitive-surrender/)). Evidence: `practitioner`. Replies on an X
   thread were named in the 2026-11-06 brief and were not opened. See
   [`notes/sweep-2026-11-06.md`](notes/sweep-2026-11-06.md).
+  **Pre-merge comprehension gates (2026-11-27).**
+  [pr-quiz](https://github.com/dkamm/pr-quiz) is a GitHub Action that uses AI to generate a quiz
+  from a pull request. The GitHub API on 2026-11-27 reports 211 stars, created 2025-06-19, last
+  push 2025-11-24. Promo post
+  [JohnDoritosKane](https://x.com/JohnDoritosKane/status/2112490958059348400), 0 likes.
+  Evidence: `practitioner`. Stars are the signal.
+  [Mironyx](https://mironyx.dev/product) has a Feature Comprehension Score (FCS) and a PR
+  Comprehension Check (PRCC). The product page says an AI generates 3 to 8 comprehension
+  questions from the PR diff, description, linked issues, and design docs, with reference
+  answers and weights, and that "the rubric is fixed before anyone sees the questions".
+  Questions target Naur's three layers ("Programming as Theory Building"): domain mapping,
+  design justification, and modification capacity. The example is "What would break if we
+  changed the retry policy from exponential to fixed-interval, and which tests would catch
+  it?" Participants answer independently. Individual scores are never tracked or reported.
+  The unit is the team. PRCC fires when a PR is opened or updated, in a soft or a hard
+  merge-gate mode. A web-search summary of their site says hard mode defaults to a 70%
+  threshold. That 70% is from their site via search, and it was not verified on the page.
+  FCS is admin-initiated after a feature. The write-up is
+  [Feature Comprehension Score](https://mironyx.dev/blog/feature-comprehension-score)
+  (March 2026, Leonid Sokolovskiy).
+  [@leonidmironyx](https://x.com/leonidmironyx/status/2087643997997064363) posts with about 0
+  likes. Evidence: `vendor`, no engagement.
+  Sphinx is a Git hook that quizzes you on your AI agent's code before push and blocks the
+  push if you cannot explain it. The only source is a teardown post
+  ([DaDw26](https://x.com/DaDw26/status/2117323355032617161), 2026-11-02, 7 likes, 11 replies,
+  277 impressions). Evidence: `practitioner`, low engagement. No repo link found.
+  [Bridgekeeper](https://bridgekeeper.io/) returned HTTP 500 on 2026-11-27. The description
+  comes from a search index only, so it is unverified. It filters the diff to material
+  changes, asks the reviewer to predict the implementation and the rationale before
+  revealing the diff, then asks category-specific Socratic questions (index or access
+  pattern, latency, concurrency, security boundary, migrations, API breaks). An LLM judge
+  decides whether understanding is enough to merge. See the PRIMM note in sweep 2026-11-25.
+  **Our own idea:** borrow Mironyx's three question types for this quiz. One domain-mapping
+  question, one design-justification question, and one modification-capacity question. Check
+  the last against the code or the tests. Have the build write the answer key, with
+  `path:line`, before the quiz renders, so the key cannot drift to fit the reader. Keep HR's
+  quiz a self-check. A merge gate is out of scope for human-review.
 - **Why it helps:** today the page shows what changed but never checks that it landed in your head. A quiz turns
   passive reading into retrieval, and it shows you which part you didn't get. It also gives us a **comprehension
   metric**, which the earlier report said human-review lacks.
@@ -195,6 +232,10 @@ factory's deliver/review stages.
   `measured-RCT`. The arXiv comment says "Accepted to ICSE 2027." Themes and the hold-back cite are in
   the 2026-11-10 changes section. Notes:
   [`notes/sweep-2026-11-10.md`](notes/sweep-2026-11-10.md).
+  **Mironyx, team aggregate only (2026-11-27).** Mironyx reports a team-level aggregate only and
+  never individual scores ([product](https://mironyx.dev/product)), so if this item ships quiz
+  scores in the export, keep them in the reader's own Copy feedback export and do not aggregate
+  per person.
 - **Why it helps:** every other item here is a guess without it. It tells us whether a block saves minutes or only
   moves them. The extend task tells us whether the reader can still work once the page is closed.
 - **Test:** 10 reviews with the export on. Check the timings add up to wall-clock time, and that viewed-but-skipped
