@@ -219,6 +219,10 @@ factory's deliver/review stages.
   edits stay small ([arXiv 2610.10610](https://arxiv.org/abs/2610.10610)). Evidence: `measured-obs`. It is not a
   human study, and it is not a reason to add an agent-eval skill. It is a reason to keep a comprehension measure
   next to time-to-approve. See #1.
+  **Mironyx, team aggregate only (2026-11-27).** Mironyx reports a team-level aggregate only and
+  never individual scores ([product](https://mironyx.dev/product)), so if this item ships quiz
+  scores in the export, keep them in the reader's own Copy feedback export and do not aggregate
+  per person.
   **White et al.** ([arXiv 2611.12019](https://arxiv.org/abs/2611.12019), published 2026-11-09T07:56:58Z)
   is the same warning on self-report. 3×2 within-subjects, N=20 after two exclusions from 22. Java snippets
   of about 30, 45, and 70 lines. Gemini's web chat on a second monitor, then a four-question quiz with the
@@ -232,10 +236,6 @@ factory's deliver/review stages.
   `measured-RCT`. The arXiv comment says "Accepted to ICSE 2027." Themes and the hold-back cite are in
   the 2026-11-10 changes section. Notes:
   [`notes/sweep-2026-11-10.md`](notes/sweep-2026-11-10.md).
-  **Mironyx, team aggregate only (2026-11-27).** Mironyx reports a team-level aggregate only and
-  never individual scores ([product](https://mironyx.dev/product)), so if this item ships quiz
-  scores in the export, keep them in the reader's own Copy feedback export and do not aggregate
-  per person.
 - **Why it helps:** every other item here is a guess without it. It tells us whether a block saves minutes or only
   moves them. The extend task tells us whether the reader can still work once the page is closed.
 - **Test:** 10 reviews with the export on. Check the timings add up to wall-clock time, and that viewed-but-skipped
