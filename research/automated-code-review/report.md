@@ -4,11 +4,14 @@
 
 *Sweep 2026-11-02: ultrareview description (§2.6), ORION, Macroscope Terra note. Eval-baseline arm rejected 2026-11-06.*
 
+*Sweep 2026-11-27: unneeded edits in agent patches (§2.5). Opened 2026-11-27.*
+
 Status: first draft, written to be revised once Matt's prior docs are folded in further. Every
 external source below was opened on 2026-10-31, except the 2026-11-02 sweep items named above,
-CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), and Foresight-SWE
-(opened 2026-11-05); anything that could not be opened is listed in "Not verified". Numbers from
-different benchmarks are not comparable.
+CR-Bench-v2 (opened in the 2026-11-04 daily sweep and again on 2026-11-05), Foresight-SWE
+(opened 2026-11-05), and the 2026-11-27 sweep (unneeded edits in agent patches); anything that
+could not be opened is listed in "Not verified". Numbers from different benchmarks are not
+comparable.
 
 **Precedence for Matt's figures** (as instructed): the 2026-10-31 escapes-dev run beats Phase 0
 `RESULTS.md` (2026-10-29), which beats the working notes on overlapping figures; where the notes
@@ -306,6 +309,26 @@ scaling agent systems [2512.08296](https://arxiv.org/abs/2512.08296).
   That matches §1.2, where execution used as a filter cut recall, and it targets the 9/30
   production misses that needed running code. ⚠️ Python-only, single paper, baselines'
   configuration unknown.
+- *2026-11-27 sweep.* **Unneeded edits in agent patches**, Goel, Steenhoek, Hu (Microsoft),
+  *How Much Do Coding Agents Over-Edit, and Why?*
+  [arXiv 2611.34875](https://arxiv.org/abs/2611.34875) (Nov 25, 2026) **[arXiv]**: DRA replays
+  the trajectory, traces each block (unit) to the step that wrote it, reverts it, and reruns
+  the task tests (7,660 resolved GitHub Copilot CLI trajectories, 18 models; SWE-bench
+  Verified 6,728, DeepSWE 932). Agent patches change a median 2.33× the lines of developer
+  patches; extra edits are mostly tests (61%) and docs (13%) on SWE-bench Verified, and
+  mostly code (58%) on DeepSWE. Agent code is on average at least as necessary as developers'
+  (mean NP_code 0.887 vs 0.864 on SWE-bench Verified; 0.797 vs 0.785 on DeepSWE). On average
+  11% of an agent patch's code units on SWE-bench Verified are still unneeded, and 89% of
+  those change behavior. Pruning with DRA using only tests the agent can see: 67% recall,
+  46% precision, and 89% of pruned patches still resolve; asking the agent to audit its own
+  diff: 36% recall, 66% precision. Agent-added tests detect 68% of injected bugs (vs 77% for
+  task tests); 5% of injected bugs are caught only by the agent's new or strengthened tests.
+  Code necessity is unrelated to resolve rate on SWE-bench Verified and negatively correlated
+  on DeepSWE (Spearman −0.59, p=0.01). ⚠️ Preprint. Judges are LLMs (second-judge agreement
+  84.4%, kappa 0.69 on role labels). The unneeded verdict depends on the test oracle (the
+  developer baseline flips sign under a stronger oracle). The paper measures unneeded code.
+  Defects a reviewer would find are unmeasured. Backlog **C31**. **Also relevant to
+  limitless** (hunk-revert probe, close to the mutation check in §1.2).
 
 ### 2.6 Runtime facts for a Claude Code + Codex skill [doc]
 
